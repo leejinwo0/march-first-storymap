@@ -1,7 +1,7 @@
 import { MAP_ENDPOINTS } from '../../api/mapService.js';
 import { addMapToggleControl } from '../utils/mapUtils.js';
 
-export function initSection1Maps() {
+export function initSection1() {
   const mapConfigsS1 = [
     {
       id: 'map-s1-1', center: [37.5562, 126.9850], zoom: 11, title: '남산 통감관저 터', region: 'seoul',

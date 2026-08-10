@@ -43,7 +43,7 @@ async function initApp() {
     console.log("✅ 스마트서울맵 API 로드 완료! 화면을 그립니다.");
 
     initGlobalUI();
-    initSection1Maps();
+    initSection1();
     initSection2();
     initSection3();
     initSection4();
