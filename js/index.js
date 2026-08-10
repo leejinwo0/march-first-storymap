@@ -4,7 +4,7 @@
 import { loadSeoulMapAPI } from './utils/mapUtils.js';
 import { initGlobalUI } from './utils/uiUtils.js';
 
-import { initSection1Maps } from './sections/section1.js';
+import { initSection1 } from './sections/section1.js';
 import { initSection2 } from './sections/section2.js';
 import { initSection3 } from './sections/section3.js';
 import { initSection4 } from './sections/section4.js';
