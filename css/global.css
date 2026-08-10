@@ -1,0 +1,312 @@
+/* 모든 요소의 여백 초기화 및 박스 사이즈 기준 설정 */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 프로젝트 전체에서 사용할 컬러 팔레트 (CSS 변수) */
+:root {
+  --red: #a83228;
+  --red-deep: #5f1714;
+  --cream: #eee6d8;
+  --paper: #d8d0c2;
+  --ink: #0d0c0b;
+  --charcoal: #15120f;
+  --gold: #b8922e;
+  --muted: #81776b;
+}
+
+/* 바디 기본 설정: 어두운 배경, 부드러운 스크롤 */
+body,
+.global-body {
+  background-color: var(--ink);
+  color: var(--cream);
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
+
+/* Leaflet(지도) 라이브러리 강제 스타일 덮어쓰기 */
+.leaflet-container {
+  background: transparent !important;
+}
+
+.leaflet-tile {
+  background-color: transparent !important;
+}
+
+.leaflet-control-attribution {
+  display: none !important;
+}
+
+/* 스토리 섹션 & 헤더 (인트로 타이틀 영역) */
+.story-section {
+  position: relative;
+  background-color: var(--ink);
+  color: white;
+}
+
+.story-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+  pointer-events: none;
+}
+
+.story-overlay-header {
+  opacity: 0.1;
+}
+
+.story-header {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  padding: 0 2rem;
+}
+
+.story-header-bg {
+  position: absolute;
+  inset: 0;
+  background-color: var(--ink);
+  opacity: 0.9;
+}
+
+.story-header-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+}
+
+.story-chapter-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.story-chapter-num {
+  font-family: 'Playfair Display', serif;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 2.25rem;
+}
+
+.story-divider {
+  height: 1px;
+  width: 3rem;
+  background-color: var(--red);
+}
+
+.story-chapter-subtitle {
+  color: var(--red);
+  font-weight: bold;
+  letter-spacing: 0.4em;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+}
+
+.story-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+.story-desc {
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 auto;
+  font-style: italic;
+  font-size: 1.125rem;
+}
+
+/* 우측 Dot 네비게이션 */
+.global-dot-nav {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  z-index: 9999;
+}
+
+.global-dot {
+  padding: 0;
+  outline: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 0, 0, 0.3);
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.global-dot.active {
+  background-color: var(--red);
+  border-color: var(--red);
+  transform: scale(1.1);
+}
+
+/* 플로팅 TOP 버튼 */
+.floating-top-btn {
+  position: fixed;
+  bottom: 2.5rem;
+  right: 2.5rem;
+  z-index: 9999;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  color: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.floating-top-btn.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.floating-top-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(168, 50, 40, 0.6);
+}
+
+/* Footer (사이트 하단) */
+.site-footer {
+  background-color: #050505;
+  color: rgba(238, 230, 216, 0.6);
+  padding: 4rem 2rem 3rem 2rem;
+  position: relative;
+  z-index: 100;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+}
+
+.footer-logo {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.footer-logo span {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.4);
+  margin-left: 0.5rem;
+  letter-spacing: 0.05em;
+}
+
+.footer-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin-bottom: 2rem;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.footer-info p {
+  margin-bottom: 0.3rem;
+}
+
+.footer-source {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.footer-copyright {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+/* 지도 일반/위성 토글 버튼 */
+.custom-map-toggle {
+  background-color: rgba(20, 20, 20, 0.85);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.85rem;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  margin-top: 1.5rem !important;
+  margin-right: 1.5rem !important;
+}
+
+.map-type-label {
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 400;
+  transition: all 0.3s ease;
+}
+
+.map-type-label.active {
+  color: #ffffff;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.map-type-divider {
+  color: rgba(255, 255, 255, 0.15);
+  font-size: 0.8rem;
+}
+
+.custom-map-toggle:hover {
+  background-color: var(--red);
+  border-color: var(--red);
+}
+
+.sc2-reset-btn,
+.sc4-reset-btn,
+.sc5-reset-btn {
+  top: 5.5rem !important;
+}
