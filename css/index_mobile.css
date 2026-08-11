@@ -81,8 +81,7 @@
 
   /* 텍스트가 위정하고 이미지가 아래에 오는 경우를 위한 클래스 */
   .swiper-slide.card-slide .top-content {
-    justify-content: flex-start;
-    padding-top: 3rem;
+    justify-content: center;
   }
 
   /* 폰트 및 타이포그래피 스타일 */
@@ -194,4 +193,104 @@
     width: 22px;
     border-radius: 4px;
   }
+}
+
+/* 텍스트 단독 카드(인트로, 푸터)를 위한 중앙 정렬 클래스 */
+.full-text-card {
+  align-items: center;
+  text-align: center;
+  background-color: #0d0c0b;
+  /* 배경을 완전히 어둡게 처리 */
+}
+
+.full-text-card .card-desc {
+  margin-bottom: 0;
+  /* 불필요한 하단 여백 제거 */
+}
+
+
+/* 💡 배경 이미지 매칭용 클래스들 (assets/images/mobile_cards 경로 연결) */
+.bg-intro {
+  background-color: #0d0c0b;
+  background-image: radial-gradient(circle, rgba(168, 50, 40, 0.2) 0%, rgba(13, 12, 11, 1) 80%);
+}
+
+.bg-history {
+  background-color: #1f1b12;
+  background-image: url('../assets/images/mobile_cards/mobile_card2.png');
+}
+
+.bg-map-capture-1 {
+  background-color: #25221d;
+  background-image: url('../assets/images/mobile_cards/mobile_card3.png');
+}
+
+.bg-map-capture-2 {
+  background-color: #25221d;
+  background-image: url('../assets/images/mobile_cards/mobile_card4.png');
+}
+
+.bg-protest {
+  background-color: #1f1b12;
+  background-image: url('../assets/images/mobile_cards/mobile_card5.png');
+}
+
+.bg-activists {
+  background-color: #25221d;
+  background-image: url('../assets/images/mobile_cards/mobile_card6.png');
+}
+
+.bg-legacy {
+  background-color: #0d0c0b;
+  background-image: url('../assets/images/mobile_cards/mobile_card7.png');
+}
+
+/* =======================================================
+     모바일 카드 하단 링크 버튼 영역
+  ======================================================= */
+.mobile-card-btns {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+  /* 위쪽 텍스트와의 간격 */
+  width: 100%;
+}
+
+.mobile-btn {
+  flex: 1;
+  /* 두 버튼이 정확히 반반씩 너비를 차지하도록 설정 */
+  text-align: center;
+  padding: 0.8rem 0;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-decoration: none;
+  /* 밑줄 제거 */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  word-break: keep-all;
+}
+
+/* 역사편찬원 버튼 (골드 색상) */
+.mobile-btn.history-btn {
+  border: 1px solid var(--gold, #b8922e);
+  color: var(--gold, #b8922e);
+}
+
+/* 스마트서울맵 버튼 (레드 색상) */
+.mobile-btn.map-btn {
+  border: 1px solid var(--red, #a83228);
+  color: var(--red, #a83228);
+}
+
+/* 버튼 터치(호버) 시 효과 */
+.mobile-btn.history-btn:active,
+.mobile-btn.history-btn:hover {
+  background-color: var(--gold, #b8922e);
+  color: #000000;
+}
+
+.mobile-btn.map-btn:active,
+.mobile-btn.map-btn:hover {
+  background-color: var(--red, #a83228);
+  color: #ffffff;
 }
