@@ -6,7 +6,7 @@ export async function initSection5() {
   const mapContainer = document.getElementById('map-s5');
   if (!mapContainer) return;
 
-  const mapS5 = L.map('map-s5', { zoomControl: false, scrollWheelZoom: false, crs: getCrsEx() }).setView([37.577613, 126.976897], 10);
+  const mapS5 = L.map('map-s5', { zoomControl: false, scrollWheelZoom: false, zoomSnap: 1, zoomAnimation: false, crs: getCrsEx() }).setView([37.577613, 126.976897], 10);
   const baseMapS5 = new L.TileLayer.DAWULGIS_EX(MAP_ENDPOINTS.seoulBaseMap_kor, { minZoom: 1, maxZoom: 15 });
   const airMapS5 = new L.TileLayer.DAWULGIS_EX(MAP_ENDPOINTS.seoulBaseMap_air, { minZoom: 1, maxZoom: 15 });
   baseMapS5.addTo(mapS5);
@@ -85,7 +85,7 @@ export async function initSection5() {
         card.classList.add('active');
         marker.openPopup();
         card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        mapS5.setView([lat, lng], 12, { animate: true, duration: 1.0 });
+        mapS5.setView([lat, lng], 12, { animate: false });
       };
 
       card.addEventListener('click', activateItem);
@@ -100,7 +100,7 @@ export async function initSection5() {
       defaultBounds = L.latLngBounds(allLatLngs);
       setTimeout(() => {
         mapS5.invalidateSize();
-        mapS5.fitBounds(defaultBounds, { padding: [50, 50], maxZoom: 11 });
+        mapS5.fitBounds(defaultBounds, { padding: [50, 50], maxZoom: 11, animate: false });
       }, 500);
     }
 
@@ -116,7 +116,7 @@ export async function initSection5() {
 
     resetBtn.addEventListener('click', () => {
       if (defaultBounds) {
-        mapS5.fitBounds(defaultBounds, { padding: [50, 50], maxZoom: 11, animate: true });
+        mapS5.fitBounds(defaultBounds, { padding: [50, 50], maxZoom: 11, animate: false }); // 💡 이 부분의 true를 false로 변경합니다.
       }
       mapS5.closePopup();
       document.querySelectorAll('.sc5-card').forEach(c => c.classList.remove('active'));
