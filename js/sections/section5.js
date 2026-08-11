@@ -43,6 +43,9 @@ export async function initSection5() {
       const detailDesc = props.COT_VALUE_03 || props.COT_VALUE_01 || "상세한 기록이 남아있지 않습니다.";
       let imgUrl = props.COT_IMG_MAIN_URL || "";
       if (imgUrl && !imgUrl.startsWith("http")) imgUrl = "https://map.seoul.go.kr" + (imgUrl.startsWith("/") ? "" : "/") + imgUrl;
+      if (imgUrl.startsWith("http://")) {
+        imgUrl = "https://images.weserv.nl/?url=" + encodeURIComponent(imgUrl);
+      }
 
       const initial = getInitialConsonant(name);
       allLatLngs.push([lat, lng]);

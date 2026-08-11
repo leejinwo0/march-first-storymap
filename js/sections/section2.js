@@ -67,6 +67,9 @@ export async function initSection2() {
         if (finalImgUrl && !finalImgUrl.startsWith("http")) {
           finalImgUrl = "https://map.seoul.go.kr" + (finalImgUrl.startsWith("/") ? "" : "/") + finalImgUrl;
         }
+        if (finalImgUrl.startsWith("http://")) {
+          finalImgUrl = "https://images.weserv.nl/?url=" + encodeURIComponent(finalImgUrl);
+        }
 
         timelineData.push({
           id: targetId,
