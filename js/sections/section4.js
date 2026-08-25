@@ -92,10 +92,20 @@ export async function initSection4() {
                     </div>
                   </div>
                 `;
-                marker.bindPopup(popupContent, { offset: [0, -15], className: 'sc4-leaflet-popup' });
+                marker.bindPopup(popupContent, {
+                  offset: [0, -15],
+                  className: 'sc4-leaflet-popup',
+                  maxWidth: 450 // 💡 Leaflet 자체의 가로 제한을 넉넉하게 늘려줍니다.
+                });
 
                 marker.on('click', () => {
-                  mapS4.setView(latlng, 11, { animate: true, duration: 0.8 });
+                  const targetZoom = 11;
+                  const targetPoint = mapS4.project(latlng, targetZoom);
+
+                  // 마커를 아래로 200px 내려서 위쪽 팝업창 공간 확보 (숫자 조절 가능)
+                  targetPoint.y -= 200;
+
+                  mapS4.setView(mapS4.unproject(targetPoint, targetZoom), targetZoom, { animate: true, duration: 0.8 });
                 });
 
                 marker.addTo(targetLayer);

@@ -66,13 +66,24 @@ export async function initSection5() {
       });
       const marker = L.marker([lat, lng], { icon: icon }).addTo(mapS5);
 
+      let historyUrl = props.EXTRA_DATA_02 || props.COT_EXTRA_DATA_02 || "";
+
+      if (!historyUrl.startsWith("http")) {
+        historyUrl = `https://db.history.go.kr/modern/ia/level.do?nameKr=${encodeURIComponent(name)}&orderColumn=person_id&recordCountPerPage=20&pageIndex=1`;
+      } else {
+        historyUrl = historyUrl.replace("http://", "https://");
+      }
+
       const popupContent = `
         <div class="sc5-popup-inner">
           <h3>${name}</h3>
           <span class="sc5-pop-addr">${shortAddr}</span>
           <div class="sc5-pop-desc">${detailDesc}</div>
           <div class="sc5-pop-btns">
-            <a href="https://db.history.go.kr/modern/ia/level.do?orderColumn=person_id&recordCountPerPage=20&pageIndex=3" target="_blank" class="sc5-btn history-btn">일제감시대상인물카드</a>
+            <!-- 👇 요청하신 일제감시대상인물카드 링크 (API 적용) 👇 -->
+            <a href="${historyUrl}" target="_blank" class="sc5-btn history-btn">일제감시대상인물카드</a>
+            
+            <!-- 👇 원래 코드 그대로 둔 서울스마트맵 링크 👇 -->
             <a href="https://map.seoul.go.kr/" target="_blank" class="sc5-btn map-btn">서울스마트맵</a>
           </div>
         </div>

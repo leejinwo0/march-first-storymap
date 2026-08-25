@@ -282,7 +282,8 @@
 
 .sc4-popup-inner {
   padding: 1.5rem;
-  max-width: 280px;
+  width: 380px;
+  max-width: 90vw;
 }
 
 .sc4-popup-inner h3 {
@@ -306,9 +307,9 @@
   font-size: 0.85rem;
   color: rgba(238, 230, 216, 0.8);
   line-height: 1.6;
-  max-height: 150px;
-  overflow-y: auto;
-  padding-right: 5px;
+  display: block;
+  height: auto;
+  white-space: normal;
 }
 
 .sc4-popup-inner .sc4-pop-desc::-webkit-scrollbar {

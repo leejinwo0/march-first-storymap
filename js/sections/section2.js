@@ -186,6 +186,7 @@ export async function initSection2() {
         const targetZoom = 13;
         const targetPoint = mapS2.project(loc.pos, targetZoom);
         targetPoint.x -= (window.innerWidth <= 768 ? 0 : 350);
+        targetPoint.y -= 200;
         mapS2.setView(mapS2.unproject(targetPoint, targetZoom), targetZoom, { animate: true, duration: 0.8 });
 
         setTimeout(() => { isMarkerClicked = false; }, 900);
@@ -231,6 +232,7 @@ export async function initSection2() {
             const currentZoom = mapS2.getZoom();
             const targetPoint = mapS2.project(activeLoc.pos, currentZoom);
             targetPoint.x -= (window.innerWidth <= 768 ? 0 : 350);
+            targetPoint.y -= 200;
             mapS2.panTo(mapS2.unproject(targetPoint, currentZoom), { animate: true, duration: 0.8 });
           }
         }

@@ -222,11 +222,9 @@
   color: rgba(238, 230, 216, 0.8);
   line-height: 1.5;
   margin-bottom: 1.2rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  display: block;
+  height: auto;
+  white-space: normal;
 }
 
 .sc2-pop-btns {
