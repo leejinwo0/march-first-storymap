@@ -144,10 +144,6 @@
     line-height: 1.5;
   }
 
-  .mobile-footer .footer-source {
-    margin: 0.3rem 0;
-  }
-
   /* 💡 배경 이미지 매칭용 클래스들 (assets/images 경로에 맞게 지정하세요) */
   .bg-intro {
     background-color: #0d0c0b;
@@ -249,7 +245,10 @@
      모바일 카드 하단 링크 버튼 영역
   ======================================================= */
 .mobile-card-btns {
-  display: flex;
+  display: grid;
+  /* 기존 flex에서 grid로 변경 */
+  grid-template-columns: repeat(2, 1fr);
+  /* 2개의 열을 1:1 비율로 배치 */
   gap: 0.6rem;
   margin-top: 1.5rem;
   /* 위쪽 텍스트와의 간격 */
@@ -257,12 +256,17 @@
 }
 
 .mobile-btn {
-  flex: 1;
-  /* 두 버튼이 정확히 반반씩 너비를 차지하도록 설정 */
+  /* flex: 1; (삭제: 더 이상 필요하지 않음) */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* 텍스트 상하좌우 중앙 정렬 */
   text-align: center;
-  padding: 0.8rem 0;
+  padding: 0.8rem 0.2rem;
+  /* 좌우 여백을 살짝 줄여 좁은 화면 대비 */
   border-radius: 6px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  /* 버튼이 2개씩 배치되므로 글씨 크기 미세 조정 */
   font-weight: bold;
   text-decoration: none;
   /* 밑줄 제거 */
@@ -282,15 +286,55 @@
   color: var(--red, #a83228);
 }
 
-/* 버튼 터치(호버) 시 효과 */
+/* 한국민족대백과사전 버튼 (네이비 색상) */
+.mobile-btn.ency-btn {
+  border: 1px solid var(--green, #2d7a4d);
+  color: var(--green, #2d7a4d);
+}
+
+/* 우리역사넷 버튼 (그린 색상) */
+.mobile-btn.historynet-btn {
+  border: 1px solid var(--navy, #2b5c8f);
+  color: var(--navy, #2b5c8f);
+}
+
+/* 국사편찬원 버튼 (퍼플 색상) */
+.mobile-btn.nikh-btn {
+  border: 1px solid var(--purple, #6a4c9c);
+  color: var(--purple, #6a4c9c);
+}
+
+/* 역사편찬원 버튼 터치(호버) 시 효과 */
 .mobile-btn.history-btn:active,
 .mobile-btn.history-btn:hover {
   background-color: var(--gold, #b8922e);
   color: #000000;
 }
 
+/* 스마트서울맵 버튼 터치(호버) 시 효과 */
 .mobile-btn.map-btn:active,
 .mobile-btn.map-btn:hover {
   background-color: var(--red, #a83228);
+  color: #ffffff;
+}
+
+/* 한국민족대백과사전 버튼 터치(호버) 시 효과 */
+.mobile-btn.ency-btn:active,
+.mobile-btn.ency-btn:hover {
+  background-color: var(--green, #2d7a4d);
+  color: #ffffff;
+}
+
+/* 우리역사넷 버튼 터치(호버) 시 효과 */
+.mobile-btn.historynet-btn:active,
+.mobile-btn.historynet-btn:hover {
+  background-color: var(--navy, #2b5c8f);
+  color: #ffffff;
+}
+
+/* 국사편찬원 버튼 터치(호버) 시 효과 */
+.mobile-btn.nikh-btn:active,
+.mobile-btn.nikh-btn:hover {
+  background-color: var(--purple, #6a4c9c);
   color: #ffffff;
 }
