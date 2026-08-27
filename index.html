@@ -12,7 +12,7 @@
   <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <!-- 📱 Swiper.js (모바일 카드 슬라이드용) CSS 로드 -->
+  <!-- Swiper.js (모바일 카드 슬라이드용) CSS 로드 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
   <!-- 사용자 정의 스타일시트 연결 -->
@@ -418,16 +418,26 @@
 
       <div class="sc4-intro-view">
         <div class="sc4-intro-content sc4-reveal">
-          <h2 class="sc4-intro-title"><span class="ko-text">저항의 물결, 만세의 확산</span></h2>
+          <h2 class="sc4-intro-title">저항의 물결, 만세의 확산</h2>
           <hr class="sc4-intro-divider">
+
           <div class="sc4-intro-cols">
-            <div class="sc4-col">
-              <h3 class="sc4-col-title"><span class="ko-text">핵심 거점 (Strategic Hubs)</span></h3>
-              <p class="sc4-col-desc ko-text">독립운동의 숨은 심장과도 같은 곳입니다. 태화관이나 보성사와 같은 장소들은 극비리에 독립선언서를 기안하고, 인쇄하며, 전국으로 배포하기 위한 준비의 거점이었습니다.</p>
+            <!-- 첫 번째 카드: 핵심 거점 -->
+            <div class="sc4-col hub-card">
+              <h3 class="sc4-col-title">
+                <span class="ko-text">중요 지점</span>
+                <span class="en-text">Strategic Hubs</span>
+              </h3>
+              <p class="sc4-col-desc">독립운동의 숨은 심장과도 같은 곳입니다. 태화관이나 보성사와 같은 장소들은 극비리에 독립선언서를 기안하고, 인쇄하며, 전국으로 배포하기 위한 준비의 거점이었습니다.</p>
             </div>
-            <div class="sc4-col">
-              <h3 class="sc4-col-title"><span class="ko-text">시위 현장 (Protest Sites)</span></h3>
-              <p class="sc4-col-desc ko-text">대중적 저항이 폭발한 역사의 무대입니다. 남대문 정거장과 공덕리 등은 학생, 상인, 노동자 등 다양한 군중이 모여 반도 전역에 '만세'의 함성을 울려 퍼지게 한 항쟁의 중심지였습니다.</p>
+
+            <!-- 두 번째 카드: 시위 현장 -->
+            <div class="sc4-col site-card">
+              <h3 class="sc4-col-title">
+                <span class="ko-text">시위 장소</span>
+                <span class="en-text">Protest Sites</span>
+              </h3>
+              <p class="sc4-col-desc">대중적 저항이 폭발한 역사의 무대입니다. 남대문 정거장과 공덕리 등은 학생, 상인, 노동자 등 다양한 군중이 모여 반도 전역에 '만세'의 함성을 울려 퍼지게 한 항쟁의 중심지였습니다.</p>
             </div>
           </div>
         </div>
@@ -564,7 +574,7 @@
         <div class="footer-bottom">
           <div class="footer-info">
             <p>본 사이트는 1919년 3·1운동의 역사적 발자취를 기억하고 기록하기 위해 제작되었습니다.</p>
-            <p class="footer-source">자료 출처: 독립기념관 국내항일운동사적지, 오픈스트리트맵(OSM), 스마트서울맵API</p>
+            <p class="footer-source">자료 출처: 스마트서울맵, 오픈스트리트맵(OSM), 역사편찬원, 우리역사넷, 한국근대사료DB, 한국민족대백과사전, 독립기념관 국내항일운동사적지</p>
           </div>
           <div class="footer-copyright">
             &copy; 2026 National Independence Archive.<br>All rights reserved.
@@ -583,7 +593,7 @@
        [자바스크립트 로드 영역]
        ============================================================== -->
   <script src="./api/config.js"></script>
-  <!-- 📱 Swiper.js JS 로드 -->
+  <!-- Swiper.js JS 로드 -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script type="module" src="./js/index.js"></script>
 

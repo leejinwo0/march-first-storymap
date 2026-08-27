@@ -20,7 +20,7 @@ async function initApp() {
 
   // 📱 [모바일 모드]
   if (isMobile) {
-    console.log("📱 모바일 모드 진입: Swiper 슬라이더 실행");
+    console.log("모바일 모드 진입: Swiper 슬라이더 실행");
 
     // Swiper 라이브러리 가동 (스와이프 기능 및 하단 점 생성)
     new Swiper(".mySwiper", {
@@ -37,10 +37,10 @@ async function initApp() {
 
   // 💻 [PC 모드]
   try {
-    console.log("💻 PC 모드 진입: 지도 API 부팅 시작...");
+    console.log("PC 모드 진입: 지도 API 부팅 시작...");
 
     await loadSeoulMapAPI();
-    console.log("✅ 스마트서울맵 API 로드 완료! 화면을 그립니다.");
+    console.log("스마트서울맵 API 로드 완료! 화면을 그립니다.");
 
     initGlobalUI();
     initSection1();
@@ -50,10 +50,10 @@ async function initApp() {
     initSection5();
     initSection6();
 
-    console.log("🎉 모든 히스토리맵 섹션 로딩 완료!");
+    console.log("모든 히스토리맵 섹션 로딩 완료!");
 
   } catch (error) {
-    console.error("❌ 앱 초기화 에러:", error);
+    console.error("웹 초기화 에러:", error);
   }
 }
 

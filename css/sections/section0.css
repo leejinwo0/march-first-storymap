@@ -9,7 +9,7 @@
   justify-content: center;
   min-height: 100vh;
   text-align: center;
-  background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(168, 50, 40, 0.08), transparent 70%), linear-gradient(180deg, #0c0c0c 0%, #0e0e0e 60%, #0c0c0c 100%);
+  background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(var(--red-rgb), 0.08), transparent 70%), linear-gradient(180deg, var(--ink) 0%, var(--charcoal) 60%, var(--ink) 100%);
   overflow: hidden;
 }
 
@@ -30,7 +30,7 @@
   left: 50%;
   width: min(70vw, 600px);
   aspect-ratio: 1;
-  border: 1px solid rgba(192, 57, 43, 0.15);
+  border: 1px solid rgba(var(--red-rgb), 0.15);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   animation: slow-rotate 60s linear infinite;
@@ -45,12 +45,12 @@
 
 .sc0-hero-ring::before {
   inset: 30px;
-  border: 1px solid rgba(184, 146, 46, 0.12);
+  border: 1px solid rgba(var(--gold-rgb), 0.12);
 }
 
 .sc0-hero-ring::after {
   inset: 22%;
-  background: conic-gradient(from 25deg, rgba(168, 50, 40, 0.78), transparent 42%, rgba(17, 54, 91, 0.62), transparent 82%, rgba(168, 50, 40, 0.78));
+  background: conic-gradient(from 25deg, rgba(var(--red-rgb), 0.78), transparent 42%, rgba(var(--navy-rgb), 0.62), transparent 82%, rgba(var(--red-rgb), 0.78));
   filter: blur(1px);
   opacity: 0.45;
 }
@@ -90,12 +90,12 @@
 .sc0-hero-title strong {
   color: var(--red);
   font-weight: inherit;
-  text-shadow: 0 0 34px rgba(168, 50, 40, 0.36);
+  text-shadow: 0 0 34px rgba(var(--red-rgb), 0.36);
 }
 
 .sc0-hero-desc {
   margin: 2rem auto 0;
-  color: rgba(238, 230, 216, 0.72);
+  color: rgba(var(--cream-rgb), 0.72);
   font-size: clamp(0.92rem, 1.7vw, 1.05rem);
   line-height: 1.9;
   animation-delay: 0.9s;

@@ -1,3 +1,5 @@
+@charset "utf-8";
+
 /* 모든 요소의 여백 초기화 및 박스 사이즈 기준 설정 */
 *,
 *::before,
@@ -7,19 +9,52 @@
   padding: 0;
 }
 
-/* 프로젝트 전체에서 사용할 컬러 팔레트 (CSS 변수) */
+/* =======================================================
+   프로젝트 전체 컬러 팔레트 (최적화 버전)
+======================================================= */
 :root {
+  /* 1. Point Colors (브랜드 컬러) */
   --red: #a83228;
-  --red-deep: #5f1714;
-  --cream: #eee6d8;
-  --paper: #d8d0c2;
-  --ink: #0d0c0b;
-  --charcoal: #15120f;
+  --red-rgb: 168, 50, 40;
   --gold: #b8922e;
+  --gold-rgb: 184, 146, 46;
+  --green: #2d7a4d;
+  --navy: #2b5c8f;
+  --purple: #6a4c9c;
+
+  /* 2. Light & Text Colors (밝은 톤/텍스트) */
+  /* #f5f0e8, #f5eddd 등 비슷한 크림색을 모두 --cream으로 통일 */
+  --white: #ffffff;
+  --white-rgb: 255, 255, 255;
+  --cream: #eee6d8;
+  --cream-rgb: 238, 230, 216;
+  --paper: #d8d0c2;
+  /* #d8d2c8 통합 */
+
+  /* 3. Dark Backgrounds (어두운 배경 톤) */
+  /* #050505, #0c0c0c, #0e0e0e 등은 가장 어두운 잉크색으로 통합 */
+  --black: #000000;
+  --black-rgb: 0, 0, 0;
+  --ink: #0d0c0b;
+  --ink-rgb: 13, 12, 11;
+  /* rgba(20,20,20) 등의 반투명 검은 배경은 charcoal로 통합 */
+  --charcoal: #15120f;
+  --charcoal-rgb: 21, 18, 15;
+  /* #1a1714, #25221d, #2a251c 등 갈색빛 도는 어두운 톤 통합 */
+  --dark-brown: #1f1b12;
+
+  /* 4. Grays (회색조) */
   --muted: #81776b;
+  /* 텍스트 보조색 */
+  --gray-light: #e0e0e0;
+  /* #e5e2e1, #c4c7c7 통합 */
+  --gray-mid: #a7a7a7;
+  /* #bbbbbb 통합 */
+  --gray-dark: #444748;
+  /* #555555 통합 */
 }
 
-/* 바디 기본 설정: 어두운 배경, 부드러운 스크롤 */
+/* 바디 기본 설정 */
 body,
 .global-body {
   background-color: var(--ink);
@@ -30,23 +65,20 @@ body,
 }
 
 /* Leaflet(지도) 라이브러리 강제 스타일 덮어쓰기 */
-.leaflet-container {
-  background: transparent !important;
-}
-
+.leaflet-container,
 .leaflet-tile {
-  background-color: transparent !important;
+  background: transparent !important;
 }
 
 .leaflet-control-attribution {
   display: none !important;
 }
 
-/* 스토리 섹션 & 헤더 (인트로 타이틀 영역) */
+/* 스토리 섹션 & 헤더 */
 .story-section {
   position: relative;
   background-color: var(--ink);
-  color: white;
+  color: var(--white);
 }
 
 .story-overlay {
@@ -77,6 +109,7 @@ body,
   inset: 0;
   background-color: var(--ink);
   opacity: 0.9;
+  /* 투명도는 이 파일 안에서 바로 조절! */
 }
 
 .story-header-content {
@@ -95,7 +128,8 @@ body,
 
 .story-chapter-num {
   font-family: 'Playfair Display', serif;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(var(--white-rgb), 0.5);
+  /* RGB 변수를 사용해 투명도 적용 */
   font-size: 2.25rem;
 }
 
@@ -116,13 +150,13 @@ body,
 .story-title {
   font-size: 3rem;
   font-weight: bold;
-  color: white;
+  color: var(--white);
   margin-bottom: 1.5rem;
   letter-spacing: -0.02em;
 }
 
 .story-desc {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(var(--white-rgb), 0.7);
   margin: 0 auto;
   font-style: italic;
   font-size: 1.125rem;
@@ -146,7 +180,7 @@ body,
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  border: 4px solid rgba(255, 0, 0, 0.3);
+  border: 4px solid rgba(var(--red-rgb), 0.3);
   background-color: transparent;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -167,10 +201,10 @@ body,
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.85);
-  color: #000000;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  background: rgba(var(--white-rgb), 0.85);
+  color: var(--black);
+  border: 1px solid rgba(var(--white-rgb), 0.2);
+  box-shadow: 0 4px 15px rgba(var(--black-rgb), 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -189,17 +223,17 @@ body,
 
 .floating-top-btn:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(168, 50, 40, 0.6);
+  box-shadow: 0 8px 20px rgba(var(--red-rgb), 0.6);
 }
 
 /* Footer (사이트 하단) */
 .site-footer {
-  background-color: #050505;
-  color: rgba(238, 230, 216, 0.6);
+  background-color: var(--ink);
+  color: rgba(var(--cream-rgb), 0.6);
   padding: 4rem 2rem 3rem 2rem;
   position: relative;
   z-index: 100;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(var(--white-rgb), 0.05);
 }
 
 .footer-inner {
@@ -218,21 +252,21 @@ body,
   font-family: 'Noto Serif KR', serif;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--white);
 }
 
 .footer-logo span {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 0.9rem;
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(var(--white-rgb), 0.4);
   margin-left: 0.5rem;
   letter-spacing: 0.05em;
 }
 
 .footer-divider {
   height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(var(--white-rgb), 0.1);
   margin-bottom: 2rem;
 }
 
@@ -251,7 +285,7 @@ body,
 
 .footer-source {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(var(--white-rgb), 0.3);
 }
 
 .footer-copyright {
@@ -264,10 +298,10 @@ body,
 
 /* 지도 일반/위성 토글 버튼 */
 .custom-map-toggle {
-  background-color: rgba(20, 20, 20, 0.85);
+  background-color: rgba(var(--charcoal-rgb), 0.85);
   backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
+  border: 1px solid rgba(var(--white-rgb), 0.2);
+  color: var(--white);
   padding: 0.5rem 0.8rem;
   border-radius: 6px;
   display: flex;
@@ -277,26 +311,26 @@ body,
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 0.85rem;
   font-weight: bold;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 10px rgba(var(--black-rgb), 0.5);
   transition: all 0.3s ease;
   margin-top: 1.5rem !important;
   margin-right: 1.5rem !important;
 }
 
 .map-type-label {
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(var(--white-rgb), 0.3);
   font-weight: 400;
   transition: all 0.3s ease;
 }
 
 .map-type-label.active {
-  color: #ffffff;
+  color: var(--white);
   font-weight: 700;
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 0 8px rgba(var(--white-rgb), 0.5);
 }
 
 .map-type-divider {
-  color: rgba(255, 255, 255, 0.15);
+  color: rgba(var(--white-rgb), 0.15);
   font-size: 0.8rem;
 }
 

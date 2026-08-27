@@ -87,8 +87,8 @@ export async function initSection4() {
                     <span class="sc4-pop-addr">${address}</span>
                     <div class="sc4-pop-desc">${desc.replace(/\n/g, '<br>')}</div>
                     <div class="sc4-pop-btns">
+                    <a href="https://map.seoul.go.kr/" target="_blank" class="sc4-btn map-btn">스마트서울맵</a>
                       <a href="https://history.seoul.go.kr/" target="_blank" class="sc4-btn history-btn">역사편찬원</a>
-                      <a href="https://map.seoul.go.kr/" target="_blank" class="sc4-btn map-btn">서울스마트맵</a>
                     </div>
                   </div>
                 `;

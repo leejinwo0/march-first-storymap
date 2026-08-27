@@ -163,8 +163,8 @@ export async function initSection2() {
           </div>
           <p class="sc2-pop-desc">${loc.shortDesc}</p>
           <div class="sc2-pop-btns">
+          <a href="https://map.seoul.go.kr/" target="_blank" class="sc2-btn map-btn">스마트서울맵</a>
             <a href="https://history.seoul.go.kr/" target="_blank" class="sc2-btn history-btn">역사편찬원</a>
-            <a href="https://map.seoul.go.kr/" target="_blank" class="sc2-btn map-btn">서울스마트맵</a>
           </div>
         </div>
       `;

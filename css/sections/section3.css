@@ -14,7 +14,7 @@
   width: 100%;
   height: 100vh;
   top: 0;
-  background-color: #0e0e0e;
+  background-color: var(--ink);
   z-index: 1;
   overflow: hidden;
 }
@@ -32,7 +32,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.9);
+  box-shadow: inset 0 0 150px rgba(var(--black-rgb), 0.9);
   z-index: 2;
 }
 
@@ -59,14 +59,14 @@
 
 .sc3-fixed-card {
   pointer-events: auto;
-  background-color: rgba(14, 14, 14, 0.85);
+  background-color: rgba(var(--charcoal-rgb), 0.85);
   backdrop-filter: blur(8px);
   padding: 2.5rem;
   border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(var(--white-rgb), 0.1);
   width: 100%;
   max-width: 450px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 20px 40px rgba(var(--black-rgb), 0.8);
   min-height: 400px;
   display: flex;
   flex-direction: column;
@@ -93,9 +93,9 @@
   width: 44px;
   height: 44px;
   border-radius: 8px;
-  background-color: rgba(14, 14, 14, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(var(--charcoal-rgb), 0.7);
+  border: 1px solid rgba(var(--white-rgb), 0.15);
+  color: rgba(var(--white-rgb), 0.5);
   font-family: 'Playfair Display', serif;
   font-size: 1.1rem;
   font-weight: bold;
@@ -107,16 +107,16 @@
 }
 
 .sc3-nav-btn:hover {
-  background-color: rgba(168, 50, 40, 0.4);
-  color: #ffffff;
+  background-color: rgba(var(--red-rgb), 0.4);
+  color: var(--white);
 }
 
 .sc3-nav-btn.active {
   background-color: var(--red);
-  color: #ffffff;
+  color: var(--white);
   border-color: var(--red);
   transform: translateX(10px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 10px rgba(var(--black-rgb), 0.5);
 }
 
 .sc3-scroll-track {
@@ -132,13 +132,13 @@
 
 .sc3-item-title {
   font-size: 1.5rem;
-  color: white;
+  color: var(--white);
   margin-bottom: 1rem;
   font-weight: bold;
 }
 
 .sc3-item-desc {
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(var(--white-rgb), 0.75);
   line-height: 1.7;
   font-size: 1rem;
   margin: 0;
@@ -146,12 +146,12 @@
 }
 
 .sc3-route-path {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(var(--black-rgb), 0.5);
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid rgba(168, 50, 40, 0.3);
+  border: 1px solid rgba(var(--red-rgb), 0.3);
   font-size: 0.85rem;
-  color: #bbb;
+  color: var(--gray-mid);
   line-height: 1.5;
 }
 
@@ -178,10 +178,10 @@
 }
 
 .sc3-route-box {
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(var(--black-rgb), 0.4);
   padding: 1.2rem;
   border-radius: 0.5rem;
-  border: 1px solid rgba(168, 50, 40, 0.3);
+  border: 1px solid rgba(var(--red-rgb), 0.3);
   margin-bottom: 1.5rem;
 }
 
@@ -199,7 +199,7 @@
 }
 
 .sc3-route-val {
-  color: #bbb;
+  color: var(--gray-mid);
   font-size: 0.95rem;
   line-height: 1.5;
   margin: 0;
@@ -214,41 +214,41 @@
 }
 
 .sc3-point-label {
-  background: rgba(0, 0, 0, 0.85);
-  color: #fff;
+  background: rgba(var(--black-rgb), 0.85);
+  color: var(--white);
   padding: 3px 8px;
   border-radius: 4px;
   font-size: 11px;
   font-weight: bold;
   margin-bottom: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(var(--white-rgb), 0.3);
   white-space: nowrap;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 5px rgba(var(--black-rgb), 0.5);
 }
 
 .sc3-point-dot {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  border: 2px solid #fff;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+  border: 2px solid var(--white);
+  box-shadow: 0 0 8px rgba(var(--black-rgb), 0.8);
 }
 
 .sc3-point-marker.start .sc3-point-dot,
 .sc3-point-marker.end .sc3-point-dot {
-  background-color: #000000;
+  background-color: var(--black);
 }
 
 .sc3-point-marker.start .sc3-point-label,
 .sc3-point-marker.end .sc3-point-label {
-  color: #ffffff;
+  color: var(--white);
 }
 
 #map-s3 {
   width: 100%;
   height: 100vh;
   position: relative;
-  background-color: #e0e0e0;
+  background-color: var(--gray-light);
   display: block !important;
 }
 

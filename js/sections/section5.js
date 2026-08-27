@@ -80,11 +80,8 @@ export async function initSection5() {
           <span class="sc5-pop-addr">${shortAddr}</span>
           <div class="sc5-pop-desc">${detailDesc}</div>
           <div class="sc5-pop-btns">
-            <!-- 👇 요청하신 일제감시대상인물카드 링크 (API 적용) 👇 -->
+            <a href="https://map.seoul.go.kr/" target="_blank" class="sc5-btn map-btn">스마트서울맵</a>
             <a href="${historyUrl}" target="_blank" class="sc5-btn history-btn">일제감시대상인물카드</a>
-            
-            <!-- 👇 원래 코드 그대로 둔 서울스마트맵 링크 👇 -->
-            <a href="https://map.seoul.go.kr/" target="_blank" class="sc5-btn map-btn">서울스마트맵</a>
           </div>
         </div>
       `;

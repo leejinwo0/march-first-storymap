@@ -205,39 +205,43 @@
 }
 
 
-/* 💡 배경 이미지 매칭용 클래스들 (assets/images/mobile_cards 경로 연결) */
-.bg-intro {
+/* 💡 공통 배경색 하나로 통일 */
+.bg-intro,
+.bg-history,
+.bg-map-capture-1,
+.bg-map-capture-2,
+.bg-protest,
+.bg-activists,
+.bg-legacy {
   background-color: #0d0c0b;
+}
+
+/* 각 카드별 배경 이미지 (색상은 위에서 공통 적용됨) */
+.bg-intro {
   background-image: radial-gradient(circle, rgba(168, 50, 40, 0.2) 0%, rgba(13, 12, 11, 1) 80%);
 }
 
 .bg-history {
-  background-color: #1f1b12;
   background-image: url('../assets/images/mobile_cards/mobile_card2.png');
 }
 
 .bg-map-capture-1 {
-  background-color: #25221d;
   background-image: url('../assets/images/mobile_cards/mobile_card3.png');
 }
 
 .bg-map-capture-2 {
-  background-color: #25221d;
   background-image: url('../assets/images/mobile_cards/mobile_card4.png');
 }
 
 .bg-protest {
-  background-color: #1f1b12;
   background-image: url('../assets/images/mobile_cards/mobile_card5.png');
 }
 
 .bg-activists {
-  background-color: #25221d;
   background-image: url('../assets/images/mobile_cards/mobile_card6.png');
 }
 
 .bg-legacy {
-  background-color: #0d0c0b;
   background-image: url('../assets/images/mobile_cards/mobile_card7.png');
 }
 

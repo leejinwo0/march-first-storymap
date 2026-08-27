@@ -2,7 +2,7 @@
    Section 6: 남겨진 유산
 ======================================================= */
 .sc6-content-wrap {
-  background-color: #0e0e0e;
+  background-color: var(--ink);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -26,8 +26,8 @@
 }
 
 .sc6-card {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(var(--white-rgb), 0.02);
+  border: 1px solid rgba(var(--white-rgb), 0.4);
   border-radius: 8px;
   padding: 2rem 1.5rem;
   text-align: center;
@@ -36,14 +36,14 @@
 
 .sc6-card:hover {
   transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(var(--white-rgb), 0.04);
 }
 
 .sc6-card-num {
   display: block;
   font-family: 'Playfair Display', serif;
   font-size: 2rem;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(var(--white-rgb), 0.3);
   margin-bottom: 1rem;
 }
 
@@ -51,13 +51,13 @@
   font-family: 'Noto Serif KR', serif;
   font-size: 1.2rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--white);
   margin-bottom: 1rem;
 }
 
 .sc6-card-desc {
   font-size: 0.9rem;
-  color: rgba(238, 230, 216, 0.8);
+  color: rgba(var(--cream-rgb), 0.8);
   line-height: 1.6;
   word-break: keep-all;
   margin-bottom: 1rem;
@@ -67,7 +67,7 @@
   font-family: 'Playfair Display', serif;
   font-style: italic;
   font-size: 0.75rem;
-  color: rgba(238, 230, 216, 0.4);
+  color: rgba(var(--cream-rgb), 0.4);
 }
 
 .sc6-quote-section {
@@ -80,7 +80,7 @@
   width: 100%;
   max-width: 900px;
   padding: 3.5rem 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(var(--white-rgb), 0.4);
   border-radius: 8px;
   text-align: center;
   background: transparent;
@@ -94,7 +94,7 @@
   font-family: 'Playfair Display', serif;
   font-size: 12rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.03);
+  color: rgba(var(--white-rgb), 0.03);
   line-height: 1;
   pointer-events: none;
   user-select: none;
@@ -105,7 +105,7 @@
   font-family: 'Noto Serif KR', serif;
   font-size: 1.35rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--white);
   line-height: 1.6;
   margin-bottom: 1.5rem;
   word-break: keep-all;
@@ -116,7 +116,7 @@
 .sc6-quote-sub {
   font-size: 1rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--white);
   margin-bottom: 2.5rem;
   position: relative;
   z-index: 2;
@@ -125,7 +125,7 @@
 .sc6-quote-footer {
   font-size: 0.75rem;
   letter-spacing: 0.25em;
-  color: rgba(238, 230, 216, 0.5);
+  color: rgba(var(--cream-rgb), 0.5);
   text-transform: uppercase;
   position: relative;
   z-index: 2;
