@@ -77,6 +77,7 @@ export async function initSection5() {
       const popupContent = `
         <div class="sc5-popup-inner">
           <h3>${name}</h3>
+          ${imgUrl ? `<img src="${imgUrl}" alt="${name}" class="sc5-pop-img" onerror="this.style.display='none';">` : ''}
           <span class="sc5-pop-addr">${shortAddr}</span>
           <div class="sc5-pop-desc">${detailDesc}</div>
           <div class="sc5-pop-btns">
@@ -88,12 +89,30 @@ export async function initSection5() {
 
       marker.bindPopup(popupContent, { offset: [0, -35], className: 'sc5-leaflet-popup', autoPan: false });
 
+      marker.on('popupopen', function (e) {
+        const popupNode = e.popup._contentNode;
+        const popupImg = popupNode.querySelector('.sc5-pop-img');
+        if (popupImg && imgUrl) {
+          popupImg.addEventListener('click', function () {
+            if (window.openGlobalModal) {
+              window.openGlobalModal(imgUrl, name);
+            }
+          });
+        }
+      });
+
       const activateItem = () => {
         document.querySelectorAll('.sc5-card').forEach(c => c.classList.remove('active'));
         card.classList.add('active');
         marker.openPopup();
         card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        mapS5.setView([lat, lng], 12, { animate: false });
+
+        // --- [수정됨] 팝업창이 잘리지 않도록 지도의 중심을 Y축으로 내려줌 ---
+        const targetZoom = 12;
+        const targetPoint = mapS5.project([lat, lng], targetZoom);
+        targetPoint.y -= 180; // 화면 위쪽 공간 확보를 위해 중심점 Y좌표 조정 (값을 키울수록 지도가 더 아래로 내려감)
+        mapS5.setView(mapS5.unproject(targetPoint, targetZoom), targetZoom, { animate: true });
+        // -------------------------------------------------------------
       };
 
       card.addEventListener('click', activateItem);
@@ -124,7 +143,7 @@ export async function initSection5() {
 
     resetBtn.addEventListener('click', () => {
       if (defaultBounds) {
-        mapS5.fitBounds(defaultBounds, { padding: [50, 50], maxZoom: 11, animate: false }); // 💡 이 부분의 true를 false로 변경합니다.
+        mapS5.fitBounds(defaultBounds, { padding: [50, 50], maxZoom: 11, animate: false });
       }
       mapS5.closePopup();
       document.querySelectorAll('.sc5-card').forEach(c => c.classList.remove('active'));

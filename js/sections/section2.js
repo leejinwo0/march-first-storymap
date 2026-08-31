@@ -141,6 +141,18 @@ export async function initSection2() {
           <p class="sc2-item-desc">${item.desc}</p>
         `;
         cardContent.classList.remove('fade-out');
+
+        // --- [추가됨] 카드 이미지 클릭 시 전역 모달창 호출 이벤트 ---
+        const currentImg = cardContent.querySelector('.sc2-item-img');
+        if (currentImg) {
+          currentImg.addEventListener('click', () => {
+            // 전역 모달 열기 (제목을 캡션으로 사용)
+            if (window.openGlobalModal) {
+              window.openGlobalModal(item.imgUrl, item.title);
+            }
+          });
+        }
+        // -------------------------------------------------------------
       }, 300);
     }
 

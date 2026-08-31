@@ -11,17 +11,23 @@ export function initSection1() {
     {
       id: 'map-s1-2', center: [37.5658, 126.9751], zoom: 11, title: '덕수궁 함녕전', region: 'seoul',
       address: '서울특별시 중구 세종대로 99',
-      desc: '1919년 1월, 고종 황제가 갑작스럽게 붕어하여 민중의 슬픔과 분노가 3·1운동의 도화선이 된 장소입니다.'
+      desc: '1919년 1월, 고종 황제가 갑작스럽게 붕어하여 민중의 슬픔과 분노가 3·1운동의 도화선이 된 장소입니다.',
+      imgUrl: '/assets/images/역사편찬원/3.1운동(1차)/202_고종황제 장례식에 대한문 앞에 모인 사람들(서울역사박물관).jpg',
+      caption: '고종황제 장례식에 대한문 앞에 모인 사람들'
     },
     {
       id: 'map-s1-3', center: [48.8566, 2.3522], zoom: 8, title: '프랑스 파리', region: 'global',
       address: '프랑스 파리 (Paris)',
-      desc: '제1차 세계대전 직후 파리 강화 회의가 열려 식민지 약소국들에게 희망을 준 민족자결주의가 제창된 곳입니다.'
+      desc: '제1차 세계대전 직후 파리 강화 회의가 열려 식민지 약소국들에게 희망을 준 민족자결주의가 제창된 곳입니다.',
+      imgUrl: '/assets/images/역사편찬원/3.1운동(1차)/204_김규식이 윌슨에게 보낸 편지(독립기념관).jpg',
+      caption: '김규식이 윌슨에게 보낸 편지'
     },
     {
       id: 'map-s1-4', center: [35.6989, 139.7544], zoom: 15, title: '도쿄 YMCA', region: 'global',
       address: '일본 도쿄도 지요다구',
-      desc: '1919년 2월 8일, 적의 심장부인 도쿄에서 조선 유학생들이 모여 2·8 독립선언서를 낭독한 뜻깊은 장소입니다.'
+      desc: '1919년 2월 8일, 적의 심장부인 도쿄에서 조선 유학생들이 모여 2·8 독립선언서를 낭독한 뜻깊은 장소입니다.',
+      imgUrl: '/assets/images/역사편찬원/3.1운동(1차)/203_2.8독립선언서(국가지정기록물_독립기념관).jpg',
+      caption: '2.8독립선언서'
     }
   ];
 
@@ -54,12 +60,13 @@ export function initSection1() {
     const popupContent = `
       <div class="sc1-popup-inner">
         <h3>${config.title}</h3>
+        ${config.imgUrl ? `<img src="${config.imgUrl}" alt="${config.title}" class="sc1-pop-img">` : ''}
         <span class="sc1-pop-addr">${config.address}</span>
         <div class="sc1-pop-desc">${config.desc}</div>
       </div>
     `;
 
-    L.marker(config.center, { icon: icon })
+    const marker = L.marker(config.center, { icon: icon })
       .addTo(map)
       .bindPopup(popupContent, {
         offset: [0, -15],
@@ -67,11 +74,32 @@ export function initSection1() {
         closeButton: false,
         autoClose: false,
         closeOnClick: false
-      })
-      .openPopup();
+      });
 
+    // --- [수정됨] 팝업이 열릴 때 이미지 클릭 이벤트 바인딩 (전역 모달 호출) ---
+    map.on('popupopen', function (e) {
+      const popupNode = e.popup._contentNode;
+      const popupImg = popupNode.querySelector('.sc1-pop-img');
+
+      // 이미지가 존재하면 클릭 시 모달 열기 함수 실행
+      if (popupImg && config.imgUrl) {
+        popupImg.style.cursor = 'pointer'; // 클릭 가능함을 표시
+        popupImg.addEventListener('click', function () {
+          const displayCaption = config.caption ? config.caption : config.title;
+
+          // index.js에 정의된 전역 함수 호출
+          if (window.openGlobalModal) {
+            window.openGlobalModal(config.imgUrl, displayCaption);
+          }
+        });
+      }
+    });
+    // -------------------------------------------------------------------
+
+    marker.openPopup();
     mapInstances.push(map);
   });
+
 
   // 2. 슬라이드 및 타이머 제어
   const slides = document.querySelectorAll('.sc1-slide');

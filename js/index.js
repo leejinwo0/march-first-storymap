@@ -12,9 +12,58 @@ import { initSection5 } from './sections/section5.js';
 import { initSection6 } from './sections/section6.js';
 
 /* =======================================================
+   🖼️ [전역 이미지 모달 기능 설정] (모든 섹션 공통)
+======================================================= */
+window.openGlobalModal = function (imgUrl, caption) {
+  const modal = document.getElementById('image-modal');
+  const modalImg = document.getElementById('img-in-modal');
+  const captionText = document.getElementById('caption-modal');
+
+  if (modal && modalImg && captionText) {
+    modal.style.display = "block";
+    modalImg.src = imgUrl;
+    modalImg.alt = caption;
+    captionText.innerHTML = caption;
+  }
+};
+
+window.closeGlobalModal = function () {
+  const modal = document.getElementById('image-modal');
+  if (modal) modal.style.display = "none";
+};
+
+// 모달 닫기 이벤트(버튼 클릭, 배경 클릭, ESC 키) 초기화 함수
+function setupGlobalModalEvents() {
+  const modal = document.getElementById('image-modal');
+  const closeBtn = document.querySelector(".close-modal");
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', window.closeGlobalModal);
+  }
+
+  // 모달 밖(어두운 배경) 영역 클릭 시 닫기
+  window.addEventListener('click', function (event) {
+    if (event.target === modal) {
+      window.closeGlobalModal();
+    }
+  });
+
+  // ESC 키 누를 때 닫기
+  document.addEventListener('keydown', function (event) {
+    if (event.key === "Escape" && modal && modal.style.display === "block") {
+      window.closeGlobalModal();
+    }
+  });
+}
+
+
+/* =======================================================
    🚀 최종 메인 앱 실행 (App Initialization)
 ======================================================= */
 async function initApp() {
+  // 앱 실행 시 전역 모달 이벤트 리스너 등록
+  setupGlobalModalEvents();
+
   // 1. 현재 화면 너비가 768px 이하인지(모바일인지) 확인
   const isMobile = window.innerWidth <= 768;
 
