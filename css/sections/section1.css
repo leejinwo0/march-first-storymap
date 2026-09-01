@@ -243,7 +243,7 @@
 /* 팝업 내부 이미지 스타일 추가 */
 .sc1-pop-img {
   width: 100%;
-  height: 120px;
+  height: 100%;
   object-fit: cover;
   border-radius: 4px;
   margin-bottom: 1rem;

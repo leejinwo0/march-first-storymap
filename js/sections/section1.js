@@ -6,7 +6,9 @@ export function initSection1() {
     {
       id: 'map-s1-1', center: [37.5562, 126.9850], zoom: 11, title: '남산 통감관저 터', region: 'seoul',
       address: '서울특별시 중구 예장동 2-1',
-      desc: '1910년 강제 한일병합조약이 체결되었던 뼈아픈 역사의 현장입니다.'
+      desc: '1910년 강제 한일병합조약이 체결되었던 뼈아픈 역사의 현장입니다.',
+      imgUrl: '/assets/images/역사편찬원/3.1운동(2차)/201_남산 총독관저(옛 통감관저_서울역사박물관).jpg',
+      caption: '남산 총독관저(옛 통감관저)'
     },
     {
       id: 'map-s1-2', center: [37.5658, 126.9751], zoom: 11, title: '덕수궁 함녕전', region: 'seoul',
@@ -73,7 +75,8 @@ export function initSection1() {
         className: 'sc1-leaflet-popup',
         closeButton: false,
         autoClose: false,
-        closeOnClick: false
+        closeOnClick: false,
+        autoPan: false
       });
 
     // --- [수정됨] 팝업이 열릴 때 이미지 클릭 이벤트 바인딩 (전역 모달 호출) ---
@@ -98,8 +101,12 @@ export function initSection1() {
 
     marker.openPopup();
     mapInstances.push(map);
-  });
 
+    const targetZoom = config.zoom;
+    const targetPoint = map.project(config.center, targetZoom);
+    targetPoint.y -= 250; // 이 숫자를 키울수록 마커가 화면 아래로 더 많이 내려갑니다. (150~300 사이 조절 권장)
+    map.setView(map.unproject(targetPoint, targetZoom), targetZoom, { animate: false });
+  });
 
   // 2. 슬라이드 및 타이머 제어
   const slides = document.querySelectorAll('.sc1-slide');

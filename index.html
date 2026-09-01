@@ -416,45 +416,40 @@
         </div>
       </header>
 
-      <div class="sc4-intro-view">
-        <div class="sc4-intro-content sc4-reveal">
-          <h2 class="sc4-intro-title">저항의 물결, 만세의 확산</h2>
-          <hr class="sc4-intro-divider">
-
-          <div class="sc4-intro-cols">
-            <!-- 첫 번째 카드: 핵심 거점 -->
-            <div class="sc4-col hub-card">
-              <h3 class="sc4-col-title">
-                <span class="ko-text">중요 지점</span>
-                <span class="en-text">Strategic Hubs</span>
-              </h3>
-              <p class="sc4-col-desc">독립운동의 숨은 심장과도 같은 곳입니다. 태화관이나 보성사와 같은 장소들은 극비리에 독립선언서를 기안하고, 인쇄하며, 전국으로 배포하기 위한 준비의 거점이었습니다.</p>
-            </div>
-
-            <!-- 두 번째 카드: 시위 현장 -->
-            <div class="sc4-col site-card">
-              <h3 class="sc4-col-title">
-                <span class="ko-text">시위 장소</span>
-                <span class="en-text">Protest Sites</span>
-              </h3>
-              <p class="sc4-col-desc">대중적 저항이 폭발한 역사의 무대입니다. 남대문 정거장과 공덕리 등은 학생, 상인, 노동자 등 다양한 군중이 모여 반도 전역에 '만세'의 함성을 울려 퍼지게 한 항쟁의 중심지였습니다.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <!-- [수정됨] 인트로 화면을 없애고 맵 뷰 안에 플로팅 패널로 통합 -->
       <div class="sc4-map-view">
         <div id="map-s4" class="sc4-map-container"></div>
         <button class="sc4-reset-btn" id="sc4-reset-btn" aria-label="전체 보기"><span class="material-symbols-outlined">전체 보기</span></button>
-        <div class="sc4-legend sc4-reveal">
-          <ul class="sc4-legend-list" id="sc4-filter-list">
-            <li class="active" data-filter="hub" tabindex="0" role="button">
-              <div class="sc4-legend-dot hub-dot"></div>
-              <div class="sc4-legend-text"><strong>중요 지점</strong><span>거사 기획 및 준비 거점</span></div>
+
+        <!-- 인트로 + 범례 결합형 플로팅 UI -->
+        <div class="sc4-floating-legend sc4-reveal">
+          <div class="sc4-legend-header">
+            <h2 class="sc4-legend-title">저항의 물결, 만세의 확산</h2>
+            <p class="sc4-legend-subtitle">아래 카드를 클릭하여 지도의 마커를 필터링해 보세요.</p>
+          </div>
+
+          <!-- JS와 연동되는 필터 리스트 (li 태그 사용) -->
+          <ul class="sc4-intro-cols" id="sc4-filter-list">
+            <!-- 첫 번째 카드: 핵심 거점 -->
+            <li class="sc4-col hub-card active" data-filter="hub" tabindex="0" role="button">
+              <h3 class="sc4-col-title">
+                <span class="ko-text">
+                  <div class="sc4-legend-dot hub-dot"></div> 중요 지점
+                </span>
+                <span class="en-text">Strategic Hubs</span>
+              </h3>
+              <p class="sc4-col-desc">태화관이나 보성사와 같이 극비리에 독립선언서를 기안하고 인쇄하며 배포하기 위한 거점입니다.</p>
             </li>
-            <li class="active" data-filter="site" tabindex="0" role="button">
-              <div class="sc4-legend-dot site-dot"></div>
-              <div class="sc4-legend-text"><strong>시위 장소</strong><span>대규모 만세 시위 전개지</span></div>
+
+            <!-- 두 번째 카드: 시위 현장 -->
+            <li class="sc4-col site-card active" data-filter="site" tabindex="0" role="button">
+              <h3 class="sc4-col-title">
+                <span class="ko-text">
+                  <div class="sc4-legend-dot site-dot"></div> 시위 장소
+                </span>
+                <span class="en-text">Protest Sites</span>
+              </h3>
+              <p class="sc4-col-desc">학생, 상인, 노동자 등 다양한 군중이 모여 반도 전역에 '만세'의 함성을 울려 퍼지게 한 항쟁의 중심지입니다.</p>
             </li>
           </ul>
         </div>

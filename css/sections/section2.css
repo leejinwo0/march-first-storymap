@@ -102,7 +102,7 @@
   border-radius: 1rem;
   border: 1px solid rgba(var(--white-rgb), 0.1);
   width: 100%;
-  max-width: 450px;
+  max-width: 520px;
   box-shadow: 0 20px 40px rgba(var(--black-rgb), 0.8);
   min-height: 520px;
   display: flex;
@@ -165,15 +165,18 @@
 
 /* --- [수정됨] 카드 내 이미지 스타일 --- */
 .sc2-item-img {
-  width: 100%;
-  height: auto;
-  max-height: 220px;
+  width: auto;
+  height: 100%;
+  max-height: 180px;
   object-fit: cover;
   border-radius: 0.5rem;
-  margin-bottom: 1.2rem;
-  border: 1px solid rgba(var(--white-rgb), 0.1);
 
-  /* 클릭 모달 효과를 위한 스타일 추가 */
+  /* ★ 이미지 중앙 정렬을 위해 수정/추가된 부분 ★ */
+  display: block;
+  margin: 0 auto 1.2rem auto;
+  /* 위 0, 좌우 auto(중앙정렬), 아래 1.2rem */
+
+  border: 1px solid rgba(var(--white-rgb), 0.1);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }

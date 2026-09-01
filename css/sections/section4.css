@@ -1,85 +1,116 @@
 /* =======================================================
-   Section 4: 역사의 현장
+   Section 4: 역사의 현장 (지도 및 플로팅 패널)
 ======================================================= */
-.sc4-intro-view {
-  min-height: 100vh;
-  background-color: var(--ink);
-  background-image: url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-}
-
-.sc4-intro-content {
-  max-width: 1000px;
+.sc4-map-view {
+  position: relative;
   width: 100%;
-  text-align: center;
-  color: var(--white);
+  height: 100vh;
+  overflow: hidden;
 }
 
-.sc4-intro-chap {
-  font-size: 0.8rem;
-  letter-spacing: 0.4em;
-  color: rgba(var(--white-rgb), 0.4);
-  margin-bottom: 2rem;
+#map-s4 .leaflet-tile-pane {
+  filter: grayscale(100%) brightness(0.95);
+  transition: filter 0.3s ease;
 }
 
-/* 타이틀 영역 */
-.sc4-intro-title {
+.sc4-map-container {
+  position: absolute;
+  inset: 0;
+  background-color: var(--ink);
+}
+
+/* =======================================================
+   인트로 + 범례 결합형 플로팅 UI
+======================================================= */
+.sc4-floating-legend {
+  position: absolute;
+  top: 10%;
+  /* 화면 위에서 10% 내려온 위치부터 시작 */
+  left: 3rem;
+  /* transform: translateY(-50%); <-- 이 줄은 삭제해 주세요! */
+
+  z-index: 1000;
+  width: 400px;
+  max-width: 90vw;
+  max-height: 80vh;
+  /* 혹시 모를 잘림 방지를 위해 최대 높이 제한 (선택사항) */
+  overflow-y: auto;
+  /* 내용이 넘치면 스크롤 생성 (선택사항) */
+
+  background: rgba(var(--charcoal-rgb), 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(var(--white-rgb), 0.15);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 20px 40px rgba(var(--black-rgb), 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sc4-legend-header {
+  text-align: left;
+  border-bottom: 1px solid rgba(var(--white-rgb), 0.1);
+  padding-bottom: 1rem;
+}
+
+.sc4-legend-title {
   font-family: 'Noto Serif KR', serif;
-  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-size: 1.6rem;
   font-weight: 700;
-  line-height: 1.3;
-  margin-bottom: 2rem;
   color: var(--white);
+  margin-bottom: 0.5rem;
   letter-spacing: -0.02em;
 }
 
-/* 중앙에서 양끝으로 흐려지는 세련된 구분선 */
-.sc4-intro-divider {
-  border: 0;
-  height: 1px;
-  background: linear-gradient(to right, transparent, rgba(var(--white-rgb), 0.3), transparent);
-  margin: 0 auto 3.5rem auto;
-  width: 70%;
+.sc4-legend-subtitle {
+  font-size: 0.85rem;
+  color: var(--gold);
 }
 
-/* 두 컬럼 그리드 배치 */
+/* 카드 리스트 컨테이너 */
 .sc4-intro-cols {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  text-align: left;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-/* 카드 기본 스타일 */
+/* 개별 필터 카드 (기존 인트로 카드의 UI 적용) */
 .sc4-col {
   position: relative;
-  background: rgba(var(--white-rgb), 0.02);
-  border: 1px solid rgba(var(--white-rgb), 0.08);
-  border-radius: 12px;
-  padding: 2.5rem 2rem;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  background: rgba(var(--white-rgb), 0.03);
+  border: 1px solid rgba(var(--white-rgb), 0.1);
+  border-radius: 8px;
+  padding: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* 마우스 호버(터치) 시 카드가 살짝 떠오르는 효과 */
 .sc4-col:hover {
-  background: rgba(var(--white-rgb), 0.04);
-  transform: translateY(-8px);
-  box-shadow: 0 15px 30px rgba(var(--black-rgb), 0.5);
-  border-color: rgba(var(--white-rgb), 0.15);
+  background: rgba(var(--white-rgb), 0.06);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(var(--black-rgb), 0.4);
 }
 
-/* 카드 상단 포인트 라인 */
+/* 비활성화 상태 (필터 꺼짐) */
+.sc4-col:not(.active) {
+  opacity: 0.4;
+  filter: grayscale(100%);
+  transform: scale(0.98);
+}
+
+/* 카드 좌측 포인트 라인 */
 .sc4-col::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 4px;
+  width: 4px;
+  height: 100%;
+  border-radius: 8px 0 0 8px;
 }
 
 .sc4-col.hub-card::before {
@@ -90,33 +121,57 @@
   background-color: var(--gold);
 }
 
-/* 카드 제목 */
+/* 카드 제목 영역 */
 .sc4-col-title {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
-  margin-bottom: 1.5rem;
+  gap: 0.2rem;
+  margin-bottom: 0.6rem;
 }
 
 .sc4-col-title .ko-text {
-  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--white);
 }
 
 .sc4-col-title .en-text {
   font-family: 'Playfair Display', serif;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--muted);
   letter-spacing: 0.1em;
+  padding-left: 1.2rem;
+  /* 점 크기만큼 들여쓰기 */
 }
 
-/* 카드 본문 */
+/* 타이틀 옆 둥근 점 아이콘 */
+.sc4-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.hub-dot {
+  background-color: var(--red);
+  box-shadow: 0 0 8px var(--red);
+}
+
+.site-dot {
+  background-color: var(--gold);
+  box-shadow: 0 0 8px var(--gold);
+}
+
+/* 카드 본문 설명 */
 .sc4-col-desc {
-  font-size: 0.95rem;
-  line-height: 1.8;
-  color: rgba(var(--cream-rgb), 0.8);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: rgba(var(--cream-rgb), 0.7);
   word-break: keep-all;
+  padding-left: 1.2rem;
+  margin: 0;
 }
 
 .sc4-icon {
@@ -163,66 +218,6 @@
   position: absolute;
   inset: 0;
   background-color: var(--ink);
-}
-
-.sc4-legend {
-  position: absolute;
-  bottom: 3rem;
-  left: 3rem;
-  z-index: 1000;
-  background-color: var(--cream);
-  padding: 1.2rem;
-  border-radius: 4px;
-  box-shadow: 0 10px 30px rgba(var(--black-rgb), 0.5);
-  color: var(--dark-brown);
-  min-width: 200px;
-}
-
-.sc4-legend-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.sc4-legend-list li {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 0.5rem;
-  border-radius: 6px;
-  background: transparent;
-}
-
-.sc4-legend-list li:hover {
-  background: rgba(var(--black-rgb), 0.05);
-}
-
-.sc4-legend-list li:not(.active) {
-  opacity: 0.4;
-  filter: grayscale(100%);
-}
-
-.sc4-legend-text strong {
-  display: block;
-  font-size: 0.9rem;
-  font-weight: 700;
-}
-
-.sc4-legend-text span {
-  display: block;
-  font-size: 0.75rem;
-  color: var(--gray-dark);
-}
-
-.sc4-legend-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
 }
 
 .hub-dot {
