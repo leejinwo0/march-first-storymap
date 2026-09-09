@@ -47,6 +47,12 @@ export async function initSection5() {
         imgUrl = "https://images.weserv.nl/?url=" + encodeURIComponent(imgUrl);
       }
 
+      // --- [추가됨] 고유 ID 추출 및 스마트서울맵 링크 동적 생성 ---
+      const poiId = props.COT_CONTS_ID;
+      // Section 5는 '생활속현장' 테마이므로 ti=100173 을 사용합니다.
+      const mapLink = `https://map.seoul.go.kr/smgis2/poiViewMap?ti=100173&pi=${poiId}&lang=ko`;
+      // -------------------------------------------------------------------
+
       const initial = getInitialConsonant(name);
       allLatLngs.push([lat, lng]);
 
@@ -81,7 +87,8 @@ export async function initSection5() {
           <span class="sc5-pop-addr">${shortAddr}</span>
           <div class="sc5-pop-desc">${detailDesc}</div>
           <div class="sc5-pop-btns">
-            <a href="https://map.seoul.go.kr/" target="_blank" class="sc5-btn map-btn">스마트서울맵</a>
+            <!-- [수정됨] 고정 링크 대신 ${mapLink} 동적 변수 적용 -->
+            <a href="${mapLink}" target="_blank" class="sc5-btn map-btn">스마트서울맵</a>
             <a href="${historyUrl}" target="_blank" class="sc5-btn history-btn">일제감시대상인물카드</a>
           </div>
         </div>

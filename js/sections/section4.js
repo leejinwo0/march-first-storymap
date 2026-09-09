@@ -51,6 +51,11 @@ export async function initSection4() {
             const address = props.COT_ADDR_FULL_NEW || props.COT_ADDR_FULL_OLD || "주소 정보 없음";
             const desc = props.COT_VALUE_03 || props.COT_VALUE_01 || "상세 설명이 없습니다.";
 
+            // --- [추가됨] Section 2처럼 고유 ID 추출 및 스마트서울맵 링크 동적 생성 ---
+            const poiId = props.COT_CONTS_ID;
+            const mapLink = `https://map.seoul.go.kr/smgis2/poiViewMap?ti=11100550&pi=${poiId}&lang=ko`;
+            // -------------------------------------------------------------------
+
             if (!props.COT_COORD_Y || !props.COT_COORD_X) return;
             const latlng = [parseFloat(props.COT_COORD_Y), parseFloat(props.COT_COORD_X)];
 
@@ -87,7 +92,8 @@ export async function initSection4() {
                     <span class="sc4-pop-addr">${address}</span>
                     <div class="sc4-pop-desc">${desc.replace(/\n/g, '<br>')}</div>
                     <div class="sc4-pop-btns">
-                    <a href="https://map.seoul.go.kr/" target="_blank" class="sc4-btn map-btn">스마트서울맵</a>
+                      <!-- [수정됨] 고정 링크 대신 ${mapLink} 동적 변수 적용 -->
+                      <a href="${mapLink}" target="_blank" class="sc4-btn map-btn">스마트서울맵</a>
                       <a href="https://history.seoul.go.kr/" target="_blank" class="sc4-btn history-btn">역사편찬원</a>
                     </div>
                   </div>
@@ -95,7 +101,7 @@ export async function initSection4() {
                 marker.bindPopup(popupContent, {
                   offset: [0, -15],
                   className: 'sc4-leaflet-popup',
-                  maxWidth: 450 // 💡 Leaflet 자체의 가로 제한을 넉넉하게 늘려줍니다.
+                  maxWidth: 450
                 });
 
                 marker.on('click', () => {
