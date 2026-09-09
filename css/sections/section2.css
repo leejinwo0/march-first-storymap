@@ -163,19 +163,14 @@
   transform: translateY(0);
 }
 
-/* --- [수정됨] 카드 내 이미지 스타일 --- */
 .sc2-item-img {
   width: auto;
   height: 100%;
   max-height: 180px;
   object-fit: cover;
   border-radius: 0.5rem;
-
-  /* ★ 이미지 중앙 정렬을 위해 수정/추가된 부분 ★ */
   display: block;
   margin: 0 auto 1.2rem auto;
-  /* 위 0, 좌우 auto(중앙정렬), 아래 1.2rem */
-
   border: 1px solid rgba(var(--white-rgb), 0.1);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -185,8 +180,6 @@
   transform: scale(1.02);
   box-shadow: 0 4px 12px rgba(var(--black-rgb), 0.6);
 }
-
-/* ------------------------------------- */
 
 .sc2-leaflet-popup .leaflet-popup-content-wrapper {
   background: rgba(var(--charcoal-rgb), 0.95);
@@ -202,9 +195,15 @@
   background: rgba(var(--charcoal-rgb), 0.95);
 }
 
+.sc2-leaflet-popup .leaflet-popup-content {
+  width: auto !important;
+  margin: 0;
+}
+
 .sc2-popup-inner {
   padding: 1.2rem;
-  width: 280px;
+  width: 420px;
+  box-sizing: border-box;
 }
 
 .sc2-pop-title {
@@ -214,6 +213,7 @@
   margin-bottom: 0.6rem;
   border-bottom: 1px solid rgba(var(--white-rgb), 0.2);
   padding-bottom: 0.5rem;
+  white-space: nowrap;
 }
 
 .sc2-pop-info {
@@ -250,12 +250,17 @@
 .sc2-btn {
   flex: 1;
   text-align: center;
-  padding: 0.5rem 0;
   border-radius: 4px;
-  font-size: 0.75rem;
   font-weight: bold;
   text-decoration: none;
   transition: all 0.3s ease;
+
+  white-space: nowrap;
+  padding: 0.6rem 0.4rem;
+  /* 위아래 여백을 살짝 늘려 안정감 부여 */
+  font-size: 0.75rem;
+  /* 폰트 크기 살짝 키움 */
+  letter-spacing: -0.05em;
 }
 
 .sc2-btn.history-btn {

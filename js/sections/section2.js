@@ -80,17 +80,18 @@ export async function initSection2() {
         });
 
         if (feature.geometry.type === 'Point' && feature.geometry.coordinates) {
-          // props 안에는 mapService.js에서 넘겨준 원본 데이터가 모두 들어있습니다.
-          const poiId = props.COT_CONTS_ID; // 이게 바로 'B_040' 같은 역할을 하는 고유 ID입니다.
-
+          const poiId = props.COT_CONTS_ID;
+          const title = props.COT_CONTS_NAME || "지명 없음"; // API의 Title 추출
+          
           locationsS2.push({
             id: targetId,
             pos: [feature.geometry.coordinates[1], feature.geometry.coordinates[0]],
-            label: props.COT_CONTS_NAME || "지명 없음",
+            label: title,
             addrNew: props.COT_ADDR_FULL_NEW || "현재 주소 정보 없음",
             addrOld: props.COT_ADDR_FULL_OLD || "옛 주소 정보 없음",
             shortDesc: props.COT_VALUE_01 || props.COT_VALUE_03 || "간단한 소개가 없습니다.",
-            mapLink: `https://map.seoul.go.kr/smgis2/poiViewMap?ti=11100550&pi=${poiId}&lang=ko`
+            mapLink: `https://map.seoul.go.kr/smgis2/poiViewMap?ti=11100550&pi=${poiId}&lang=ko`,
+            sajeokLink: `http://sajeok.i815.or.kr/search/index/q/${encodeURIComponent(title)}`
           });
         }
       }
@@ -181,7 +182,7 @@ export async function initSection2() {
           <div class="sc2-pop-btns">
             <!-- [수정됨] href 부분을 loc.mapLink 로 변경 -->
             <a href="${loc.mapLink}" target="_blank" class="sc2-btn map-btn">스마트서울맵</a>
-            <a href="https://history.seoul.go.kr/" target="_blank" class="sc2-btn history-btn">역사편찬원</a>
+            <a href="${loc.sajeokLink}" target="_blank" class="sc2-btn history-btn">국내 독립운동·국가수호 사적지</a>
           </div>
         </div>
       `;

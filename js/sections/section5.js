@@ -47,15 +47,14 @@ export async function initSection5() {
         imgUrl = "https://images.weserv.nl/?url=" + encodeURIComponent(imgUrl);
       }
 
-      // --- [추가됨] 고유 ID 추출 및 스마트서울맵 링크 동적 생성 ---
+      // 스마트서울맵 링크 생성
       const poiId = props.COT_CONTS_ID;
-      // Section 5는 '생활속현장' 테마이므로 ti=100173 을 사용합니다.
       const mapLink = `https://map.seoul.go.kr/smgis2/poiViewMap?ti=100173&pi=${poiId}&lang=ko`;
-      // -------------------------------------------------------------------
 
       const initial = getInitialConsonant(name);
       allLatLngs.push([lat, lng]);
 
+      // 하단 카드에는 사진 유지
       const card = document.createElement('div');
       card.className = 'sc5-card';
       card.innerHTML = `
@@ -72,8 +71,8 @@ export async function initSection5() {
       });
       const marker = L.marker([lat, lng], { icon: icon }).addTo(mapS5);
 
+      // 일제감시대상인물카드 링크 생성
       let historyUrl = props.EXTRA_DATA_02 || props.COT_EXTRA_DATA_02 || "";
-
       if (!historyUrl.startsWith("http")) {
         historyUrl = `https://db.history.go.kr/modern/ia/level.do?nameKr=${encodeURIComponent(name)}&orderColumn=person_id&recordCountPerPage=20&pageIndex=1`;
       } else {
@@ -83,11 +82,9 @@ export async function initSection5() {
       const popupContent = `
         <div class="sc5-popup-inner">
           <h3>${name}</h3>
-          ${imgUrl ? `<img src="${imgUrl}" alt="${name}" class="sc5-pop-img" onerror="this.style.display='none';">` : ''}
           <span class="sc5-pop-addr">${shortAddr}</span>
           <div class="sc5-pop-desc">${detailDesc}</div>
           <div class="sc5-pop-btns">
-            <!-- [수정됨] 고정 링크 대신 ${mapLink} 동적 변수 적용 -->
             <a href="${mapLink}" target="_blank" class="sc5-btn map-btn">스마트서울맵</a>
             <a href="${historyUrl}" target="_blank" class="sc5-btn history-btn">일제감시대상인물카드</a>
           </div>
@@ -96,17 +93,7 @@ export async function initSection5() {
 
       marker.bindPopup(popupContent, { offset: [0, -35], className: 'sc5-leaflet-popup', autoPan: false });
 
-      marker.on('popupopen', function (e) {
-        const popupNode = e.popup._contentNode;
-        const popupImg = popupNode.querySelector('.sc5-pop-img');
-        if (popupImg && imgUrl) {
-          popupImg.addEventListener('click', function () {
-            if (window.openGlobalModal) {
-              window.openGlobalModal(imgUrl, name);
-            }
-          });
-        }
-      });
+      // (기존에 있던 사진 클릭 시 전역 모달을 띄우는 이벤트 리스너 제거)
 
       const activateItem = () => {
         document.querySelectorAll('.sc5-card').forEach(c => c.classList.remove('active'));
@@ -114,12 +101,10 @@ export async function initSection5() {
         marker.openPopup();
         card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 
-        // --- [수정됨] 팝업창이 잘리지 않도록 지도의 중심을 Y축으로 내려줌 ---
         const targetZoom = 12;
         const targetPoint = mapS5.project([lat, lng], targetZoom);
-        targetPoint.y -= 180; // 화면 위쪽 공간 확보를 위해 중심점 Y좌표 조정 (값을 키울수록 지도가 더 아래로 내려감)
+        targetPoint.y -= 180;
         mapS5.setView(mapS5.unproject(targetPoint, targetZoom), targetZoom, { animate: true });
-        // -------------------------------------------------------------
       };
 
       card.addEventListener('click', activateItem);

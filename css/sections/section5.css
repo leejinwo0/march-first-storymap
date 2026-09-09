@@ -148,71 +148,65 @@
   box-shadow: none;
 }
 
+/* =======================================================
+   팝업창 스타일 (Section 2 레이아웃 & 다크 테마 적용)
+======================================================= */
+.sc5-leaflet-popup .leaflet-popup-content {
+  width: auto !important;
+  margin: 0;
+}
+
 .sc5-leaflet-popup .leaflet-popup-content-wrapper {
-  background: var(--cream);
-  border-radius: 4px;
-  border: 1px solid var(--gray-light);
-  box-shadow: 0 15px 30px rgba(var(--black-rgb), 0.2);
+  background: rgba(var(--charcoal-rgb), 0.95);
+  border: 1px solid rgba(var(--white-rgb), 0.2);
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(var(--black-rgb), 0.8);
+  color: var(--white);
   padding: 0;
+  backdrop-filter: blur(4px);
 }
 
 .sc5-leaflet-popup .leaflet-popup-tip {
-  background: var(--cream);
+  background: rgba(var(--charcoal-rgb), 0.95);
 }
 
 .sc5-popup-inner {
-  padding: 1.5rem;
-  max-width: 300px;
+  padding: 1.2rem;
+  width: 420px;
+  box-sizing: border-box;
 }
 
 .sc5-popup-inner h3 {
   font-family: 'Noto Serif KR', serif;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--dark-brown);
-  margin-bottom: 0.5rem;
-  border-bottom: 2px solid var(--red);
+  font-size: 1.15rem;
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(var(--white-rgb), 0.2);
   padding-bottom: 0.5rem;
-  display: inline-block;
+  display: block;
+  white-space: nowrap;
 }
 
-/* --- [수정됨] 팝업 내부 인물 이미지 스타일 --- */
-.sc5-pop-img {
-  width: 100%;
-  height: 160px;
-  /* 높이를 조금 키움 */
-  object-fit: contain;
-  /* 이미지가 잘리지 않고 전체가 보이게 설정 */
-  background-color: var(--gray-light);
-  /* 여백이 생길 경우 배경색 지정 */
-  border-radius: 4px;
-  margin-bottom: 0.8rem;
-  border: 1px solid var(--paper);
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.sc5-pop-img:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 10px rgba(var(--black-rgb), 0.3);
-}
-
-/* ------------------------------------------- */
+/* (이전에 있던 .sc5-pop-img 스타일은 삭제되었습니다) */
 
 .sc5-popup-inner .sc5-pop-addr {
   display: block;
   font-size: 0.75rem;
-  color: var(--gold);
-  margin-bottom: 1rem;
-  font-weight: bold;
+  color: var(--gray-mid);
+  margin-bottom: 0.8rem;
+  line-height: 1.5;
 }
 
 .sc5-popup-inner .sc5-pop-desc {
-  font-size: 0.9rem;
-  color: var(--gray-dark);
-  line-height: 1.6;
+  font-size: 0.85rem;
+  color: rgba(var(--cream-rgb), 0.8);
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+  display: block;
+  height: auto;
   max-height: 150px;
   overflow-y: auto;
+  white-space: normal;
   padding-right: 5px;
 }
 
@@ -221,10 +215,51 @@
 }
 
 .sc5-popup-inner .sc5-pop-desc::-webkit-scrollbar-thumb {
-  background: var(--gray-light);
+  background: rgba(var(--white-rgb), 0.3);
   border-radius: 2px;
 }
 
+.sc5-pop-btns {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sc5-btn {
+  flex: 1;
+  text-align: center;
+  border-radius: 4px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  padding: 0.6rem 0.4rem;
+  font-size: 0.75rem;
+  letter-spacing: -0.05em;
+}
+
+.sc5-btn.history-btn {
+  border: 1px solid var(--gold);
+  color: var(--gold);
+}
+
+.sc5-btn.history-btn:hover {
+  background-color: var(--gold);
+  color: var(--black);
+}
+
+.sc5-btn.map-btn {
+  border: 1px solid var(--red);
+  color: var(--red);
+}
+
+.sc5-btn.map-btn:hover {
+  background-color: var(--red);
+  color: var(--white);
+}
+
+/* =======================================================
+   기타 UI 및 검색 패널 스타일
+======================================================= */
 .sc5-reveal {
   opacity: 0;
   transform: translateY(50px);
@@ -375,42 +410,4 @@
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
-}
-
-.sc5-pop-btns {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-.sc5-btn {
-  flex: 1;
-  text-align: center;
-  padding: 0.5rem 0;
-  border-radius: 4px;
-  font-size: 0.72rem;
-  font-weight: bold;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  word-break: keep-all;
-}
-
-.sc5-btn.history-btn {
-  border: 1px solid var(--charcoal);
-  color: var(--charcoal);
-}
-
-.sc5-btn.history-btn:hover {
-  background-color: var(--charcoal);
-  color: var(--cream);
-}
-
-.sc5-btn.map-btn {
-  border: 1px solid var(--red);
-  color: var(--red);
-}
-
-.sc5-btn.map-btn:hover {
-  background-color: var(--red);
-  color: var(--white);
 }

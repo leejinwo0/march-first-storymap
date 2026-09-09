@@ -24,18 +24,16 @@
 ======================================================= */
 .sc4-floating-legend {
   position: absolute;
-  top: 10%;
-  /* 화면 위에서 10% 내려온 위치부터 시작 */
+  top: 50%;
+  transform: translateY(-50%);
+
   left: 3rem;
-  /* transform: translateY(-50%); <-- 이 줄은 삭제해 주세요! */
 
   z-index: 1000;
   width: 400px;
   max-width: 90vw;
   max-height: 80vh;
-  /* 혹시 모를 잘림 방지를 위해 최대 높이 제한 (선택사항) */
   overflow-y: auto;
-  /* 내용이 넘치면 스크롤 생성 (선택사항) */
 
   background: rgba(var(--charcoal-rgb), 0.85);
   backdrop-filter: blur(10px);
@@ -452,4 +450,12 @@
 .sc4-btn.map-btn:hover {
   background-color: var(--red);
   color: var(--white);
+}
+
+.sc4-floating-legend.sc4-reveal {
+  transform: translateY(calc(-50% + 30px)) !important;
+}
+
+.sc4-floating-legend.sc4-reveal.active {
+  transform: translateY(-50%) !important;
 }
