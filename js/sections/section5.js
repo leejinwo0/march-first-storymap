@@ -100,10 +100,9 @@ export async function initSection5() {
         card.classList.add('active');
         marker.openPopup();
         card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-
         const targetZoom = 12;
         const targetPoint = mapS5.project([lat, lng], targetZoom);
-        targetPoint.y -= 180;
+        targetPoint.y -= 60;
         mapS5.setView(mapS5.unproject(targetPoint, targetZoom), targetZoom, { animate: true });
       };
 

@@ -141,3 +141,102 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+.sc6-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(var(--black-rgb), 0.8);
+  /* 뒷배경 어둡게 */
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s ease;
+}
+
+.sc6-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sc6-modal-container {
+  background: rgba(var(--charcoal-rgb), 0.95);
+  border: 1px solid rgba(var(--white-rgb), 0.15);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  /* 큰 팝업창 사이즈 */
+  padding: 3rem;
+  position: relative;
+  transform: translateY(30px) scale(0.95);
+  /* 아래에서 살짝 커지며 등장 */
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 20px 50px rgba(var(--black-rgb), 0.8);
+  text-align: center;
+}
+
+.sc6-modal-overlay.active .sc6-modal-container {
+  transform: translateY(0) scale(1);
+}
+
+.sc6-modal-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: transparent;
+  border: none;
+  color: rgba(var(--white-rgb), 0.4);
+  font-size: 2rem;
+  cursor: pointer;
+  transition: color 0.3s;
+  line-height: 1;
+}
+
+.sc6-modal-close:hover {
+  color: var(--white);
+}
+
+.sc6-modal-header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(var(--white-rgb), 0.1);
+  padding-bottom: 1.5rem;
+}
+
+.sc6-modal-num {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  color: rgba(var(--white-rgb), 0.2);
+  margin-bottom: 0.5rem;
+}
+
+.sc6-modal-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--white);
+  /* 제목 강조 */
+  margin-bottom: 0.5rem;
+}
+
+.sc6-modal-en {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: rgba(var(--cream-rgb), 0.5);
+}
+
+.sc6-modal-body p {
+  font-size: 1.05rem;
+  color: rgba(var(--white-rgb), 0.85);
+  line-height: 1.8;
+  word-break: keep-all;
+  text-align: left;
+  /* 본문은 읽기 편하게 좌측 정렬 */
+}

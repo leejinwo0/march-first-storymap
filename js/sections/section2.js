@@ -81,17 +81,24 @@ export async function initSection2() {
 
         if (feature.geometry.type === 'Point' && feature.geometry.coordinates) {
           const poiId = props.COT_CONTS_ID;
-          const title = props.COT_CONTS_NAME || "지명 없음"; // API의 Title 추출
-          
+          const title = props.COT_CONTS_NAME || "지명 없음";
+          let rawDesc = props.COT_VALUE_01 || props.COT_VALUE_03 || "간단한 소개가 없습니다.";
+          let formattedDesc = rawDesc.replace(/\n/g, '<br>').replace(/ - /g, '<br><br>- ');
+          // --------------------------------------------------
+
           locationsS2.push({
             id: targetId,
             pos: [feature.geometry.coordinates[1], feature.geometry.coordinates[0]],
             label: title,
             addrNew: props.COT_ADDR_FULL_NEW || "현재 주소 정보 없음",
             addrOld: props.COT_ADDR_FULL_OLD || "옛 주소 정보 없음",
-            shortDesc: props.COT_VALUE_01 || props.COT_VALUE_03 || "간단한 소개가 없습니다.",
+
+            // 기존 코드: shortDesc: props.COT_VALUE_01 || props.COT_VALUE_03 ...
+            // 변경 코드: 위에서 줄바꿈 처리한 변수를 넣습니다.
+            shortDesc: formattedDesc,
+
             mapLink: `https://map.seoul.go.kr/smgis2/poiViewMap?ti=11100550&pi=${poiId}&lang=ko`,
-            sajeokLink: `http://sajeok.i815.or.kr/search/index/q/${encodeURIComponent(title)}`
+            sajeokLink: `http://sajeok.i815.or.kr/i815/search_list?keyword=${encodeURIComponent(title)}`
           });
         }
       }
