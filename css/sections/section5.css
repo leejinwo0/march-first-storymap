@@ -411,3 +411,36 @@
   visibility: visible;
   transform: translateY(0);
 }
+
+.sc5-pop-info-list {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.sc5-pop-info-list:empty {
+  display: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.sc5-pop-info-list .info-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.sc5-pop-info-list .info-label {
+  font-size: 0.75rem;
+  color: var(--white);
+  font-weight: bold;
+}
+
+.sc5-pop-info-list .info-val {
+  font-size: 0.85rem;
+  color: rgba(var(--white-rgb), 0.9);
+  line-height: 1.5;
+  word-break: keep-all;
+}

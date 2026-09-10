@@ -5,7 +5,7 @@ export async function initSection4() {
   const mapContainer = document.getElementById('map-s4');
   if (!mapContainer) return;
 
-  const mapS4 = L.map('map-s4', { zoomControl: false, scrollWheelZoom: false, crs: getCrsEx() }).setView([37.577613 - 0.015, 126.976897], 7);
+  const mapS4 = L.map('map-s4', { zoomControl: false, scrollWheelZoom: false, crs: getCrsEx() }).setView([37.577613 - 0.019, 126.976897 - 0.04], 7);
   const baseMapS4 = new L.TileLayer.DAWULGIS_EX(MAP_ENDPOINTS.seoulBaseMap_kor, { minZoom: 1, maxZoom: 15 });
   const airMapS4 = new L.TileLayer.DAWULGIS_EX(MAP_ENDPOINTS.seoulBaseMap_air, { minZoom: 1, maxZoom: 15 });
   baseMapS4.addTo(mapS4);
