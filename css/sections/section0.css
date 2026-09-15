@@ -152,3 +152,59 @@
     transform: translateY(0);
   }
 }
+
+/* 좌측 하단 출처 텍스트 스타일 */
+.intro-source-text {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 2.5rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.5px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* 좌측 배경 기미독립선언서 이미지 스타일 */
+.intro-bg-doc {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%) rotate(-8deg);
+  /* 사진처럼 중앙 기준 살짝 왼쪽, 비스듬하게 회전 */
+  width: 350px;
+  /* 원하시는 크기에 맞게 조절하세요 */
+  opacity: 0.15;
+  /* 은은하게 깔리도록 투명도 조절 */
+  z-index: 1;
+  /* 메인 텍스트보다 뒤로 가도록 설정 */
+  pointer-events: none;
+}
+
+/* 우측 상단 출처 텍스트 스타일 */
+.intro-source-text-right {
+  position: absolute;
+  bottom: 2rem;
+  right: 2.5rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.5px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* 우측 배경 진관사 태극기 이미지 스타일 */
+.intro-bg-flag {
+  position: absolute;
+  top: 50%;
+  right: 10%;
+  /* 화면 오른쪽 기준으로 배치 */
+  transform: translateY(-50%) rotate(6deg);
+  /* 왼쪽 문서와 반대 방향으로 살짝 회전 */
+  width: 350px;
+  /* 사진 비율에 맞게 크기 조절 가능 */
+  opacity: 0.12;
+  /* 태극기 특성상 대비가 강할 수 있어 투명도를 살짝 더 낮춤 */
+  z-index: 1;
+  pointer-events: none;
+}

@@ -25,27 +25,7 @@ export async function initSection2() {
 
   const pathLine = L.polyline([], { color: '#000000', weight: 3, dashArray: '8, 8', opacity: 1, lineJoin: 'round' }).addTo(mapS2);
 
-  const resetBtn = document.getElementById('sc2-reset-btn');
-  L.DomEvent.disableClickPropagation(resetBtn);
-
-  mapS2.on('zoomend', () => {
-    if (mapS2.getZoom() > defaultZoom) {
-      resetBtn.classList.add('show');
-    } else {
-      resetBtn.classList.remove('show');
-    }
-  });
-
-  let isResetting = false;
   let isMarkerClicked = false;
-
-  resetBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    isResetting = true;
-    mapS2.setView(defaultCenter, defaultZoom, { animate: true, duration: 0.8 });
-    setTimeout(() => { isResetting = false; }, 900);
-  });
 
   try {
     const geojsonData = await fetchTimeTravelData();
@@ -71,34 +51,35 @@ export async function initSection2() {
           finalImgUrl = "https://images.weserv.nl/?url=" + encodeURIComponent(finalImgUrl);
         }
 
+        const title = props.COT_CONTS_NAME || "지명 없음";
+
+        let rawVal01 = (props.COT_VALUE_01 || "").trim().replace(/^"|"$/g, '');
+        let rawVal03 = (props.COT_VALUE_03 || "").trim().replace(/^"|"$/g, '');
+
+        let val01 = rawVal01 ? rawVal01.replace(/\n/g, '<br>').replace(/ - /g, '<br>- ') : "";
+        let val03 = rawVal03 ? rawVal03.replace(/\n/g, '<br>').replace(/ - /g, '<br>- ') : "";
+
+        let combinedDesc = "";
+        if (val01) combinedDesc += val01;
+        if (val01 && val03) combinedDesc += "<br><br>";
+        if (val03) combinedDesc += val03;
+        if (!combinedDesc) combinedDesc = "상세 설명이 없습니다.";
+
         timelineData.push({
           id: targetId,
-          date: props.COT_ADDR_FULL_OLD || "위치 정보 없음",
-          title: props.COT_CONTS_NAME || "제목 없음",
-          desc: props.COT_VALUE_03 || props.COT_VALUE_01 || "설명 정보가 없습니다.",
-          imgUrl: finalImgUrl
+          title: title,
+          desc: combinedDesc,
+          imgUrl: finalImgUrl,
+          addrNew: props.COT_ADDR_FULL_NEW || "현재 주소 정보 없음",
+          addrOld: props.COT_ADDR_FULL_OLD || "옛 주소 정보 없음",
+          poiId: props.COT_CONTS_ID
         });
 
         if (feature.geometry.type === 'Point' && feature.geometry.coordinates) {
-          const poiId = props.COT_CONTS_ID;
-          const title = props.COT_CONTS_NAME || "지명 없음";
-          let rawDesc = props.COT_VALUE_01 || props.COT_VALUE_03 || "간단한 소개가 없습니다.";
-          let formattedDesc = rawDesc.replace(/\n/g, '<br>').replace(/ - /g, '<br><br>- ');
-          // --------------------------------------------------
-
           locationsS2.push({
             id: targetId,
             pos: [feature.geometry.coordinates[1], feature.geometry.coordinates[0]],
-            label: title,
-            addrNew: props.COT_ADDR_FULL_NEW || "현재 주소 정보 없음",
-            addrOld: props.COT_ADDR_FULL_OLD || "옛 주소 정보 없음",
-
-            // 기존 코드: shortDesc: props.COT_VALUE_01 || props.COT_VALUE_03 ...
-            // 변경 코드: 위에서 줄바꿈 처리한 변수를 넣습니다.
-            shortDesc: formattedDesc,
-
-            mapLink: `https://map.seoul.go.kr/smgis2/poiViewMap?ti=11100550&pi=${poiId}&lang=ko`,
-            sajeokLink: `http://sajeok.i815.or.kr/i815/search_list?keyword=${encodeURIComponent(title)}`
+            label: title
           });
         }
       }
@@ -146,25 +127,32 @@ export async function initSection2() {
       cardContent.classList.add('fade-out');
       setTimeout(() => {
         const imageHTML = item.imgUrl ? `<img src="${item.imgUrl}" alt="${item.title}" class="sc2-item-img">` : "";
+        const mapLink = `https://map.seoul.go.kr/smgis2/poiViewMap?ti=11100550&pi=${item.poiId}&lang=ko`;
+        const sajeokLink = `http://sajeok.i815.or.kr/i815/search_list?keyword=${encodeURIComponent(item.title)}`;
+
         cardContent.innerHTML = `
-          <span class="sc2-item-date">${item.date}</span>
-          <h3 class="sc2-item-title">${item.title}</h3>
-          ${imageHTML} 
-          <p class="sc2-item-desc">${item.desc}</p>
+          <h4 class="sc2-pop-title sc2-card-title">${item.title}</h4>
+          ${imageHTML}
+          <div class="sc2-pop-info sc2-card-info">
+            <p><strong>현재:</strong> ${item.addrNew}</p>
+            <p><strong>옛지명:</strong> ${item.addrOld}</p>
+          </div>
+          <div class="sc2-pop-desc sc2-card-desc">${item.desc}</div>
+          <div class="sc2-pop-btns sc2-card-btns">
+            <a href="${mapLink}" target="_blank" class="sc2-btn map-btn">스마트서울맵</a>
+            <a href="${sajeokLink}" target="_blank" class="sc2-btn history-btn">독립운동 사적지</a>
+          </div>
         `;
         cardContent.classList.remove('fade-out');
 
-        // --- [추가됨] 카드 이미지 클릭 시 전역 모달창 호출 이벤트 ---
         const currentImg = cardContent.querySelector('.sc2-item-img');
         if (currentImg) {
           currentImg.addEventListener('click', () => {
-            // 전역 모달 열기 (제목을 캡션으로 사용)
             if (window.openGlobalModal) {
               window.openGlobalModal(item.imgUrl, item.title);
             }
           });
         }
-        // -------------------------------------------------------------
       }, 300);
     }
 
@@ -179,18 +167,8 @@ export async function initSection2() {
       const marker = L.marker(loc.pos, { icon }).addTo(mapS2);
 
       const popupContent = `
-        <div class="sc2-popup-inner">
-          <h4 class="sc2-pop-title">${loc.label}</h4>
-          <div class="sc2-pop-info">
-            <p><strong>현재:</strong> ${loc.addrNew}</p>
-            <p><strong>옛지명:</strong> ${loc.addrOld}</p>
-          </div>
-          <p class="sc2-pop-desc">${loc.shortDesc}</p>
-          <div class="sc2-pop-btns">
-            <!-- [수정됨] href 부분을 loc.mapLink 로 변경 -->
-            <a href="${loc.mapLink}" target="_blank" class="sc2-btn map-btn">스마트서울맵</a>
-            <a href="${loc.sajeokLink}" target="_blank" class="sc2-btn history-btn">국내 독립운동·국가수호 사적지</a>
-          </div>
+        <div class="sc2-popup-inner sc2-popup-mini">
+          <h4 class="sc2-pop-title" style="margin-bottom:0; border:none; padding-bottom:0; white-space:nowrap; color:#ffffff;">${loc.label}</h4>
         </div>
       `;
 
@@ -208,10 +186,21 @@ export async function initSection2() {
         const targetStep = document.getElementById(`step-${loc.id}`);
         if (targetStep) targetStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-        const targetZoom = 13;
+        // 👇 팝업 유지: 닫히지 않고 계속 떠있게 고정
+        setTimeout(() => { marker.openPopup(); }, 10);
+
+        let targetZoom;
+        if (mapS2.getZoom() > defaultZoom && currentCardId === loc.id) {
+          // 이미 확대된 마커를 다시 클릭한 경우 -> 줌아웃 (원래의 첫 번째 사진 모습)
+          targetZoom = defaultZoom;
+        } else {
+          // 새 마커 클릭 시 -> 줌인 (두 번째 사진 모습)
+          targetZoom = 13;
+        }
+
+        // 👇 줌인/줌아웃 상관없이 무조건 클릭한 마커를 우측 중앙에 맞춤 (화면 쏠림 방지)
         const targetPoint = mapS2.project(loc.pos, targetZoom);
         targetPoint.x -= (window.innerWidth <= 768 ? 0 : 350);
-        targetPoint.y -= 200;
         mapS2.setView(mapS2.unproject(targetPoint, targetZoom), targetZoom, { animate: true, duration: 0.8 });
 
         setTimeout(() => { isMarkerClicked = false; }, 900);
@@ -252,12 +241,11 @@ export async function initSection2() {
 
           const activeLoc = locationsS2.find(l => String(l.id) === activeId);
 
-          if (activeLoc && !isResetting && !isMarkerClicked) {
+          if (activeLoc && !isMarkerClicked) {
             mapS2.invalidateSize();
             const currentZoom = mapS2.getZoom();
             const targetPoint = mapS2.project(activeLoc.pos, currentZoom);
             targetPoint.x -= (window.innerWidth <= 768 ? 0 : 350);
-            targetPoint.y -= 200;
             mapS2.panTo(mapS2.unproject(targetPoint, currentZoom), { animate: true, duration: 0.8 });
           }
         }

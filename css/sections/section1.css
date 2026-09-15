@@ -61,20 +61,15 @@
   height: 12px;
   border-radius: 50%;
   border: 4px solid rgba(var(--red-rgb), 0.3);
-  /* 반투명한 빨간 테두리 */
   background-color: transparent;
-  /* 내부는 투명하게 */
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-/* 마우스를 올렸을 때의 시각적 효과 (선택사항) */
 .sc1-dot:hover {
   border-color: rgba(var(--red-rgb), 0.6);
-  /* 기존처럼 배경색이 채워지지 않고 테두리만 더 선명해지게 설정했습니다. */
 }
 
-/* 활성화(선택) 되었을 때의 상태 */
 .sc1-dot.active {
   background-color: var(--red);
   border-color: var(--red);
@@ -84,10 +79,7 @@
 .sc1-play-btn {
   position: absolute;
   left: 100%;
-  /* 닷 컨테이너의 오른쪽 끝을 시작점으로 설정 */
   margin-left: 1.5rem;
-  /* 기존에 있던 간격만큼 띄워주기 */
-
   background: transparent;
   border: none;
   color: rgba(var(--red-rgb), 0.5);
@@ -114,12 +106,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* 다시 중앙 정렬로 예쁘게 복구 */
-
-  /* 패딩: 위(숫자 겹침 방지), 양옆, 아래(닷 겹침 방지) */
-  /* vw 대신 vh(화면 높이 비율)를 사용하여 높이가 무한정 늘어나는 것을 막습니다. */
   padding: clamp(7rem, 12vh, 10rem) clamp(2rem, 5vw, 5rem) clamp(6rem, 10vh, 7rem);
-
   background: var(--charcoal);
   position: relative;
   overflow: hidden;
@@ -248,30 +235,24 @@
 
 .sc1-popup-inner {
   padding: 1.8rem;
-  /* 내부 여백도 조금 더 넓게 조정 */
   max-width: 500px;
 }
 
 .sc1-popup-inner h3 {
   font-family: 'Noto Serif KR', serif;
   font-size: 1.4rem;
-  /* 기존 1.1rem에서 1.4rem으로 제목 확대 */
   font-weight: 700;
   color: var(--white);
   margin-bottom: 0.8rem;
-  /* 제목 아래 간격도 살짝 넓힘 */
   border-bottom: 1px solid rgba(var(--white-rgb), 0.2);
   padding-bottom: 0.6rem;
 }
 
-/* 팝업 내부 이미지 스타일 (이 부분은 기존과 동일하게 두셔도 됩니다) */
 .sc1-pop-img {
   width: 100%;
-  max-height: 220px;
+  max-height: 300px;
   object-fit: cover;
   border-radius: 4px;
-  margin-bottom: 1.2rem;
-  /* 이미지 아래 간격 살짝 넓힘 */
   border: 1px solid rgba(var(--white-rgb), 0.2);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -280,23 +261,6 @@
 .sc1-pop-img:hover {
   transform: scale(1.03);
   box-shadow: 0 4px 10px rgba(var(--black-rgb), 0.5);
-}
-
-.sc1-popup-inner .sc1-pop-addr {
-  display: block;
-  font-size: 0.8rem;
-  color: var(--gold);
-  margin-bottom: 0.8rem;
-  white-space: nowrap;
-  letter-spacing: -0.03em;
-}
-
-.sc1-popup-inner .sc1-pop-desc {
-  font-size: 0.9rem;
-  /* 기존 1.05rem에서 0.9rem으로 축소 */
-  color: rgba(var(--cream-rgb), 0.8);
-  line-height: 1.6;
-  word-break: keep-all;
 }
 
 .custom-marker-wrapper {
@@ -338,4 +302,78 @@
     transform: translate(-50%, -50%) scale(4);
     opacity: 0;
   }
+}
+
+/* =======================================================
+   사진 호버 오버레이 (클릭 통과, 줄바꿈 방지 적용)
+======================================================= */
+.sc1-pop-img-wrapper {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.sc1-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(var(--black-rgb), 0.6);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.85rem;
+  font-weight: bold;
+
+  /* 마우스 클릭을 막지 않고 통과시킴, 글자 한 줄로 강제 */
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.sc1-pop-img-wrapper:hover .sc1-img-overlay {
+  opacity: 1;
+}
+
+/* =======================================================
+   전역 모달창 하단 캡션 스타일 (JS에서 분리)
+======================================================= */
+.sc1-modal-caption {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.sc1-modal-title {
+  display: block;
+  font-size: 1.15rem;
+  color: #ffffff;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.sc1-modal-addr {
+  display: block;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 8px;
+}
+
+.sc1-modal-desc {
+  font-size: 0.95rem;
+  color: #ffffff;
+  line-height: 1.6;
+  max-width: 900px;
+  margin: 0 auto;
+  word-break: keep-all;
+}
+
+.sc1-popup-inner .sc1-pop-addr {
+  display: block;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.4;
+  white-space: nowrap;
 }
