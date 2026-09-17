@@ -1,4 +1,15 @@
 /* =======================================================
+   역사 지도(WMS) 엔드포인트 및 레이어 관리 객체 (추가됨)
+======================================================= */
+export const HISTORICAL_MAPS = {
+  wmsUrl: 'https://map.seoul.go.kr/smgis2/proxy?url=prop/tileMapGeoserver/wms?',
+  gyeongseong: 'tile_map:g_old_capital_tms',        // 경성대지도
+  ready31: 'tile_map:g_ready31movement_tms',        // 삼일운동 준비과정
+  capital: 'tile_map:g_capital_tms',                // 대경성부대관
+  relic50s: 'tile_map:g_new_relic_tms'              // 전재표시도(1950년대)
+};
+
+/* =======================================================
    API 엔드포인트(URL) 관리 객체
 ======================================================= */
 export const MAP_ENDPOINTS = {

@@ -1,17 +1,17 @@
-import { MAP_ENDPOINTS } from '../../api/mapService.js';
+import { MAP_ENDPOINTS, HISTORICAL_MAPS } from '../../api/mapService.js'; // 💡 HISTORICAL_MAPS 추가
 import { addMapToggleControl } from '../utils/mapUtils.js';
 
 export function initSection1() {
   const mapConfigsS1 = [
     {
-      id: 'map-s1-1', center: [37.5562, 126.9850], zoom: 11, title: '남산 통감관저 터', region: 'seoul',
+      id: 'map-s1-1', center: [37.5562, 126.9850], zoom: 9, title: '남산 통감관저 터', region: 'seoul',
       address: '서울특별시 중구 예장동 2-1',
       desc: '1910년 <한일강제병합조약>을 조인했던 뼈아픈 역사의 현장입니다.',
       imgUrl: '/assets/images/역사편찬원/3.1운동(2차)/201_남산 총독관저(옛 통감관저_서울역사박물관).jpg',
       caption: '남산 총독관저(옛 통감관저)'
     },
     {
-      id: 'map-s1-2', center: [37.5650416322942, 126.976542945622], zoom: 11, title: '덕수궁 대한문', region: 'seoul',
+      id: 'map-s1-2', center: [37.5650416322942, 126.976542945622], zoom: 9, title: '덕수궁 대한문', region: 'seoul',
       address: '서울특별시 중구 세종대로 99',
       desc: '고종 황제의 장례일에 대한문 앞에 모인 사람들의 모습이다. 대한문은 고종 황제가 기거하던 덕수궁의 정문이다.',
       imgUrl: '/assets/images/역사편찬원/3.1운동(1차)/202_고종황제 장례식에 대한문 앞에 모인 사람들(서울역사박물관).jpg',
@@ -45,17 +45,29 @@ export function initSection1() {
       attributionControl: false, crs: config.region === 'seoul' ? getCrsEx() : L.CRS.EPSG3857
     });
 
-    let baseMapLayer, airMapLayer;
+    let baseMapLayer, secondaryMapLayer;
+
     if (config.region === 'seoul') {
       baseMapLayer = new L.TileLayer.DAWULGIS_EX(MAP_ENDPOINTS.seoulBaseMap_kor, { minZoom: 1, maxZoom: 15 });
-      airMapLayer = new L.TileLayer.DAWULGIS_EX(MAP_ENDPOINTS.seoulBaseMap_air, { minZoom: 1, maxZoom: 15 });
+
+      // 💡 서울 지역일 경우 위성지도 대신 WMS 경성대지도 레이어 생성
+      secondaryMapLayer = L.tileLayer.wms(HISTORICAL_MAPS.wmsUrl, {
+        layers: HISTORICAL_MAPS.gyeongseong,
+        format: 'image/png',
+        transparent: true,
+        maxZoom: 12,
+        attribution: '경성대지도'
+      });
     } else {
+      // 글로벌 지역은 기존 방식 유지
       baseMapLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 });
-      airMapLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19 });
+      secondaryMapLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19 });
     }
 
     baseMapLayer.addTo(map);
-    addMapToggleControl(map, baseMapLayer, airMapLayer);
+    const toggleLabel = config.region === 'seoul' ? '경성대지도' : '위성지도';
+    // 토글 컨트롤에 두 번째 지도를 연결
+    addMapToggleControl(map, baseMapLayer, secondaryMapLayer, toggleLabel);
 
     const icon = L.divIcon({ className: 'custom-marker-wrapper', html: '<div class="map-pulse"></div>', iconSize: [14, 14], iconAnchor: [7, 7] });
 

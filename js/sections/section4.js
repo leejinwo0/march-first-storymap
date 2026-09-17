@@ -1,4 +1,5 @@
-import { fetchTimeTravelData, MAP_ENDPOINTS } from '../../api/mapService.js';
+// 💡 1. HISTORICAL_MAPS 임포트 추가
+import { fetchTimeTravelData, MAP_ENDPOINTS, HISTORICAL_MAPS } from '../../api/mapService.js';
 import { addMapToggleControl } from '../utils/mapUtils.js';
 
 export async function initSection4() {
@@ -7,9 +8,20 @@ export async function initSection4() {
 
   const mapS4 = L.map('map-s4', { zoomControl: false, scrollWheelZoom: false, crs: getCrsEx() }).setView([37.577613 - 0.019, 126.976897 - 0.04], 7);
   const baseMapS4 = new L.TileLayer.DAWULGIS_EX(MAP_ENDPOINTS.seoulBaseMap_kor, { minZoom: 1, maxZoom: 15 });
-  const airMapS4 = new L.TileLayer.DAWULGIS_EX(MAP_ENDPOINTS.seoulBaseMap_air, { minZoom: 1, maxZoom: 15 });
+
+  // 💡 2. 기존 위성지도 대신 WMS 경성대지도 레이어 생성
+  const gyeongseongMapS4 = L.tileLayer.wms(HISTORICAL_MAPS.wmsUrl, {
+    layers: HISTORICAL_MAPS.gyeongseong,
+    format: 'image/png',
+    transparent: true,
+    maxZoom: 18,
+    attribution: '경성대지도'
+  });
+
   baseMapS4.addTo(mapS4);
-  addMapToggleControl(mapS4, baseMapS4, airMapS4)
+
+  // 💡 3. 토글 컨트롤에 경성대지도를 연결하고 버튼 글씨도 변경
+  addMapToggleControl(mapS4, baseMapS4, gyeongseongMapS4, '경성대지도');
 
   let mapTriggered = false;
 
@@ -105,11 +117,11 @@ export async function initSection4() {
                 });
 
                 marker.on('click', () => {
-                  const targetZoom = 11;
+                  const targetZoom = 9;
                   const targetPoint = mapS4.project(latlng, targetZoom);
 
                   // 마커를 아래로 200px 내려서 위쪽 팝업창 공간 확보 (숫자 조절 가능)
-                  targetPoint.y -= 200;
+                  targetPoint.y -= 100;
 
                   mapS4.setView(mapS4.unproject(targetPoint, targetZoom), targetZoom, { animate: true, duration: 0.8 });
                 });

@@ -1,4 +1,5 @@
-import { fetchTimeTravelData, MAP_ENDPOINTS } from '../../api/mapService.js';
+// 💡 1. HISTORICAL_MAPS 임포트 추가
+import { fetchTimeTravelData, MAP_ENDPOINTS, HISTORICAL_MAPS } from '../../api/mapService.js';
 import { addMapToggleControl } from '../utils/mapUtils.js';
 
 export async function initSection3() {
@@ -7,9 +8,20 @@ export async function initSection3() {
 
   const mapS3 = L.map('map-s3', { zoomControl: false, scrollWheelZoom: false, crs: getCrsEx() });
   const baseMapS3 = new L.TileLayer.DAWULGIS_EX(MAP_ENDPOINTS.seoulBaseMap_kor, { minZoom: 1, maxZoom: 15 });
-  const airMapS3 = new L.TileLayer.DAWULGIS_EX(MAP_ENDPOINTS.seoulBaseMap_air, { minZoom: 1, maxZoom: 15 });
+
+  // 💡 2. 위성지도 대신 WMS 경성대지도 레이어 생성
+  const gyeongseongMapS3 = L.tileLayer.wms(HISTORICAL_MAPS.wmsUrl, {
+    layers: HISTORICAL_MAPS.gyeongseong,
+    format: 'image/png',
+    transparent: true,
+    maxZoom: 18,
+    attribution: '경성대지도'
+  });
+
   baseMapS3.addTo(mapS3);
-  addMapToggleControl(mapS3, baseMapS3, airMapS3);
+
+  // 💡 3. 토글 컨트롤에 경성대지도를 연결하고, 버튼 텍스트도 '경성대지도'로 변경
+  addMapToggleControl(mapS3, baseMapS3, gyeongseongMapS3, '경성대지도');
 
   let activeMarkers = [];
   const routeLayers = {};
@@ -56,7 +68,8 @@ export async function initSection3() {
       mapS3.fitBounds(allBounds, {
         paddingTopLeft: isMobile ? [30, 30] : [450, 50],
         paddingBottomRight: isMobile ? [30, 150] : [50, 50],
-        maxZoom: 13
+        // 💡 4. 까만 화면(이미지 깨짐)을 방지하기 위해 최대 줌 레벨을 13 -> 11로 낮췄습니다.
+        maxZoom: 11
       });
     }, 500);
 

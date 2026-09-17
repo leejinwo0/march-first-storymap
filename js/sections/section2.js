@@ -1,4 +1,4 @@
-import { fetchTimeTravelData, MAP_ENDPOINTS } from '../../api/mapService.js';
+import { fetchTimeTravelData, MAP_ENDPOINTS, HISTORICAL_MAPS } from '../../api/mapService.js';
 import { addMapToggleControl, generateCurvedPath } from '../utils/mapUtils.js';
 
 export async function initSection2() {
@@ -6,7 +6,7 @@ export async function initSection2() {
   if (!mapContainer) return;
 
   const defaultCenter = [37.5759, 126.9850];
-  const defaultZoom = 10;
+  const defaultZoom = 9; // 👈 전체 화면 줌 레벨 (기존 10 -> 9로 축소)
 
   const mapS2 = L.map('map-s2', {
     zoomControl: false,
@@ -16,9 +16,17 @@ export async function initSection2() {
   }).setView(defaultCenter, defaultZoom);
 
   const baseMapS2 = new L.TileLayer.DAWULGIS_EX(MAP_ENDPOINTS.seoulBaseMap_kor, { minZoom: 1, maxZoom: 15 });
-  const airMapS2 = new L.TileLayer.DAWULGIS_EX(MAP_ENDPOINTS.seoulBaseMap_air, { minZoom: 1, maxZoom: 15 });
+
+  const gyeongseongMapS2 = L.tileLayer.wms(HISTORICAL_MAPS.wmsUrl, {
+    layers: HISTORICAL_MAPS.gyeongseong,
+    format: 'image/png',
+    transparent: true,
+    maxZoom: 18,
+    attribution: '경성대지도'
+  });
+
   baseMapS2.addTo(mapS2);
-  addMapToggleControl(mapS2, baseMapS2, airMapS2);
+  addMapToggleControl(mapS2, baseMapS2, gyeongseongMapS2, '경성대지도');
 
   const resizeObserverS2 = new ResizeObserver(() => mapS2.invalidateSize());
   resizeObserverS2.observe(mapContainer);
@@ -186,21 +194,18 @@ export async function initSection2() {
         const targetStep = document.getElementById(`step-${loc.id}`);
         if (targetStep) targetStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-        // 👇 팝업 유지: 닫히지 않고 계속 떠있게 고정
         setTimeout(() => { marker.openPopup(); }, 10);
 
         let targetZoom;
         if (mapS2.getZoom() > defaultZoom && currentCardId === loc.id) {
-          // 이미 확대된 마커를 다시 클릭한 경우 -> 줌아웃 (원래의 첫 번째 사진 모습)
           targetZoom = defaultZoom;
         } else {
-          // 새 마커 클릭 시 -> 줌인 (두 번째 사진 모습)
-          targetZoom = 13;
+          targetZoom = 11; // 👈 클릭 시 줌인 레벨 (기존 13 -> 11로 축소)
         }
 
-        // 👇 줌인/줌아웃 상관없이 무조건 클릭한 마커를 우측 중앙에 맞춤 (화면 쏠림 방지)
         const targetPoint = mapS2.project(loc.pos, targetZoom);
         targetPoint.x -= (window.innerWidth <= 768 ? 0 : 350);
+        // 👇 버그 수정된 부분 (targetZoom 파라미터가 가운데 추가되었습니다)
         mapS2.setView(mapS2.unproject(targetPoint, targetZoom), targetZoom, { animate: true, duration: 0.8 });
 
         setTimeout(() => { isMarkerClicked = false; }, 900);
@@ -253,5 +258,22 @@ export async function initSection2() {
     }, { threshold: 0.5, rootMargin: "-20% 0px -20% 0px" });
 
     document.querySelectorAll('.sc2-scroll-step').forEach(item => markerObserver.observe(item));
+
+    if (targetIds.length > 0) {
+      const firstId = targetIds[0];
+      updateCardContent(firstId);
+
+      setTimeout(() => {
+        if (markers[firstId]) {
+          markers[firstId].marker.openPopup();
+          const firstContainer = document.getElementById(`map-marker-container-${firstId}`);
+          if (firstContainer) {
+            firstContainer.classList.remove('sc2-marker-dimmed');
+            firstContainer.classList.add('sc2-marker-active');
+          }
+        }
+      }, 300);
+    }
+
   } catch (error) { console.error('Section 2 에러:', error); }
 }
