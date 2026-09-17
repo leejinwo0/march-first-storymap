@@ -444,25 +444,29 @@
           <!-- JS와 연동되는 필터 리스트 (li 태그 사용) -->
           <ul class="sc4-intro-cols" id="sc4-filter-list">
             <!-- 첫 번째 카드: 핵심 거점 -->
-            <li class="sc4-col hub-card active" data-filter="hub" tabindex="0" role="button">
-              <h3 class="sc4-col-title">
-                <span class="ko-text">
-                  <div class="sc4-legend-dot hub-dot"></div> 중요 지점
-                </span>
-                <span class="en-text">Strategic Hubs</span>
-              </h3>
-              <p class="sc4-col-desc">독립선언서 기안 및 배포가 이루어진 항일 준비 거점</p>
+            <li class="sc4-col hub-card active" data-filter="hub">
+              <div class="sc4-col-header" tabindex="0" role="button">
+                <h3 class="sc4-col-title">
+                  <span class="ko-text">
+                    <div class="sc4-legend-dot hub-dot"></div> 중요 지점
+                  </span>
+                  <span class="en-text">Strategic Hubs</span>
+                </h3>
+              </div>
+              <ul class="sc4-loc-list" id="sc4-hub-list"></ul>
             </li>
 
             <!-- 두 번째 카드: 시위 현장 -->
-            <li class="sc4-col site-card active" data-filter="site" tabindex="0" role="button">
-              <h3 class="sc4-col-title">
-                <span class="ko-text">
-                  <div class="sc4-legend-dot site-dot"></div> 시위 장소
-                </span>
-                <span class="en-text">Protest Sites</span>
-              </h3>
-              <p class="sc4-col-desc">민중이 자발적으로 모여 만세를 외친 실제 항쟁지</p>
+            <li class="sc4-col site-card active" data-filter="site">
+              <div class="sc4-col-header" tabindex="0" role="button">
+                <h3 class="sc4-col-title">
+                  <span class="ko-text">
+                    <div class="sc4-legend-dot site-dot"></div> 시위 장소
+                  </span>
+                  <span class="en-text">Protest Sites</span>
+                </h3>
+              </div>
+              <ul class="sc4-loc-list" id="sc4-site-list"></ul>
             </li>
           </ul>
         </div>

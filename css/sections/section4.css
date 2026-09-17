@@ -30,7 +30,7 @@
   left: 3rem;
 
   z-index: 1000;
-  width: 400px;
+  width: 640px;
   max-width: 90vw;
   max-height: 80vh;
   overflow-y: auto;
@@ -72,12 +72,13 @@
   padding: 0;
   margin: 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 1rem;
 }
 
 /* 개별 필터 카드 (기존 인트로 카드의 UI 적용) */
 .sc4-col {
+  flex: 1;
   position: relative;
   background: rgba(var(--white-rgb), 0.03);
   border: 1px solid rgba(var(--white-rgb), 0.1);
@@ -458,4 +459,73 @@
 
 .sc4-floating-legend.sc4-reveal.active {
   transform: translateY(-50%) !important;
+}
+
+/* =======================================================
+   범례 내 장소 리스트 스타일
+======================================================= */
+.sc4-loc-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0 0;
+  border-top: 1px solid rgba(var(--white-rgb), 0.1);
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 220px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* 스크롤바 디자인 */
+.sc4-loc-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sc4-loc-list::-webkit-scrollbar-thumb {
+  background: rgba(var(--white-rgb), 0.3);
+  border-radius: 2px;
+}
+
+.sc4-loc-item {
+  flex-shrink: 0;
+  width: 92%;
+  line-height: 1.3;
+  font-size: 0.8rem;
+  color: rgba(var(--cream-rgb), 0.8);
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  background: rgba(var(--black-rgb), 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sc4-loc-item:hover {
+  background: rgba(var(--white-rgb), 0.1);
+  color: var(--white);
+  transform: translateX(3px);
+}
+
+.sc4-col-header {
+  cursor: pointer;
+}
+
+.sc4-loc-item.active {
+  background: rgba(var(--white-rgb), 0.2);
+  color: var(--white);
+}
+
+/* 1. 중요 지점 리스트 클릭 시 -> 빨간색 선 */
+.hub-card .sc4-loc-item.active {
+  border-left: 3px solid var(--red);
+}
+
+/* 2. 시위 장소 리스트 클릭 시 -> 노란색(골드) 선 */
+.site-card .sc4-loc-item.active {
+  border-left: 3px solid var(--gold);
 }

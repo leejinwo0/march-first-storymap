@@ -43,6 +43,8 @@ export async function initSection4() {
   resetBtn.addEventListener('click', () => {
     mapS4.setView(defaultCenter, defaultZoom, { animate: true, duration: 0.8 });
     mapS4.closePopup();
+    // 초기화 버튼 누를 때 활성화 상태도 모두 지우기
+    document.querySelectorAll('.sc4-loc-item').forEach(item => item.classList.remove('active'));
   });
 
   try {
@@ -56,6 +58,10 @@ export async function initSection4() {
           let hubDelay = 0;
           let siteDelay = 0;
 
+          // 리스트를 추가할 부모 컨테이너 찾기
+          const hubListContainer = document.getElementById('sc4-hub-list');
+          const siteListContainer = document.getElementById('sc4-site-list');
+
           geojsonData.features.forEach((feature) => {
             const props = feature.properties;
             const subId = String(props.COT_THEME_SUB_ID);
@@ -63,10 +69,8 @@ export async function initSection4() {
             const address = props.COT_ADDR_FULL_NEW || props.COT_ADDR_FULL_OLD || "주소 정보 없음";
             const desc = props.COT_VALUE_03 || props.COT_VALUE_01 || "상세 설명이 없습니다.";
 
-            // --- [추가됨] Section 2처럼 고유 ID 추출 및 스마트서울맵 링크 동적 생성 ---
             const poiId = props.COT_CONTS_ID;
             const mapLink = `https://map.seoul.go.kr/smgis2/poiViewMap?ti=11100550&pi=${poiId}&lang=ko`;
-            // -------------------------------------------------------------------
 
             if (!props.COT_COORD_Y || !props.COT_COORD_X) return;
             const latlng = [parseFloat(props.COT_COORD_Y), parseFloat(props.COT_COORD_X)];
@@ -74,58 +78,94 @@ export async function initSection4() {
             let pulseClass = '';
             let targetLayer = null;
             let currentDelay = 0;
+            let listContainer = null;
 
             if (subId === '3') {
               pulseClass = 'sc4-pulse-site';
               targetLayer = siteLayer;
+              listContainer = siteListContainer;
               currentDelay = siteDelay;
               siteDelay += 150;
             } else if (subId === '4') {
               pulseClass = 'sc4-pulse-hub';
               targetLayer = hubLayer;
+              listContainer = hubListContainer;
               currentDelay = hubDelay;
               hubDelay += 150;
             }
 
             if (pulseClass !== '' && targetLayer) {
-              setTimeout(() => {
-                const icon = L.divIcon({
-                  className: 'sc4-marker-wrapper',
-                  html: `<div class="${pulseClass}"></div>`,
-                  iconSize: [40, 40],
-                  iconAnchor: [20, 20]
-                });
+              // 1. 마커와 팝업 생성
+              const icon = L.divIcon({
+                className: 'sc4-marker-wrapper',
+                html: `<div class="${pulseClass}"></div>`,
+                iconSize: [40, 40],
+                iconAnchor: [20, 20]
+              });
 
-                const marker = L.marker(latlng, { icon: icon });
-
-                const popupContent = `
-                  <div class="sc4-popup-inner">
-                    <h3>${name}</h3>
-                    <span class="sc4-pop-addr">${address}</span>
-                    <div class="sc4-pop-desc">${desc.replace(/\n/g, '<br>')}</div>
-                    <div class="sc4-pop-btns">
-                      <!-- [수정됨] 고정 링크 대신 ${mapLink} 동적 변수 적용 -->
-                      <a href="${mapLink}" target="_blank" class="sc4-btn map-btn">스마트서울맵</a>
-                      <a href="https://history.seoul.go.kr/" target="_blank" class="sc4-btn history-btn">역사편찬원</a>
-                    </div>
+              const marker = L.marker(latlng, { icon: icon });
+              const popupContent = `
+                <div class="sc4-popup-inner">
+                  <h3>${name}</h3>
+                  <span class="sc4-pop-addr">${address}</span>
+                  <div class="sc4-pop-desc">${desc.replace(/\n/g, '<br>')}</div>
+                  <div class="sc4-pop-btns">
+                    <a href="${mapLink}" target="_blank" class="sc4-btn map-btn">스마트서울맵</a>
+                    <a href="https://history.seoul.go.kr/" target="_blank" class="sc4-btn history-btn">역사편찬원</a>
                   </div>
-                `;
-                marker.bindPopup(popupContent, {
-                  offset: [0, -15],
-                  className: 'sc4-leaflet-popup',
-                  maxWidth: 450
-                });
+                </div>
+              `;
+              marker.bindPopup(popupContent, { offset: [0, -15], className: 'sc4-leaflet-popup', maxWidth: 450 });
 
-                marker.on('click', () => {
+              // 2. 범례 리스트 아이템 생성
+              const li = document.createElement('li');
+              li.className = 'sc4-loc-item';
+              li.innerText = name;
+              if (listContainer) {
+                listContainer.appendChild(li);
+              }
+
+              // 💡 3. 줌인/줌아웃 토글 공통 로직
+              const activateItem = (e) => {
+                if (e && e.stopPropagation) e.stopPropagation();
+
+                const isAlreadyActive = li.classList.contains('active');
+
+                if (isAlreadyActive) {
+                  // 이미 켜져있다면 -> 줌아웃(초기화)
+                  li.classList.remove('active');
+                  mapS4.closePopup();
+                  mapS4.setView(defaultCenter, defaultZoom, { animate: true, duration: 0.8 });
+                } else {
+                  // 안 켜져있다면 -> 줌인(활성화)
+                  const parentCol = li.closest('.sc4-col');
+                  if (parentCol && !parentCol.classList.contains('active')) {
+                    parentCol.classList.add('active');
+                    if (subId === '3') mapS4.addLayer(siteLayer);
+                    if (subId === '4') mapS4.addLayer(hubLayer);
+                  }
+
+                  // 다른 아이템들 선택 해제
+                  document.querySelectorAll('.sc4-loc-item').forEach(item => item.classList.remove('active'));
+                  li.classList.add('active'); // 현재 클릭한 것만 선택 표시
+
+                  // 우측 여백 확보하여 줌인
                   const targetZoom = 9;
                   const targetPoint = mapS4.project(latlng, targetZoom);
-
-                  // 마커를 아래로 200px 내려서 위쪽 팝업창 공간 확보 (숫자 조절 가능)
-                  targetPoint.y -= 100;
+                  targetPoint.y -= 150;
+                  targetPoint.x -= 300;
 
                   mapS4.setView(mapS4.unproject(targetPoint, targetZoom), targetZoom, { animate: true, duration: 0.8 });
-                });
+                  setTimeout(() => marker.openPopup(), 300);
+                }
+              };
 
+              // 마커 클릭, 리스트 클릭 모두 동일한 토글 로직 적용!
+              marker.on('click', activateItem);
+              li.addEventListener('click', activateItem);
+
+              // 딜레이를 주어 지도에 마커 추가
+              setTimeout(() => {
                 marker.addTo(targetLayer);
               }, currentDelay);
             }
@@ -135,9 +175,11 @@ export async function initSection4() {
     }, { threshold: 0.3 });
     observerS4.observe(mapContainer);
 
-    const filterItems = document.querySelectorAll('#sc4-filter-list li');
-    filterItems.forEach(item => {
-      item.addEventListener('click', () => {
+    // 필터 기능(헤더 클릭) 연동
+    const filterHeaders = document.querySelectorAll('#sc4-filter-list .sc4-col-header');
+    filterHeaders.forEach(header => {
+      header.addEventListener('click', () => {
+        const item = header.closest('.sc4-col');
         const filterType = item.getAttribute('data-filter');
         const isActive = item.classList.contains('active');
 
@@ -145,6 +187,8 @@ export async function initSection4() {
           item.classList.remove('active');
           if (filterType === 'hub') mapS4.removeLayer(hubLayer);
           if (filterType === 'site') mapS4.removeLayer(siteLayer);
+          // 카드 비활성화 시 내부 아이템들의 active 상태도 지우기
+          item.querySelectorAll('.sc4-loc-item').forEach(li => li.classList.remove('active'));
         } else {
           item.classList.add('active');
           if (filterType === 'hub') mapS4.addLayer(hubLayer);

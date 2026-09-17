@@ -40,7 +40,6 @@ export async function initSection5() {
     const activistItems = [];
     const allLatLngs = [];
 
-    // 💡 에러 방지: defaultBounds 변수를 상단으로 미리 끌어올렸습니다.
     let defaultBounds = null;
 
     activists.forEach((feature) => {
@@ -51,31 +50,6 @@ export async function initSection5() {
       const lng = parseFloat(props.COT_COORD_X);
       const name = props.COT_CONTS_NAME || "무명 열사";
       const shortAddr = props.COT_ADDR_FULL_NEW || props.COT_ADDR_FULL_OLD || "활동 지역 불명";
-
-      const getSafeValue = (labelKw, directCotKey, directKey) => {
-        for (const key in props) {
-          if (key.includes('NAME_')) {
-            const labelStr = String(props[key] || "");
-            if (labelStr.includes(labelKw)) {
-              const valKey = key.replace('NAME_', 'VALUE_');
-              const val = props[valKey];
-              if (val && val !== 'null' && String(val).trim() !== '') return val;
-            }
-          }
-        }
-        const directVal1 = props[directCotKey];
-        if (directVal1 && directVal1 !== 'null' && String(directVal1).trim() !== '') return directVal1;
-
-        const directVal2 = props[directKey];
-        if (directVal2 && directVal2 !== 'null' && String(directVal2).trim() !== '') return directVal2;
-
-        return "";
-      };
-
-      const sinbun = getSafeValue("신분", "COT_VALUE_02", "VALUE_02");
-      const sagun = getSafeValue("사건개요", "COT_VALUE_03", "VALUE_03");
-      const pangyul = getSafeValue("판결날", "COT_VALUE_04", "VALUE_04");
-      const joemyung = getSafeValue("죄명", "COT_VALUE_05", "VALUE_05");
 
       let imgUrl = props.COT_IMG_MAIN_URL || props.IMG_MAIN_URL || "";
       if (imgUrl && !imgUrl.startsWith("http")) {
@@ -95,7 +69,7 @@ export async function initSection5() {
       card.className = 'sc5-card';
       card.innerHTML = `
         <div class="sc5-card-img"><img src="${imgUrl}" alt="${name} 사진" onerror="this.style.display='none';"></div>
-        <div class="sc5-card-info"><h4>${name}</h4><p>${shortAddr.split(' ')[0]} ${shortAddr.split(' ')[1] || ''}</p></div>
+        <div class="sc5-card-info"><h4>${name}</h4></div>
       `;
       trackContainer.appendChild(card);
 
@@ -114,16 +88,14 @@ export async function initSection5() {
         historyUrl = historyUrl.replace("http://", "https://");
       }
 
-      const popupContent = `
+      // 💡 1. 초기 팝업창은 로딩 상태로 만들어 둡니다.
+      const initialPopupContent = `
         <div class="sc5-popup-inner">
           <h3>${name}</h3>
           <span class="sc5-pop-addr">${shortAddr}</span>
           <div class="sc5-pop-desc">
-            <div class="sc5-pop-info-list">
-              ${sinbun ? `<div class="info-row"><span class="info-label">신분</span><span class="info-val">${sinbun}</span></div>` : ''}
-              ${sagun ? `<div class="info-row"><span class="info-label">사건개요</span><span class="info-val">${sagun}</span></div>` : ''}
-              ${pangyul ? `<div class="info-row"><span class="info-label">판결날</span><span class="info-val">${pangyul}</span></div>` : ''}
-              ${joemyung ? `<div class="info-row"><span class="info-label">죄명</span><span class="info-val">${joemyung}</span></div>` : ''}
+            <div class="info-row" style="padding: 10px 0; text-align: center; color: #888;">
+              상세 정보를 불러오는 중입니다...
             </div>
           </div>
           <div class="sc5-pop-btns">
@@ -133,10 +105,12 @@ export async function initSection5() {
         </div>
       `;
 
-      marker.bindPopup(popupContent, { offset: [0, -35], className: 'sc5-leaflet-popup', autoPan: false });
+      marker.bindPopup(initialPopupContent, { offset: [0, -35], className: 'sc5-leaflet-popup', autoPan: false });
 
-      // 💡 마커 클릭 시 줌인/줌아웃 토글 기능 적용
-      const activateItem = () => {
+      let isDetailLoaded = false; // 데이터를 한 번만 불러오기 위한 플래그
+
+      // 💡 2. 클릭 시 실행되는 함수 (비동기 async 추가)
+      const activateItem = async () => {
         const isAlreadyActive = card.classList.contains('active');
 
         if (isAlreadyActive) {
@@ -153,7 +127,7 @@ export async function initSection5() {
             });
           }
         } else {
-          // 안 켜져있다면 줌인(켜기)
+          // 안 켜져있다면 줌인(켜기) 및 팝업 열기
           document.querySelectorAll('.sc5-card').forEach(c => c.classList.remove('active'));
           card.classList.add('active');
           marker.openPopup();
@@ -163,6 +137,75 @@ export async function initSection5() {
           const targetPoint = mapS5.project([lat, lng], targetZoom);
           targetPoint.y -= 60;
           mapS5.setView(mapS5.unproject(targetPoint, targetZoom), targetZoom, { animate: true });
+
+          // 💡 3. 상세 정보 API 호출 로직 (아직 로드되지 않았을 경우에만)
+          if (!isDetailLoaded && poiId) {
+            try {
+              // 기존 MAP_ENDPOINTS에서 API 키가 포함된 기본 주소 추출
+              const baseUrl = MAP_ENDPOINTS.themeData_100173.split('/public/')[0];
+              const detailApiUrl = `${baseUrl}/public/themes/contents/detail?theme_id=100173&conts_id=${poiId}`;
+
+              const response = await fetch(detailApiUrl);
+              const detailData = await response.json();
+
+              if (detailData && detailData.body && detailData.body.length > 0) {
+                const dProps = detailData.body[0]; // 상세 API에서 받아온 프로퍼티
+
+                // 상세 정보 추출기
+                const getSafeValue = (labelKw, directCotKey) => {
+                  for (const key in dProps) {
+                    if (key.includes('NAME_')) {
+                      if (String(dProps[key]).includes(labelKw)) {
+                        const valKey = key.replace('NAME_', 'VALUE_');
+                        const val = dProps[valKey];
+                        if (val && val !== 'null' && String(val).trim() !== '') return val;
+                      }
+                    }
+                  }
+                  const directVal = dProps[directCotKey];
+                  if (directVal && directVal !== 'null' && String(directVal).trim() !== '') return directVal;
+                  return "";
+                };
+
+                const sinbun = getSafeValue("신분", "COT_VALUE_02");
+                const sagun = getSafeValue("사건개요", "COT_VALUE_03");
+                const pangyul = getSafeValue("판결날", "COT_VALUE_04");
+                const joemyung = getSafeValue("죄명", "COT_VALUE_05");
+
+                // 💡 4. 데이터를 덮어씌운 새로운 팝업 HTML 생성
+                const updatedPopupContent = `
+                  <div class="sc5-popup-inner">
+                    <h3>${name}</h3>
+                    <span class="sc5-pop-addr">${shortAddr}</span>
+                    <div class="sc5-pop-desc">
+                      <div class="sc5-pop-info-list">
+                        ${sinbun ? `<div class="info-row"><span class="info-label">신분</span><span class="info-val">${sinbun}</span></div>` : ''}
+                        ${sagun ? `<div class="info-row"><span class="info-label">사건개요</span><span class="info-val">${sagun}</span></div>` : ''}
+                        ${pangyul ? `<div class="info-row"><span class="info-label">판결날</span><span class="info-val">${pangyul}</span></div>` : ''}
+                        ${joemyung ? `<div class="info-row"><span class="info-label">죄명</span><span class="info-val">${joemyung}</span></div>` : ''}
+                      </div>
+                    </div>
+                    <div class="sc5-pop-btns">
+                      <a href="${mapLink}" target="_blank" class="sc5-btn map-btn">스마트서울맵</a>
+                      <a href="${historyUrl}" target="_blank" class="sc5-btn history-btn">일제감시대상인물카드</a>
+                    </div>
+                  </div>
+                `;
+
+                // 팝업 내용 업데이트 및 로드 완료 처리
+                marker.setPopupContent(updatedPopupContent);
+                isDetailLoaded = true;
+              }
+            } catch (error) {
+              console.error(`상세 API 호출 실패 (${name}):`, error);
+              marker.setPopupContent(`
+                <div class="sc5-popup-inner">
+                  <h3>${name}</h3>
+                  <div class="sc5-pop-desc"><span class="info-val">상세 정보를 불러올 수 없습니다.</span></div>
+                </div>
+              `);
+            }
+          }
         }
       };
 
