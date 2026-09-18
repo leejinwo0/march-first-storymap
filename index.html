@@ -496,35 +496,40 @@
         <div id="map-s5" class="sc5-map-container"></div>
         <button class="sc5-reset-btn" id="sc5-reset-btn" aria-label="전체 보기"><span class="material-symbols-outlined">전체 보기</span></button>
 
-        <div class="sc5-search-wrapper sc5-reveal">
-          <button class="sc5-search-toggle" id="sc5-search-toggle" aria-label="검색 열기"><span class="material-symbols-outlined">검색</span></button>
-          <div class="sc5-search-panel" id="sc5-search-panel">
-            <input type="text" id="sc5-search-input" class="sc5-search-input" placeholder="인물 이름 검색..." autocomplete="off">
-            <div class="sc5-filter-container">
-              <button class="sc5-filter-btn active" data-filter="all">전체</button>
-              <button class="sc5-filter-btn" data-filter="ㄱ">ㄱ</button>
-              <button class="sc5-filter-btn" data-filter="ㄴ">ㄴ</button>
-              <button class="sc5-filter-btn" data-filter="ㄷ">ㄷ</button>
-              <button class="sc5-filter-btn" data-filter="ㄹ">ㄹ</button>
-              <button class="sc5-filter-btn" data-filter="ㅁ">ㅁ</button>
-              <button class="sc5-filter-btn" data-filter="ㅂ">ㅂ</button>
-              <button class="sc5-filter-btn" data-filter="ㅅ">ㅅ</button>
-              <button class="sc5-filter-btn" data-filter="ㅇ">ㅇ</button>
-              <button class="sc5-filter-btn" data-filter="ㅈ">ㅈ</button>
-              <button class="sc5-filter-btn" data-filter="ㅊ">ㅊ</button>
-              <button class="sc5-filter-btn" data-filter="ㅋ">ㅋ</button>
-              <button class="sc5-filter-btn" data-filter="ㅌ">ㅌ</button>
-              <button class="sc5-filter-btn" data-filter="ㅍ">ㅍ</button>
-              <button class="sc5-filter-btn" data-filter="ㅎ">ㅎ</button>
+        <!-- 💡 검색 버튼과 캐러셀 영역을 하나로 묶었습니다. -->
+        <div class="sc5-carousel-wrapper sc5-reveal">
+
+          <!-- [이동됨] 왼쪽 화살표 버튼 위로 갈 검색 영역 -->
+          <div class="sc5-search-wrapper">
+            <button class="sc5-search-toggle" id="sc5-search-toggle" aria-label="검색 열기"><span class="material-symbols-outlined">검색</span></button>
+            <div class="sc5-search-panel" id="sc5-search-panel">
+              <input type="text" id="sc5-search-input" class="sc5-search-input" placeholder="인물 이름 검색..." autocomplete="off">
+              <div class="sc5-filter-container">
+                <button class="sc5-filter-btn active" data-filter="all">전체</button>
+                <button class="sc5-filter-btn" data-filter="ㄱ">ㄱ</button>
+                <button class="sc5-filter-btn" data-filter="ㄴ">ㄴ</button>
+                <button class="sc5-filter-btn" data-filter="ㄷ">ㄷ</button>
+                <button class="sc5-filter-btn" data-filter="ㄹ">ㄹ</button>
+                <button class="sc5-filter-btn" data-filter="ㅁ">ㅁ</button>
+                <button class="sc5-filter-btn" data-filter="ㅂ">ㅂ</button>
+                <button class="sc5-filter-btn" data-filter="ㅅ">ㅅ</button>
+                <button class="sc5-filter-btn" data-filter="ㅇ">ㅇ</button>
+                <button class="sc5-filter-btn" data-filter="ㅈ">ㅈ</button>
+                <button class="sc5-filter-btn" data-filter="ㅊ">ㅊ</button>
+                <button class="sc5-filter-btn" data-filter="ㅋ">ㅋ</button>
+                <button class="sc5-filter-btn" data-filter="ㅌ">ㅌ</button>
+                <button class="sc5-filter-btn" data-filter="ㅍ">ㅍ</button>
+                <button class="sc5-filter-btn" data-filter="ㅎ">ㅎ</button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="sc5-carousel-wrapper sc5-reveal">
+          <!-- 기존 하단 카드 슬라이드 조작부 -->
           <button class="sc5-nav-btn prev" id="sc5-btn-prev"><span class="material-symbols-outlined">⬅</span></button>
           <div class="sc5-carousel-track no-scrollbar" id="sc5-activist-list"></div>
           <button class="sc5-nav-btn next" id="sc5-btn-next"><span class="material-symbols-outlined">➡</span></button>
         </div>
+
       </div>
     </section>
 
