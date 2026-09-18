@@ -41,7 +41,7 @@
 
         <!-- [모바일 카드 2] 시대적 배경 -->
         <div class="swiper-slide card-slide">
-          <div class="card-content top-content">
+          <div class="card-content">
             <p class="card-chapter">01. 시대의 부름</p>
             <h2 class="card-title-sub">빼앗긴 들에<br>독립의 불씨가 움트다</h2>
             <p class="card-desc">1910년 경술국치 이후, 가혹한 무단통치 속에서도 조국의 빛을 되찾기 위한 열망은 꺼지지 않았습니다. 도쿄에서 들려온 2·8 독립선언의 메아리는 잠들어 있던 민중의 가슴에 뜨거운 불씨를 당겼습니다.</p>
@@ -56,14 +56,11 @@
               <!-- <a href="https://db.history.go.kr/" target="_blank" class="mobile-btn nikh-btn">한국근대사료DB</a> -->
             </div>
           </div>
-
           <div class="card-image bg-history"></div>
         </div>
 
         <!-- [모바일 카드 3] 거사의 맹세 -->
         <div class="swiper-slide card-slide">
-          <div class="card-image bg-map-capture-1"></div>
-
           <div class="card-content">
             <p class="card-chapter">02. 거사의 맹세</p>
             <h2 class="card-title-sub">세상을 깨울 함성을<br>준비하다</h2>
@@ -77,11 +74,16 @@
               <!-- <a href="https://history.seoul.go.kr/" target="_blank" class="mobile-btn history-btn">역사편찬원</a> -->
             </div>
           </div>
+          <div class="mobile-timeline-scroll-area">
+            <div id="mobile-s2-timeline" class="mobile-s2-timeline">
+              <!-- JavaScript를 통해 타임라인 데이터가 삽입됩니다. -->
+            </div>
+          </div>
         </div>
 
         <!-- [모바일 카드 4] 함성의 궤적 -->
         <div class="swiper-slide card-slide">
-          <div class="card-content top-content">
+          <div class="card-content">
             <p class="card-chapter">03. 함성의 궤적</p>
             <h2 class="card-title-sub">두려움을 넘어선 발걸음,<br>거리를 덮다</h2>
             <p class="card-desc">1919년 3월 1일 오후 2시, 탑골공원에 모인 학생과 시민들의 입에서 마침내 억눌렸던 함성이 터져 나왔습니다. 종로를 지나 대한문으로 굽이친 태극기의 물결은 이내 전국 방방곡곡으로 번져갔습니다.</p>
@@ -94,14 +96,11 @@
               <!-- <a href="https://history.seoul.go.kr/" target="_blank" class="mobile-btn history-btn">역사편찬원</a> -->
             </div>
           </div>
-
           <div class="card-image bg-map-capture-2"></div>
         </div>
 
         <!-- [모바일 카드 5] 역사의 현장 -->
         <div class="swiper-slide card-slide">
-          <div class="card-image bg-protest"></div>
-
           <div class="card-content">
             <p class="card-chapter">04. 역사의 현장</p>
             <h2 class="card-title-sub">피와 눈물로 새겨진<br>기억의 공간들</h2>
@@ -116,14 +115,15 @@
               <!-- <a href="https://history.seoul.go.kr/" target="_blank" class="mobile-btn history-btn">역사편찬원</a> -->
             </div>
           </div>
+          <div class="card-image bg-protest"></div>
         </div>
 
-        <!-- [모바일 카드 6] 독립의 별들 -->
+        <!-- [모바일 카드 6] 독립의 별들 (지도 없이 2열 그리드 스크롤) -->
         <div class="swiper-slide card-slide">
-          <div class="card-content top-content">
+          <div class="card-content">
             <p class="card-chapter">05. 독립의 별들</p>
             <h2 class="card-title-sub">어둠을 가르고<br>스스로 빛이 된 사람들</h2>
-            <p class="card-desc">역사에 굵게 새겨진 민족대표 33인뿐만이 아닙니다. 장터를 지키던 상인, 앳된 학생, 이름 없는 노동자까지. 조국을 위해 기꺼이 스스로 불꽃이 된 수많은 무명 열사들을 지도 위로 다시 호명합니다.</p>
+            <p class="card-desc">역사에 굵게 새겨진 민족대표 33인뿐만이 아닙니다. 장터를 지키던 상인, 앳된 학생, 이름 없는 노동자까지. 조국을 위해 기꺼이 스스로 불꽃이 된 수많은 무명 열사들을 호명합니다.</p>
 
             <div class="mobile-card-btns">
               <a href="https://map.seoul.go.kr/smgis2/short/6PTzT" target="_blank" class="mobile-btn map-btn">스마트서울맵</a>
@@ -134,12 +134,15 @@
             </div>
           </div>
 
-          <div class="card-image bg-activists"></div>
+          <!-- 💡 기존 사진 대신: 스크롤 가능한 독립운동가 2열 그리드 영역 -->
+          <div class="mobile-activist-scroll-area">
+            <div id="mobile-activist-grid" class="mobile-activist-grid">
+            </div>
+          </div>
         </div>
 
         <!-- [모바일 카드 7] 남겨진 유산 (푸터 분리) -->
         <div class="swiper-slide card-slide">
-          <div class="card-image bg-legacy"></div>
           <div class="card-content legacy-content">
             <p class="card-chapter">06. 남겨진 유산</p>
             <h2 class="card-title-sub">끝이 아닌,<br>거대한 역사의 시작</h2>
@@ -153,7 +156,7 @@
               <!-- <a href="https://history.seoul.go.kr/" target="_blank" class="mobile-btn history-btn">역사편찬원</a> -->
             </div>
           </div>
-
+          <div class="card-image bg-legacy"></div>
         </div>
 
         <!-- [모바일 카드 8] 푸터 - 이미지 없이 텍스트만 -->

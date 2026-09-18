@@ -11,6 +11,10 @@ import { initSection4 } from './sections/section4.js';
 import { initSection5 } from './sections/section5.js';
 import { initSection6 } from './sections/section6.js';
 
+// 💡 새롭게 추가한 모바일 전용 모듈 가져오기
+import { initMobileSection2 } from './mobiles/mobile_section2.js';
+import { initMobileSection5 } from './mobiles/mobile_section5.js';
+
 /* =======================================================
    🖼️ [전역 이미지 모달 기능 설정] (모든 섹션 공통)
 ======================================================= */
@@ -79,6 +83,9 @@ async function initApp() {
       },
       grabCursor: true, // 마우스로 잡고 끄는 커서 모양 활성화
     });
+
+    initMobileSection2();
+    initMobileSection5();
 
     // 모바일에서는 무거운 PC용 지도 로직을 실행하지 않고 여기서 끝냅니다.
     return;
