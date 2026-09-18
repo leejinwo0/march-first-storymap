@@ -6,14 +6,14 @@ export async function initSection2() {
   if (!mapContainer) return;
 
   const defaultCenter = [37.5759, 126.9850];
-  const defaultZoom = 9; // 👈 전체 화면 줌 레벨 (기존 10 -> 9로 축소)
 
+  // 💡 초기 줌 레벨을 일반지도에 맞게 10으로 설정합니다.
   const mapS2 = L.map('map-s2', {
     zoomControl: false,
     scrollWheelZoom: false,
     closePopupOnClick: false,
     crs: getCrsEx()
-  }).setView(defaultCenter, defaultZoom);
+  }).setView(defaultCenter, 10);
 
   const baseMapS2 = new L.TileLayer.DAWULGIS_EX(MAP_ENDPOINTS.seoulBaseMap_kor, { minZoom: 1, maxZoom: 15 });
 
@@ -27,6 +27,20 @@ export async function initSection2() {
 
   baseMapS2.addTo(mapS2);
   addMapToggleControl(mapS2, baseMapS2, gyeongseongMapS2, '경성대지도');
+
+  // 💡 지도 전환 버튼을 누를 때마다 줌 레벨을 자동으로 +1, -1 보정해주는 핵심 로직
+  mapS2.on('layeradd', (e) => {
+    if (e.layer === gyeongseongMapS2) {
+      mapS2.setZoom(mapS2.getZoom(), { animate: false });
+    }
+    if (e.layer === baseMapS2) {
+      mapS2.setZoom(mapS2.getZoom() + 1, { animate: false });
+    }
+  });
+
+  // 💡 현재 켜진 지도에 따라 타겟 줌 레벨을 동적으로 반환하는 함수
+  const getDefaultZoom = () => mapS2.hasLayer(gyeongseongMapS2) ? 9 : 10;
+  const getTargetZoom = () => mapS2.hasLayer(gyeongseongMapS2) ? 11 : 12;
 
   const resizeObserverS2 = new ResizeObserver(() => mapS2.invalidateSize());
   resizeObserverS2.observe(mapContainer);
@@ -197,15 +211,16 @@ export async function initSection2() {
         setTimeout(() => { marker.openPopup(); }, 10);
 
         let targetZoom;
-        if (mapS2.getZoom() > defaultZoom && currentCardId === loc.id) {
-          targetZoom = defaultZoom;
+        // 💡 동적 줌 레벨 적용
+        if (mapS2.getZoom() > getDefaultZoom() && currentCardId === loc.id) {
+          targetZoom = getDefaultZoom();
         } else {
-          targetZoom = 11; // 👈 클릭 시 줌인 레벨 (기존 13 -> 11로 축소)
+          targetZoom = getTargetZoom();
         }
 
         const targetPoint = mapS2.project(loc.pos, targetZoom);
-        targetPoint.x -= (window.innerWidth <= 768 ? 0 : 350);
-        // 👇 버그 수정된 부분 (targetZoom 파라미터가 가운데 추가되었습니다)
+        targetPoint.x -= (window.innerWidth <= 768 ? 0 : 500);
+
         mapS2.setView(mapS2.unproject(targetPoint, targetZoom), targetZoom, { animate: true, duration: 0.8 });
 
         setTimeout(() => { isMarkerClicked = false; }, 900);
@@ -250,7 +265,9 @@ export async function initSection2() {
             mapS2.invalidateSize();
             const currentZoom = mapS2.getZoom();
             const targetPoint = mapS2.project(activeLoc.pos, currentZoom);
-            targetPoint.x -= (window.innerWidth <= 768 ? 0 : 350);
+
+            targetPoint.x -= (window.innerWidth <= 768 ? 0 : 500);
+
             mapS2.panTo(mapS2.unproject(targetPoint, currentZoom), { animate: true, duration: 0.8 });
           }
         }
@@ -262,6 +279,15 @@ export async function initSection2() {
     if (targetIds.length > 0) {
       const firstId = targetIds[0];
       updateCardContent(firstId);
+
+      const firstLoc = locationsS2.find(l => l.id === firstId);
+      if (firstLoc) {
+        const currentZoom = mapS2.getZoom();
+        const targetPoint = mapS2.project(firstLoc.pos, currentZoom);
+
+        targetPoint.x -= (window.innerWidth <= 768 ? 0 : 500);
+        mapS2.setView(mapS2.unproject(targetPoint, currentZoom), currentZoom, { animate: false });
+      }
 
       setTimeout(() => {
         if (markers[firstId]) {

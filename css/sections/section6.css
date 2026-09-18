@@ -76,9 +76,9 @@
 }
 
 .sc6-quote-box {
-  position: relative;
+position: relative;
   width: 100%;
-  max-width: 900px;
+  max-width: 1050px;
   padding: 3.5rem 2rem;
   border: 1px solid rgba(var(--white-rgb), 0.4);
   border-radius: 8px;
@@ -102,13 +102,14 @@
 }
 
 .sc6-quote-main {
-  font-family: 'Noto Serif KR', serif;
-  font-size: 1.35rem;
+font-family: 'Noto Serif KR', serif;
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--white);
   line-height: 1.6;
   margin-bottom: 1.5rem;
   word-break: keep-all;
+  white-space: nowrap;
   position: relative;
   z-index: 2;
 }
@@ -149,7 +150,6 @@
   width: 100%;
   height: 100%;
   background: rgba(var(--black-rgb), 0.8);
-  /* 뒷배경 어둡게 */
   backdrop-filter: blur(8px);
   z-index: 9999;
   display: flex;
@@ -171,11 +171,9 @@
   border-radius: 12px;
   width: 90%;
   max-width: 600px;
-  /* 큰 팝업창 사이즈 */
   padding: 3rem;
   position: relative;
   transform: translateY(30px) scale(0.95);
-  /* 아래에서 살짝 커지며 등장 */
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   box-shadow: 0 20px 50px rgba(var(--black-rgb), 0.8);
   text-align: center;
@@ -221,7 +219,6 @@
   font-size: 1.8rem;
   font-weight: 700;
   color: var(--white);
-  /* 제목 강조 */
   margin-bottom: 0.5rem;
 }
 
@@ -238,5 +235,85 @@
   line-height: 1.8;
   word-break: keep-all;
   text-align: left;
-  /* 본문은 읽기 편하게 좌측 정렬 */
+}
+
+/* =======================================================
+   Section 6 추가 스타일 (안내 문구, 심플 카드, 팝업 링크)
+======================================================= */
+
+/* 카드 위 안내 문구 */
+.sc6-instruction {
+  text-align: center;
+  color: rgba(var(--gold-rgb), 0.9);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  letter-spacing: -0.5px;
+}
+
+/* 카드 내 '클릭하여 자세히 보기' 텍스트 */
+.sc6-click-hint {
+  color: rgba(var(--cream-rgb), 0.4);
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.sc6-card:hover .sc6-click-hint {
+  color: var(--white);
+}
+
+/* 팝업창 내부 백과사전 링크 버튼 */
+.sc6-modal-link {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.8rem 1.5rem;
+  border: 1px solid rgba(var(--white-rgb), 0.3);
+  border-radius: 4px;
+  background: rgba(var(--white-rgb), 0.05);
+  color: rgba(var(--white-rgb), 0.9);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.sc6-modal-link:hover {
+  background: rgba(var(--white-rgb), 0.15);
+  border-color: rgba(var(--white-rgb), 0.8);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+.sc6-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* 카드 위에 덮일 어두운 반투명 배경 (기본 상태: 숨김) */
+.sc6-card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  /* 사진처럼 어두운 딤(Dim) 처리 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+/* 오버레이 안의 텍스트 스타일 */
+.sc6-card-overlay span {
+  color: var(--white);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+}
+
+/* 카드에 마우스를 올렸을 때 나타나는 애니메이션 */
+.sc6-card:hover .sc6-card-overlay {
+  opacity: 1;
 }
