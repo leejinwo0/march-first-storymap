@@ -1,4 +1,3 @@
-// js/mobiles/mobile_section5.js
 import { fetchDailyLifeData, MAP_ENDPOINTS } from '../../api/mapService.js';
 
 export async function initMobileSection5() {
@@ -50,7 +49,6 @@ export async function initMobileSection5() {
       if (imgUrl.startsWith("http://")) {
         imgUrl = "https://images.weserv.nl/?url=" + encodeURIComponent(imgUrl);
       }
-      const defaultImg = '../assets/images/default_profile.png';
 
       let historyUrl = props.COT_EXTRA_DATA_02 || props.EXTRA_DATA_02 || "";
       if (!historyUrl || !historyUrl.startsWith("http")) {
@@ -62,9 +60,9 @@ export async function initMobileSection5() {
       const card = document.createElement('div');
       card.className = 'mobile-activist-card';
 
-      // 💡 주소를 없애고 사진과 이름만 렌더링
+      // 💡 주소를 없애고 사진과 이름만 렌더링 (이미지가 없을 경우 아예 숨김 처리)
       card.innerHTML = `
-        <img src="${imgUrl}" alt="${name} 사진" class="mobile-activist-img" onerror="this.src='${defaultImg}'">
+        <img src="${imgUrl}" alt="${name} 사진" class="mobile-activist-img" onerror="this.style.display='none';">
         <div class="mobile-activist-name">${name}</div>
       `;
 
@@ -73,7 +71,7 @@ export async function initMobileSection5() {
         // 로딩 상태 표시 후 모달 열기
         modalBody.innerHTML = `
           <div class="mobile-modal-loading">
-            <img src="${imgUrl}" onerror="this.src='${defaultImg}'" class="mobile-modal-img">
+            <img src="${imgUrl}" onerror="this.style.display='none';" class="mobile-modal-img">
             <h3>${name}</h3>
             <p style="color:#888; margin-top:20px;">상세 정보를 불러오는 중입니다...</p>
           </div>
@@ -114,7 +112,7 @@ export async function initMobileSection5() {
             // 💡 팝업 내용 업데이트 (사진 + 상세 정보)
             modalBody.innerHTML = `
               <div class="mobile-modal-header">
-                <img src="${imgUrl}" onerror="this.src='${defaultImg}'" class="mobile-modal-img">
+                <img src="${imgUrl}" onerror="this.style.display='none';" class="mobile-modal-img">
                 <h3 class="mobile-modal-title">${name}</h3>
               </div>
               <div class="mobile-modal-info">
@@ -131,7 +129,7 @@ export async function initMobileSection5() {
           console.error(`상세 API 호출 실패 (${name}):`, error);
           modalBody.innerHTML = `
             <div class="mobile-modal-header">
-              <img src="${imgUrl}" onerror="this.src='${defaultImg}'" class="mobile-modal-img">
+              <img src="${imgUrl}" onerror="this.style.display='none';" class="mobile-modal-img">
               <h3 class="mobile-modal-title">${name}</h3>
             </div>
             <p style="color:#a83228; text-align:center; margin-top:20px;">정보를 불러올 수 없습니다.</p>

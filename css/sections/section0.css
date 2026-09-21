@@ -172,7 +172,8 @@
   left: 10%;
   transform: translateY(-50%) rotate(-8deg);
   /* 사진처럼 중앙 기준 살짝 왼쪽, 비스듬하게 회전 */
-  width: 350px;
+  width: 450px;
+  height: 250px;
   /* 원하시는 크기에 맞게 조절하세요 */
   opacity: 0.15;
   /* 은은하게 깔리도록 투명도 조절 */
@@ -201,7 +202,8 @@
   /* 화면 오른쪽 기준으로 배치 */
   transform: translateY(-50%) rotate(6deg);
   /* 왼쪽 문서와 반대 방향으로 살짝 회전 */
-  width: 350px;
+  width: 450px;
+  height: 250px;
   /* 사진 비율에 맞게 크기 조절 가능 */
   opacity: 0.12;
   /* 태극기 특성상 대비가 강할 수 있어 투명도를 살짝 더 낮춤 */
