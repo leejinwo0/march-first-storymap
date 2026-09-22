@@ -148,7 +148,9 @@ export async function initSection2() {
 
       cardContent.classList.add('fade-out');
       setTimeout(() => {
-        const imageHTML = item.imgUrl ? `<img src="${item.imgUrl}" alt="${item.title}" class="sc2-item-img">` : "";
+        // 💡 수정된 부분: 이미지 로드 실패 시 최대 3번까지 재시도 후 숨김 처리
+        const imageHTML = item.imgUrl ? `<img src="${item.imgUrl}" alt="${item.title}" class="sc2-item-img" data-retry="0" onerror="let r = parseInt(this.dataset.retry); if(r < 3) { this.dataset.retry = r + 1; setTimeout(() => { this.src = this.src.split('&retry')[0] + '&retry=' + r; }, 1000); } else { this.style.display = 'none'; }">` : "";
+
         const mapLink = `https://map.seoul.go.kr/smgis2/poiViewMap?ti=11100550&pi=${item.poiId}&lang=ko`;
         const sajeokLink = `http://sajeok.i815.or.kr/i815/search_list?keyword=${encodeURIComponent(item.title)}`;
 
