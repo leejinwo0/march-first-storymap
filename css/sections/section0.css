@@ -144,7 +144,6 @@
 }
 
 .sc0-hero-desc {
-  max-width: 34em;
   margin: var(--space-8) auto 0;
   color: rgba(var(--cream-rgb), 0.75);
   font-size: clamp(0.95rem, 1.7vw, 1.08rem);

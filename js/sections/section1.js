@@ -42,9 +42,8 @@ export function initSection1() {
 
     const map = L.map(config.id, {
       center: config.center, zoom: config.zoom, zoomControl: false, scrollWheelZoom: false,
-      attributionControl: false, crs: config.region === 'seoul' ? getCrsEx() : L.CRS.EPSG3857
+      attributionControl: config.region !== 'seoul', crs: config.region === 'seoul' ? getCrsEx() : L.CRS.EPSG3857
     });
-
     let baseMapLayer, secondaryMapLayer;
 
     if (config.region === 'seoul') {
@@ -59,8 +58,10 @@ export function initSection1() {
         attribution: '경성대지도'
       });
     } else {
-      // 글로벌 지역은 기존 방식 유지
-      baseMapLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 });
+      baseMapLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>'
+      });
       secondaryMapLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19 });
     }
 

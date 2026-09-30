@@ -163,14 +163,13 @@
 }
 
 .sc6-quote-main {
-  max-width: 44em;
   margin: 0 auto var(--space-6);
   color: var(--text-primary);
   font-family: var(--font-serif);
-  font-size: var(--fs-xl);
+  font-size: clamp(1rem, 1.35vw, 1.3rem);
   font-weight: 700;
   line-height: 1.6;
-  text-wrap: balance;
+  white-space: nowrap;
 }
 
 .sc6-quote-sub {

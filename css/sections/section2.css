@@ -113,7 +113,7 @@
 /* 카드용 텍스트 크기 (팝업 공통 클래스 재정의) */
 .sc2-fixed-card .sc2-card-title {
   margin-bottom: var(--space-4);
-  font-size: var(--fs-2xl);
+  font-size: 1.5rem;
   line-height: 1.4;
   white-space: normal;
 }

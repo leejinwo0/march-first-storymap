@@ -101,14 +101,6 @@
   min-height: var(--viewport-h);
 }
 
-.sc1-split-layout.reverse .sc1-split-text {
-  order: 2;
-}
-
-.sc1-split-layout.reverse .sc1-split-visual {
-  order: 1;
-}
-
 .sc1-split-text {
   position: relative;
   display: flex;
@@ -130,6 +122,19 @@
   inset: 0;
   background: var(--bg-base);
   filter: grayscale(100%) brightness(0.95);
+}
+
+.sc1-map-container .leaflet-control-attribution {
+  display: block !important;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-xs) 0 0 0;
+  background: rgba(var(--ink-rgb), 0.7);
+  color: var(--text-secondary);
+  font-size: var(--fs-2xs);
+}
+
+.sc1-map-container .leaflet-control-attribution a {
+  color: var(--cream);
 }
 
 /* ---------- 텍스트 ---------- */
@@ -171,7 +176,6 @@
 }
 
 .sc1-desc-text {
-  max-width: 38em;
   color: var(--text-body);
   line-height: 1.85;
 }
