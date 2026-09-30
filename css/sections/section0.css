@@ -7,10 +7,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: var(--viewport-h);
   text-align: center;
-  background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(var(--red-rgb), 0.08), transparent 70%), linear-gradient(180deg, var(--ink) 0%, var(--charcoal) 60%, var(--ink) 100%);
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(var(--red-rgb), 0.1), transparent 70%),
+    linear-gradient(180deg, var(--ink) 0%, var(--charcoal) 60%, var(--ink) 100%);
   overflow: hidden;
+  isolation: isolate;
 }
 
 .sc0-hero-texture,
@@ -55,11 +58,57 @@
   opacity: 0.45;
 }
 
+/* 배경 사료 이미지 (기미독립선언서 / 진관사 태극기) */
+.intro-bg-doc,
+.intro-bg-flag {
+  position: absolute;
+  top: 50%;
+  z-index: 0;
+  width: clamp(280px, 30vw, 450px);
+  aspect-ratio: 9 / 5;
+  object-fit: cover;
+  border-radius: var(--radius-xs);
+  pointer-events: none;
+  filter: sepia(0.3) saturate(0.8);
+}
+
+.intro-bg-doc {
+  left: 8%;
+  transform: translateY(-50%) rotate(-8deg);
+  opacity: 0.15;
+}
+
+.intro-bg-flag {
+  right: 8%;
+  transform: translateY(-50%) rotate(6deg);
+  opacity: 0.12;
+}
+
+/* 이미지 출처 표기 */
+.intro-source-text,
+.intro-source-text-right {
+  position: absolute;
+  bottom: var(--space-8);
+  z-index: var(--z-content);
+  color: rgba(var(--white-rgb), 0.4);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.02em;
+  pointer-events: none;
+}
+
+.intro-source-text {
+  left: var(--space-10);
+}
+
+.intro-source-text-right {
+  right: var(--space-10);
+}
+
 .sc0-hero-content {
   position: relative;
   z-index: 2;
   width: min(92vw, 900px);
-  padding: 0 1.5rem;
+  padding: 0 var(--space-6);
 }
 
 .sc0-hero-date,
@@ -67,23 +116,24 @@
 .sc0-hero-desc,
 .sc0-scroll-cue {
   opacity: 0;
-  animation: fade-up 1s forwards;
+  animation: fade-up 1s var(--ease-out) forwards;
 }
 
 .sc0-hero-date {
-  margin-bottom: 1.25rem;
+  margin-bottom: var(--space-5);
   color: var(--gold);
-  font-family: "Playfair Display", serif;
+  font-family: var(--font-display);
   font-size: clamp(0.9rem, 2vw, 1.15rem);
   letter-spacing: 0.28em;
   animation-delay: 0.3s;
 }
 
 .sc0-hero-title {
-  font-family: "Noto Serif KR", serif;
+  font-family: var(--font-serif);
   font-size: clamp(4rem, 14vw, 10rem);
   font-weight: 900;
   line-height: 0.92;
+  letter-spacing: -0.03em;
   animation-delay: 0.5s;
 }
 
@@ -94,37 +144,44 @@
 }
 
 .sc0-hero-desc {
-  margin: 2rem auto 0;
-  color: rgba(var(--cream-rgb), 0.72);
-  font-size: clamp(0.92rem, 1.7vw, 1.05rem);
+  max-width: 34em;
+  margin: var(--space-8) auto 0;
+  color: rgba(var(--cream-rgb), 0.75);
+  font-size: clamp(0.95rem, 1.7vw, 1.08rem);
   line-height: 1.9;
   animation-delay: 0.9s;
 }
 
 .sc0-scroll-cue {
   position: absolute;
-  bottom: 2rem;
+  bottom: var(--space-8);
+  left: 50%;
   z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.65rem;
-  background: transparent;
-  border: none;
-  color: var(--muted);
-  font-size: 0.68rem;
+  gap: var(--space-3);
+  padding: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--fs-2xs);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  cursor: pointer;
-  transform: translateX(-50%);
+  text-decoration: none;
+  translate: -50% 0;
   animation-delay: 1.5s;
+  transition: color var(--dur-base) ease;
+}
+
+.sc0-scroll-cue:hover {
+  color: var(--cream);
 }
 
 .sc0-scroll-cue::after {
   content: "";
   width: 1px;
   height: 40px;
-  background: linear-gradient(var(--muted), transparent);
+  background: linear-gradient(currentColor, transparent);
+  transform-origin: top;
   animation: cue-pulse 1.8s ease-in-out infinite;
 }
 
@@ -151,62 +208,4 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-/* 좌측 하단 출처 텍스트 스타일 */
-.intro-source-text {
-  position: absolute;
-  bottom: 2.5rem;
-  left: 2.5rem;
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.4);
-  letter-spacing: 0.5px;
-  z-index: 10;
-  pointer-events: none;
-}
-
-/* 좌측 배경 기미독립선언서 이미지 스타일 */
-.intro-bg-doc {
-  position: absolute;
-  top: 50%;
-  left: 10%;
-  transform: translateY(-50%) rotate(-8deg);
-  /* 사진처럼 중앙 기준 살짝 왼쪽, 비스듬하게 회전 */
-  width: 450px;
-  height: 250px;
-  /* 원하시는 크기에 맞게 조절하세요 */
-  opacity: 0.15;
-  /* 은은하게 깔리도록 투명도 조절 */
-  z-index: 1;
-  /* 메인 텍스트보다 뒤로 가도록 설정 */
-  pointer-events: none;
-}
-
-/* 우측 상단 출처 텍스트 스타일 */
-.intro-source-text-right {
-  position: absolute;
-  bottom: 2rem;
-  right: 2.5rem;
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.4);
-  letter-spacing: 0.5px;
-  z-index: 10;
-  pointer-events: none;
-}
-
-/* 우측 배경 진관사 태극기 이미지 스타일 */
-.intro-bg-flag {
-  position: absolute;
-  top: 50%;
-  right: 10%;
-  /* 화면 오른쪽 기준으로 배치 */
-  transform: translateY(-50%) rotate(6deg);
-  /* 왼쪽 문서와 반대 방향으로 살짝 회전 */
-  width: 450px;
-  height: 250px;
-  /* 사진 비율에 맞게 크기 조절 가능 */
-  opacity: 0.12;
-  /* 태극기 특성상 대비가 강할 수 있어 투명도를 살짝 더 낮춤 */
-  z-index: 1;
-  pointer-events: none;
 }

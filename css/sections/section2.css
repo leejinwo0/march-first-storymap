@@ -1,21 +1,23 @@
 /* =======================================================
-   Section 2: 거사의 맹세 (타임라인)
+   Section 2: 거사의 맹세 (스크롤 타임라인)
+   - 공통 요소(글래스 카드, 스텝 버튼, 팝업, 링크 버튼)는 global.css
 ======================================================= */
+
+/* ---------- 레이아웃 (지도 + 카드 겹침) ---------- */
 .sc2-content-wrap {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr;
-  position: relative;
 }
 
 .sc2-map-pane {
-  grid-column: 1;
-  grid-row: 1;
-  width: 100%;
-  height: 100vh;
   position: sticky;
   top: 0;
-  background-color: var(--ink);
   z-index: 1;
+  grid-area: 1 / 1;
+  width: 100%;
+  height: var(--viewport-h);
+  background-color: var(--bg-base);
   overflow: hidden;
 }
 
@@ -24,23 +26,18 @@
   height: 100%;
 }
 
-#map-s2 .leaflet-tile-pane {
-  filter: grayscale(100%) brightness(0.95);
-}
-
 .sc2-map-shadow {
   position: absolute;
   inset: 0;
+  z-index: 2;
   pointer-events: none;
   box-shadow: inset 0 0 150px rgba(var(--black-rgb), 0.9);
-  z-index: 2;
 }
 
 .sc2-timeline-pane {
-  grid-column: 1;
-  grid-row: 1;
   position: relative;
-  z-index: 10;
+  z-index: var(--z-content);
+  grid-area: 1 / 1;
   width: 100%;
   pointer-events: none;
 }
@@ -48,288 +45,177 @@
 .sc2-sticky-card-container {
   position: sticky;
   top: 0;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  padding-left: 8%;
-  gap: 1.5rem;
   z-index: 11;
-}
-
-.sc2-side-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  pointer-events: auto;
-}
-
-.sc2-nav-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 8px;
-  background-color: rgba(var(--charcoal-rgb), 0.7);
-  border: 1px solid rgba(var(--white-rgb), 0.15);
-  color: rgba(var(--white-rgb), 0.5);
-  font-family: 'Playfair Display', serif;
-  font-size: 1.1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  justify-content: center;
-}
-
-.sc2-nav-btn:hover {
-  background-color: rgba(var(--red-rgb), 0.4);
-  color: var(--white);
-}
-
-.sc2-nav-btn.active {
-  background-color: var(--red);
-  color: var(--white);
-  border-color: var(--red);
-  transform: translateX(10px);
-  box-shadow: 0 4px 10px rgba(var(--black-rgb), 0.5);
-}
-
-/* --- 왼쪽 고정 상자(카드) 스타일 --- */
-.sc2-fixed-card {
-  pointer-events: auto;
-  background-color: rgba(var(--charcoal-rgb), 0.85);
-  backdrop-filter: blur(8px);
-  padding: 2.5rem;
-  border-radius: 1rem;
-  border: 1px solid rgba(var(--white-rgb), 0.1);
+  gap: var(--space-6);
   width: 100%;
-  max-width: 600px;
-  box-shadow: 0 20px 40px rgba(var(--black-rgb), 0.8);
-  min-height: 550px;
+  height: var(--viewport-h);
+  padding-left: 8%;
+}
+
+.sc2-scroll-track {
+  position: relative;
+  z-index: var(--z-content);
+  padding: 30vh 0 70vh;
+}
+
+.sc2-scroll-step {
+  width: 100%;
+  height: 80vh;
+}
+
+/* ---------- 좌측 고정 카드 ---------- */
+.sc2-fixed-card {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  width: 100%;
+  max-width: 560px;
+  min-height: 520px;
   max-height: 85vh;
+  padding: var(--space-8);
+  border-radius: var(--radius-lg);
   overflow-y: auto;
-}
-
-/* 왼쪽 상자 커스텀 스크롤바 */
-.sc2-fixed-card::-webkit-scrollbar {
-  width: 6px;
-}
-
-.sc2-fixed-card::-webkit-scrollbar-thumb {
-  background: rgba(var(--white-rgb), 0.3);
-  border-radius: 3px;
+  pointer-events: auto;
 }
 
 #sc2-card-content {
-  transition: opacity 0.3s ease-in-out;
-  opacity: 1;
   display: flex;
   flex-direction: column;
   height: 100%;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
 }
 
 #sc2-card-content.fade-out {
   opacity: 0;
 }
 
-.sc2-scroll-track {
-  position: relative;
-  z-index: 10;
-  padding: 30vh 0 70vh 0;
-}
-
-.sc2-scroll-step {
-  height: 80vh;
-  width: 100%;
-}
-
 .sc2-item-img {
-  width: auto;
-  height: 100%;
-  max-height: 180px;
-  object-fit: cover;
-  border-radius: 0.5rem;
   display: block;
-  margin: 0 auto 1.2rem auto;
-  border: 1px solid rgba(var(--white-rgb), 0.1);
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 200px;
+  margin: 0 auto var(--space-5);
+  object-fit: contain;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: zoom-in;
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) ease;
 }
 
 .sc2-item-img:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 12px rgba(var(--black-rgb), 0.6);
+  transform: scale(1.015);
+  box-shadow: var(--shadow-md);
 }
 
-/* --- 기존 팝업 디자인을 왼쪽 카드에 적용 --- */
-.sc2-card-title {
-  font-size: 1.5rem !important;
-  white-space: normal !important;
-  word-break: keep-all;
+/* 카드용 텍스트 크기 (팝업 공통 클래스 재정의) */
+.sc2-fixed-card .sc2-card-title {
+  margin-bottom: var(--space-4);
+  font-size: var(--fs-2xl);
   line-height: 1.4;
-  margin-bottom: 1rem !important;
+  white-space: normal;
 }
 
-.sc2-card-info {
-  font-size: 0.85rem !important;
-  margin-bottom: 1rem !important;
+.sc2-fixed-card .sc2-card-info {
+  margin-bottom: var(--space-4);
+  font-size: var(--fs-sm);
 }
 
-.sc2-card-desc {
-  font-size: 0.95rem !important;
-  margin-bottom: 1.5rem !important;
-  height: auto;
-  overflow-y: visible;
+.sc2-fixed-card .sc2-card-desc {
+  margin-bottom: var(--space-6);
+  font-size: var(--fs-md);
+  line-height: 1.75;
 }
 
 .sc2-card-btns {
   margin-top: auto;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(var(--white-rgb), 0.1);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-subtle);
 }
 
-/* --- 오른쪽 지도 미니 팝업 --- */
-.sc2-leaflet-popup .leaflet-popup-content-wrapper {
-  background: rgba(var(--charcoal-rgb), 0.95);
-  border: 1px solid rgba(var(--white-rgb), 0.2);
-  border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(var(--black-rgb), 0.8);
-  color: var(--white);
-  padding: 0;
-  backdrop-filter: blur(4px);
-}
-
-.sc2-leaflet-popup .leaflet-popup-tip {
-  background: rgba(var(--charcoal-rgb), 0.95);
-}
-
-.sc2-leaflet-popup .leaflet-popup-content {
-  width: auto !important;
-  margin: 0;
-}
-
-.sc2-popup-inner {
-  padding: 1.2rem;
-  width: 420px;
-  box-sizing: border-box;
-}
-
-.sc2-popup-mini {
-  width: max-content;
-  padding: 0.8rem 1.5rem;
-  text-align: center;
-}
-
-.sc2-popup-mini .sc2-pop-title {
-  color: #ffffff !important;
-}
-
-/* 공통 텍스트 스타일 */
+/* ---------- 텍스트 (카드·팝업 공통) ---------- */
 .sc2-pop-title {
-  font-family: 'Noto Serif KR', serif;
-  font-size: 1.2rem;
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-default);
   color: var(--gold);
-  margin-bottom: 0.6rem;
-  border-bottom: 1px solid rgba(var(--white-rgb), 0.2);
-  padding-bottom: 0.5rem;
+  font-family: var(--font-serif);
+  font-size: var(--fs-lg);
   white-space: nowrap;
 }
 
 .sc2-pop-info {
-  font-size: 0.75rem;
-  color: var(--gray-mid);
-  margin-bottom: 0.8rem;
+  display: grid;
+  gap: var(--space-1);
+  margin-bottom: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+  font-size: var(--fs-xs);
   line-height: 1.5;
 }
 
-.sc2-pop-info p {
-  margin-bottom: 0.2rem;
-}
-
 .sc2-pop-info strong {
-  color: var(--white);
-  margin-right: 4px;
+  margin-right: var(--space-1);
+  color: var(--gold);
+  font-weight: 600;
 }
 
 .sc2-pop-desc {
-  font-size: 0.85rem;
-  color: rgba(var(--cream-rgb), 0.8);
-  line-height: 1.6;
   display: block;
-  height: auto;
+  color: var(--text-body);
+  font-size: var(--fs-sm);
+  line-height: 1.65;
   white-space: normal;
 }
 
-.sc2-pop-btns {
-  display: flex;
-  gap: 0.5rem;
+/* ---------- 지도 미니 팝업 ---------- */
+.sc2-popup-inner {
+  width: 420px;
+  padding: var(--space-5);
 }
 
-.sc2-btn {
-  flex: 1;
+.sc2-popup-mini {
+  width: max-content;
+  padding: var(--space-3) var(--space-6);
   text-align: center;
-  border-radius: 4px;
-  font-weight: bold;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  padding: 0.6rem 0.4rem;
-  font-size: 0.75rem;
-  letter-spacing: -0.05em;
 }
 
-.sc2-btn.history-btn {
-  border: 1px solid var(--gold);
-  color: var(--gold);
-}
-
-.sc2-btn.history-btn:hover {
-  background-color: var(--gold);
-  color: var(--black);
-}
-
-.sc2-btn.map-btn {
-  border: 1px solid var(--red);
-  color: var(--red);
-}
-
-.sc2-btn.map-btn:hover {
-  background-color: var(--red);
-  color: var(--white);
-}
-
-/* --- 마커 디자인 --- */
+/* ---------- 번호 마커 ---------- */
 .sc2-marker-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: all 0.7s;
+  transition: transform 0.7s var(--ease-out), opacity 0.7s ease;
 }
 
 .sc2-marker-circle {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 9999px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  font-size: 0.875rem;
-  transition: all 0.3s ease;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  transition: background-color var(--dur-base) ease, color var(--dur-base) ease, transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) ease;
 }
 
 .sc2-marker-dimmed .sc2-marker-circle {
-  background-color: rgba(var(--black-rgb), 0.3);
-  color: rgba(var(--white-rgb), 0.5);
+  border: 1px solid rgba(var(--white-rgb), 0.25);
+  background-color: rgba(var(--black-rgb), 0.45);
+  color: rgba(var(--white-rgb), 0.6);
   box-shadow: none;
 }
 
 .sc2-marker-active .sc2-marker-circle {
+  border: 2px solid var(--white);
   background-color: var(--red);
   color: var(--white);
-  box-shadow: 0 0 15px rgba(var(--red-rgb), 0.8);
-  transform: scale(1.5);
+  box-shadow: 0 0 0 6px rgba(var(--red-rgb), 0.25), 0 0 18px var(--accent-glow);
+  transform: scale(1.4);
 }

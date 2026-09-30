@@ -1,79 +1,109 @@
 /* =======================================================
-   Section 5: 독립의 별들 (지도 및 하단 인물 캐러셀)
+   Section 5: 독립의 별들 (지도 + 하단 인물 캐러셀)
+   - 공통 요소(글래스 패널, 컨트롤 버튼, 팝업, 링크 버튼)는 global.css
 ======================================================= */
+
+/* ---------- 지도 ---------- */
 .sc5-map-view {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: var(--viewport-h);
   overflow: hidden;
 }
 
 .sc5-map-container {
   position: absolute;
   inset: 0;
-  background-color: var(--gray-light);
+  background-color: var(--bg-base);
 }
 
-#map-s5 .leaflet-tile-pane {
-  filter: grayscale(100%) brightness(0.95);
-  transition: filter 0.3s ease;
-}
-
+/* ---------- 하단 캐러셀 ---------- */
 .sc5-carousel-wrapper {
   position: absolute;
-  bottom: 2rem;
-  left: 1%;
-  transform: translateX(-50%);
-  width: 95%;
-  max-width: 100%;
-  z-index: 1000;
+  bottom: var(--space-8);
+  left: 50%;
+  z-index: var(--z-map-ui);
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: var(--space-3);
+  width: calc(100% - 12rem);
+  /* 우측 dot 내비·TOP 버튼 영역 확보 */
+  translate: -50% 0;
 }
 
 .sc5-carousel-track {
   flex: 1;
   display: flex;
-  justify-content: flex-start;
-  gap: 1.5rem;
+  gap: var(--space-5);
+  padding: var(--space-6) var(--space-2);
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding: 1.5rem 0.5rem;
-  -ms-overflow-style: none;
+  scroll-snap-type: x proximity;
   scrollbar-width: none;
+  /* 좌우 끝 페이드 */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
 }
 
 .sc5-carousel-track::-webkit-scrollbar {
   display: none;
 }
 
+.sc5-nav-btn {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: var(--control-h);
+  height: var(--control-h);
+  border: 1px solid var(--border-default);
+  border-radius: 50%;
+  background: var(--surface-glass-strong);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  color: var(--white);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: background-color var(--dur-base) ease, border-color var(--dur-base) ease;
+}
+
+.sc5-nav-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.sc5-nav-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ---------- 인물 카드 (JS 생성) ---------- */
 .sc5-card {
   flex: 0 0 128px;
-  background: var(--dark-brown);
-  border: 1px solid rgba(var(--white-rgb), 0.1);
-  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-md);
   overflow: hidden;
+  scroll-snap-align: start;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 10px 20px rgba(var(--black-rgb), 0.3);
+  transition: transform var(--dur-base) var(--ease-out), border-color var(--dur-base) ease, box-shadow var(--dur-base) ease;
 }
 
 .sc5-card:hover,
 .sc5-card.active {
-  transform: translateY(-12px);
   border-color: var(--red);
-  box-shadow: 0 15px 25px rgba(var(--red-rgb), 0.5);
+  box-shadow: var(--shadow-accent);
+  transform: translateY(-10px);
 }
 
 .sc5-card-img {
-  width: 100%;
-  height: 90px;
-  background-color: var(--dark-brown);
-  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  height: 90px;
+  background-color: var(--surface-raised);
+  overflow: hidden;
 }
 
 .sc5-card-img img {
@@ -81,7 +111,7 @@
   height: 100%;
   object-fit: contain;
   filter: grayscale(100%);
-  transition: filter 0.3s ease, transform 0.5s ease;
+  transition: filter var(--dur-base) ease, transform var(--dur-slow) var(--ease-out);
 }
 
 .sc5-card:hover img,
@@ -91,271 +121,65 @@
 }
 
 .sc5-card-info {
-  padding: 0.3rem;
+  padding: var(--space-2) var(--space-1);
   text-align: center;
 }
 
 .sc5-card-info h4 {
   color: var(--white);
-  font-family: 'Noto Serif KR', serif;
-  font-size: 1rem;
-  margin-bottom: 0.3rem;
+  font-family: var(--font-serif);
+  font-size: var(--fs-md);
+  line-height: 1.3;
 }
 
-.sc5-card-info p {
-  color: var(--gold);
-  font-size: 0.75rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.sc5-nav-btn {
-  width: 44px;
-  height: 44px;
-  margin-left: 20px;
-  border-radius: 50%;
-  background: rgba(var(--charcoal-rgb), 0.9);
-  border: 1px solid rgba(var(--white-rgb), 0.2);
-  color: var(--white);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: 0.2s;
-  overflow: hidden;
-}
-
-.sc5-nav-btn:hover {
-  background: var(--red);
-}
-
-.sc5-nav-btn span {
-  font-size: 24px;
-  line-height: 1;
-}
-
-.sc5-custom-pin {
-  width: 100%;
-  height: 100%;
-  background-image: url('../../assets/images/marker_theme_100173_5.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center bottom;
-  background-color: transparent;
-  border: none;
-  box-shadow: none;
-}
-
-/* =======================================================
-   팝업창 스타일 (Section 2 레이아웃 & 다크 테마 적용)
-======================================================= */
-.sc5-leaflet-popup .leaflet-popup-content {
-  width: auto !important;
-  margin: 0;
-}
-
-.sc5-leaflet-popup .leaflet-popup-content-wrapper {
-  background: rgba(var(--charcoal-rgb), 0.95);
-  border: 1px solid rgba(var(--white-rgb), 0.2);
-  border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(var(--black-rgb), 0.8);
-  color: var(--white);
-  padding: 0;
-  backdrop-filter: blur(4px);
-}
-
-.sc5-leaflet-popup .leaflet-popup-tip {
-  background: rgba(var(--charcoal-rgb), 0.95);
-}
-
-.sc5-popup-inner {
-  padding: 1.2rem;
-  width: 420px;
-  box-sizing: border-box;
-}
-
-.sc5-popup-inner h3 {
-  font-family: 'Noto Serif KR', serif;
-  font-size: 1.15rem;
-  color: var(--gold);
-  margin-bottom: 0.6rem;
-  border-bottom: 1px solid rgba(var(--white-rgb), 0.2);
-  padding-bottom: 0.5rem;
-  display: block;
-  white-space: nowrap;
-}
-
-/* (이전에 있던 .sc5-pop-img 스타일은 삭제되었습니다) */
-
-.sc5-popup-inner .sc5-pop-addr {
-  display: block;
-  font-size: 0.75rem;
-  color: var(--gray-mid);
-  margin-bottom: 0.8rem;
-  line-height: 1.5;
-}
-
-.sc5-popup-inner .sc5-pop-desc {
-  font-size: 0.85rem;
-  color: rgba(var(--cream-rgb), 0.8);
-  line-height: 1.5;
-  margin-bottom: 1.2rem;
-  display: block;
-  height: auto;
-  max-height: 150px;
-  overflow-y: auto;
-  white-space: normal;
-  padding-right: 5px;
-}
-
-.sc5-popup-inner .sc5-pop-desc::-webkit-scrollbar {
-  width: 4px;
-}
-
-.sc5-popup-inner .sc5-pop-desc::-webkit-scrollbar-thumb {
-  background: rgba(var(--white-rgb), 0.3);
-  border-radius: 2px;
-}
-
-.sc5-pop-btns {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.sc5-btn {
-  flex: 1;
-  text-align: center;
-  border-radius: 4px;
-  font-weight: bold;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  padding: 0.6rem 0.4rem;
-  font-size: 0.75rem;
-  letter-spacing: -0.05em;
-}
-
-.sc5-btn.history-btn {
-  border: 1px solid var(--gold);
-  color: var(--gold);
-}
-
-.sc5-btn.history-btn:hover {
-  background-color: var(--gold);
-  color: var(--black);
-}
-
-.sc5-btn.map-btn {
-  border: 1px solid var(--red);
-  color: var(--red);
-}
-
-.sc5-btn.map-btn:hover {
-  background-color: var(--red);
-  color: var(--white);
-}
-
-/* =======================================================
-   기타 UI 및 검색 패널 스타일 (수정됨)
-======================================================= */
-.sc5-reveal {
-  opacity: 0;
-  transform: translateY(50px);
-  transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.sc5-reveal.active {
-  opacity: 1;
-  transform: translateY(0);
-}
-
+/* ---------- 검색 패널 ---------- */
 .sc5-search-wrapper {
   position: absolute;
-  left: 20px;
-  /* 좌측 화살표(약 60px 차지)를 지나 첫 번째 사진 사이에 오도록 x축 조정 */
   bottom: 160px;
-  /* 캐러셀 인물 사진 윗부분에 살짝 걸치거나 위에 오도록 y축 조정 */
-  z-index: 1100;
+  left: var(--space-5);
+  z-index: var(--z-map-overlay);
   display: flex;
   flex-direction: column-reverse;
-  /* 버튼이 밑에, 패널이 위로 열리도록 유지 */
+  /* 버튼 하단, 패널 상단 */
   align-items: flex-start;
-  gap: 0.5rem;
-}
-
-/* 💡 검색 버튼: 다시 직사각형 형태로 변경 */
-.sc5-search-toggle {
-  width: auto;
-  height: auto;
-  background: rgba(var(--charcoal-rgb), 0.85);
-  border: 1px solid rgba(var(--white-rgb), 0.2);
-  color: var(--white);
-  padding: 0.6rem 1.2rem;
-  /* 직사각형 형태를 위한 패딩 설정 */
-  border-radius: 6px;
-  /* 둥근 사각형 모서리 */
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 0.7rem;
-  font-weight: bold;
-  backdrop-filter: blur(4px);
-  box-shadow: 0 4px 10px rgba(var(--black-rgb), 0.5);
-  transition: all 0.3s ease;
-}
-
-.sc5-search-toggle:hover {
-  background: var(--red);
-  border-color: var(--red);
+  gap: var(--space-2);
 }
 
 .sc5-search-toggle span {
-  font-size: 18px;
+  font-size: var(--fs-sm);
 }
 
-/* 💡 검색 패널 박스 디자인 */
 .sc5-search-panel {
-  background: rgba(var(--charcoal-rgb), 0.95);
-  border: 1px solid rgba(var(--white-rgb), 0.2);
-  border-radius: 8px;
-  padding: 1.2rem;
-  backdrop-filter: blur(4px);
-  box-shadow: 0 10px 25px rgba(var(--black-rgb), 0.7);
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  width: 280px;
-  /* 패널 너비 설정 */
+  gap: var(--space-4);
+  width: 300px;
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(15px);
-  /* 아래에서 위로 나타나는 애니메이션 준비 */
-  transition: all 0.3s ease;
+  transform: translateY(12px) scale(0.98);
+  transform-origin: bottom left;
+  transition: opacity var(--dur-base) ease, visibility var(--dur-base) ease, transform var(--dur-base) var(--ease-out);
 }
 
 .sc5-search-panel.show {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
-/* 💡 검색 입력칸 */
 .sc5-search-input {
   width: 100%;
-  box-sizing: border-box;
-  /* 패딩 포함 크기 유지 */
-  padding: 0.8rem 1rem;
-  border-radius: 4px;
-  border: 1px solid rgba(var(--white-rgb), 0.3);
-  background: rgba(var(--black-rgb), 0.5);
+  min-height: var(--control-h);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: rgba(var(--black-rgb), 0.45);
   color: var(--white);
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 0.95rem;
+  font-size: var(--fs-md);
   outline: none;
+  transition: border-color var(--dur-base) ease, box-shadow var(--dur-base) ease;
 }
 
 .sc5-search-input::placeholder {
@@ -363,107 +187,116 @@
 }
 
 .sc5-search-input:focus {
-  border-color: var(--red);
+  border-color: var(--red-light);
+  box-shadow: 0 0 0 3px rgba(var(--red-rgb), 0.3);
 }
 
-/* 💡 자음 필터 버튼 영역 */
 .sc5-filter-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-1);
+}
+
+.sc5-filter-container .sc5-filter-btn[data-filter="all"] {
+  grid-column: span 2;
+  /* 전체(2칸) + 자음 14개 = 4열 × 4행 */
 }
 
 .sc5-filter-btn {
+  min-height: 34px;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
   background: transparent;
-  border: 1px solid rgba(var(--white-rgb), 0.3);
-  color: rgba(var(--white-rgb), 0.7);
-  border-radius: 4px;
-  padding: 0.4rem 0.6rem;
-  /* 버튼을 살짝 작게 조절 */
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  font-weight: 700;
   cursor: pointer;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 0.8rem;
-  font-weight: bold;
-  transition: all 0.3s ease;
+  transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease, border-color var(--dur-fast) ease;
 }
 
 .sc5-filter-btn:hover {
-  background: rgba(var(--red-rgb), 0.5);
+  background: rgba(var(--red-rgb), 0.4);
   color: var(--white);
 }
 
 .sc5-filter-btn.active {
-  background: var(--red);
+  background: var(--accent);
+  border-color: var(--accent);
   color: var(--white);
-  border-color: var(--red);
 }
 
-/* (이 아래에 기존 .sc5-reset-btn 관련 코드 유지) */
-
-.sc5-reset-btn {
-  position: absolute;
-  right: 1.5rem;
-  z-index: 1000;
-  background-color: rgba(var(--charcoal-rgb), 0.85);
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(var(--white-rgb), 0.2);
-  color: var(--white);
-  padding: 0.6rem 1rem;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 0.85rem;
-  font-weight: bold;
-  box-shadow: 0 4px 10px rgba(var(--black-rgb), 0.5);
-  transition: all 0.3s ease;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-10px);
+/* ---------- 마커 ---------- */
+.sc5-custom-pin {
+  width: 100%;
+  height: 100%;
+  background: url("../../assets/images/marker_theme_100173_5.png") center bottom / contain no-repeat;
+  filter: drop-shadow(0 3px 4px rgba(var(--black-rgb), 0.5));
 }
 
-.sc5-reset-btn:hover {
-  background-color: var(--red);
-  border-color: var(--red);
+/* ---------- 지도 팝업 (JS 생성) ---------- */
+.sc5-popup-inner {
+  width: 420px;
+  padding: var(--space-5);
 }
 
-.sc5-reset-btn.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+.sc5-popup-inner h3 {
+  display: block;
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border-default);
+  color: var(--gold);
+  font-family: var(--font-serif);
+  font-size: var(--fs-lg);
+  white-space: nowrap;
+}
+
+.sc5-popup-inner .sc5-pop-addr {
+  display: block;
+  margin-bottom: var(--space-3);
+  color: var(--text-secondary);
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+}
+
+.sc5-popup-inner .sc5-pop-desc {
+  display: block;
+  max-height: 160px;
+  margin-bottom: var(--space-5);
+  padding-right: var(--space-1);
+  color: var(--text-body);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  white-space: normal;
+  overflow-y: auto;
 }
 
 .sc5-pop-info-list {
-  margin-top: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
 }
 
 .sc5-pop-info-list:empty {
   display: none;
   margin: 0;
-  padding: 0;
-  border: none;
 }
 
 .sc5-pop-info-list .info-row {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: var(--space-1);
 }
 
 .sc5-pop-info-list .info-label {
-  font-size: 0.75rem;
-  color: var(--white);
-  font-weight: bold;
+  color: var(--gold);
+  font-size: var(--fs-xs);
+  font-weight: 700;
 }
 
 .sc5-pop-info-list .info-val {
-  font-size: 0.85rem;
   color: rgba(var(--white-rgb), 0.9);
+  font-size: var(--fs-sm);
   line-height: 1.5;
-  word-break: keep-all;
 }

@@ -1,115 +1,108 @@
 /* =======================================================
-   Section 4: 역사의 현장 (지도 및 플로팅 패널)
+   Section 4: 역사의 현장 (지도 + 플로팅 범례)
+   - 공통 요소(글래스 패널, 컨트롤 버튼, 팝업, 링크 버튼)는 global.css
 ======================================================= */
+
+/* ---------- 지도 ---------- */
 .sc4-map-view {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: var(--viewport-h);
   overflow: hidden;
-}
-
-#map-s4 .leaflet-tile-pane {
-  filter: grayscale(100%) brightness(0.95);
-  transition: filter 0.3s ease;
 }
 
 .sc4-map-container {
   position: absolute;
   inset: 0;
-  background-color: var(--ink);
+  background-color: var(--bg-base);
 }
 
-/* =======================================================
-   인트로 + 범례 결합형 플로팅 UI
-======================================================= */
+/* ---------- 플로팅 범례 패널 ---------- */
 .sc4-floating-legend {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
-
-  left: 3rem;
-
-  z-index: 1000;
-  width: 640px;
-  max-width: 90vw;
-  max-height: 80vh;
-  overflow-y: auto;
-
-  background: rgba(var(--charcoal-rgb), 0.85);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(var(--white-rgb), 0.15);
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 20px 40px rgba(var(--black-rgb), 0.6);
+  left: var(--space-12);
+  z-index: var(--z-map-ui);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--space-5);
+  width: 640px;
+  max-width: calc(100vw - 6rem);
+  max-height: 80vh;
+  padding: var(--space-8);
+  border-radius: var(--radius-lg);
+  overflow-y: auto;
+  transform: translateY(-50%);
+}
+
+/* reveal 애니메이션 + 수직 중앙 정렬 병합 */
+.sc4-floating-legend.sc4-reveal {
+  transform: translateY(calc(-50% + 30px));
+}
+
+.sc4-floating-legend.sc4-reveal.active {
+  transform: translateY(-50%);
 }
 
 .sc4-legend-header {
-  text-align: left;
-  border-bottom: 1px solid rgba(var(--white-rgb), 0.1);
-  padding-bottom: 1rem;
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .sc4-legend-title {
-  font-family: 'Noto Serif KR', serif;
-  font-size: 1.6rem;
+  margin-bottom: var(--space-2);
+  color: var(--text-primary);
+  font-family: var(--font-serif);
+  font-size: var(--fs-2xl);
   font-weight: 700;
-  color: var(--white);
-  margin-bottom: 0.5rem;
-  letter-spacing: -0.02em;
+  letter-spacing: var(--tracking-tight);
 }
 
 .sc4-legend-subtitle {
-  font-size: 0.85rem;
-  color: var(--gold);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
 }
 
-/* 카드 리스트 컨테이너 */
+/* ---------- 필터 카드 ---------- */
 .sc4-intro-cols {
-  list-style: none;
-  padding: 0;
-  margin: 0;
   display: flex;
-  flex-direction: row;
-  gap: 1rem;
+  gap: var(--space-4);
+  list-style: none;
 }
 
-/* 개별 필터 카드 (기존 인트로 카드의 UI 적용) */
 .sc4-col {
-  flex: 1;
   position: relative;
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-5) var(--space-5) var(--space-5) var(--space-6);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
   background: rgba(var(--white-rgb), 0.03);
-  border: 1px solid rgba(var(--white-rgb), 0.1);
-  border-radius: 8px;
-  padding: 1.2rem;
+  overflow: hidden;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: opacity var(--dur-base) ease, filter var(--dur-base) ease, background-color var(--dur-base) ease, border-color var(--dur-base) ease, box-shadow var(--dur-base) ease;
 }
 
 .sc4-col:hover {
-  background: rgba(var(--white-rgb), 0.06);
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(var(--black-rgb), 0.4);
+  border-color: var(--border-default);
+  background: var(--surface-hover);
+  box-shadow: var(--shadow-md);
 }
 
-/* 비활성화 상태 (필터 꺼짐) */
+/* 필터 OFF 상태 */
 .sc4-col:not(.active) {
-  opacity: 0.4;
+  opacity: 0.45;
   filter: grayscale(100%);
-  transform: scale(0.98);
 }
 
-/* 카드 좌측 포인트 라인 */
+/* 좌측 포인트 라인 */
 .sc4-col::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 4px;
   height: 100%;
-  border-radius: 8px 0 0 8px;
 }
 
 .sc4-col.hub-card::before {
@@ -120,34 +113,38 @@
   background-color: var(--gold);
 }
 
-/* 카드 제목 영역 */
+.sc4-col-header {
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+}
+
 .sc4-col-title {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-  margin-bottom: 0.6rem;
+  gap: var(--space-1);
 }
 
 .sc4-col-title .ko-text {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1.1rem;
+  gap: var(--space-2);
+  color: var(--text-primary);
+  font-size: var(--fs-lg);
   font-weight: 700;
-  color: var(--white);
 }
 
 .sc4-col-title .en-text {
-  font-family: 'Playfair Display', serif;
-  font-size: 0.75rem;
-  color: var(--muted);
+  padding-left: calc(10px + var(--space-2));
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  font-weight: 400;
   letter-spacing: 0.1em;
-  padding-left: 1.2rem;
-  /* 점 크기만큼 들여쓰기 */
 }
 
-/* 타이틀 옆 둥근 점 아이콘 */
 .sc4-legend-dot {
+  display: inline-block;
+  flex-shrink: 0;
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -163,70 +160,56 @@
   box-shadow: 0 0 8px var(--gold);
 }
 
-/* 카드 본문 설명 */
-.sc4-col-desc {
-  font-size: 0.85rem;
-  line-height: 1.6;
-  color: rgba(var(--cream-rgb), 0.7);
-  word-break: keep-all;
-  padding-left: 1.2rem;
-  margin: 0;
+/* ---------- 장소 리스트 ---------- */
+.sc4-loc-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  max-height: 220px;
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-subtle);
+  list-style: none;
+  overflow: hidden auto;
 }
 
-.sc4-icon {
-  font-size: 1.5rem;
+.sc4-loc-item {
+  flex-shrink: 0;
+  padding: var(--space-2) var(--space-3);
+  border-left: 3px solid transparent;
+  border-radius: var(--radius-xs);
+  background: var(--surface-sunken);
+  color: var(--text-body);
+  font-size: var(--fs-sm);
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease, padding-left var(--dur-base) var(--ease-out);
 }
 
-.hub-icon {
-  color: var(--red);
+.sc4-loc-item:hover {
+  padding-left: var(--space-4);
+  background: rgba(var(--white-rgb), 0.1);
+  color: var(--white);
 }
 
-.site-icon {
-  color: var(--gold);
+.sc4-loc-item.active {
+  background: rgba(var(--white-rgb), 0.16);
+  color: var(--white);
+  font-weight: 600;
 }
 
-.sc4-col-desc {
-  font-size: 0.95rem;
-  line-height: 1.8;
-  color: rgba(var(--white-rgb), 0.7);
-  word-break: keep-all;
+.hub-card .sc4-loc-item.active {
+  border-left-color: var(--red);
 }
 
-.sc4-highlight-hub {
-  color: var(--red);
-  font-weight: bold;
+.site-card .sc4-loc-item.active {
+  border-left-color: var(--gold);
 }
 
-.sc4-highlight-site {
-  color: var(--gold);
-  font-weight: bold;
-}
-
-.sc4-map-view {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-}
-
-#map-s4 .leaflet-tile-pane {
-  filter: grayscale(100%) brightness(0.95);
-  transition: filter 0.3s ease;
-}
-
-.sc4-map-container {
-  position: absolute;
-  inset: 0;
-  background-color: var(--ink);
-}
-
-.hub-dot {
-  background-color: var(--red);
-}
-
-.site-dot {
-  background-color: var(--gold);
-}
-
+/* ---------- 마커 (이미지 + 펄스 링) ---------- */
 .sc4-marker-wrapper {
   display: flex;
   align-items: center;
@@ -235,297 +218,73 @@
 
 .sc4-pulse-hub,
 .sc4-pulse-site {
-  width: 100%;
-  height: 100%;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
   position: relative;
   z-index: 2;
+  width: 100%;
+  height: 100%;
+  background: center / contain no-repeat;
 }
 
 .sc4-pulse-hub {
-  background-image: url('../../assets/images/marker_theme_11100550_3.png');
+  background-image: url("../../assets/images/marker_theme_11100550_3.png");
 }
 
 .sc4-pulse-site {
-  background-image: url('../../assets/images/marker_theme_11100550_4.png');
+  background-image: url("../../assets/images/marker_theme_11100550_4.png");
 }
 
 .sc4-pulse-hub::after,
 .sc4-pulse-site::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
+  z-index: -1;
   width: 15px;
   height: 15px;
+  border: 3px solid var(--red);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  z-index: -1;
-}
-
-.sc4-pulse-hub::after {
-  border: 3px solid var(--red);
-  animation: pulse-img-red 2s infinite ease-out;
+  animation: pulse-ring 2s ease-out infinite;
+  /* keyframes: section1.css */
 }
 
 .sc4-pulse-site::after {
-  border: 3px solid var(--gold);
-  animation: pulse-img-gold 2s infinite ease-out;
+  border-color: var(--gold);
 }
 
-@keyframes pulse-img-red {
-  0% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translate(-50%, -50%) scale(4);
-    opacity: 0;
-  }
-}
-
-@keyframes pulse-img-gold {
-  0% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translate(-50%, -50%) scale(4);
-    opacity: 0;
-  }
-}
-
-@keyframes pulse-gold {
-  0% {
-    transform: scale(0.5);
-    opacity: 1;
-  }
-
-  100% {
-    transform: scale(2.5);
-    opacity: 0;
-  }
-}
-
-.sc4-reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.sc4-reveal.active {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.sc4-leaflet-popup .leaflet-popup-content-wrapper {
-  background: rgba(var(--charcoal-rgb), 0.95);
-  border: 1px solid rgba(var(--white-rgb), 0.2);
-  border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(var(--black-rgb), 0.8);
-  color: var(--white);
-  padding: 0;
-  backdrop-filter: blur(4px);
-}
-
-.sc4-leaflet-popup .leaflet-popup-tip {
-  background: rgba(var(--charcoal-rgb), 0.95);
-}
-
+/* ---------- 지도 팝업 ---------- */
 .sc4-popup-inner {
-  padding: 1.5rem;
   width: 380px;
   max-width: 90vw;
+  padding: var(--space-2) 0;
 }
 
 .sc4-popup-inner h3 {
-  font-family: 'Noto Serif KR', serif;
-  font-size: 1.2rem;
+  margin-bottom: var(--space-2);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border-default);
+  color: var(--text-primary);
+  font-family: var(--font-serif);
+  font-size: var(--fs-lg);
   font-weight: 700;
-  color: var(--white);
-  margin-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(var(--white-rgb), 0.2);
-  padding-bottom: 0.5rem;
 }
 
 .sc4-popup-inner .sc4-pop-addr {
   display: block;
-  font-size: 0.75rem;
+  margin-bottom: var(--space-4);
   color: var(--gold);
-  margin-bottom: 1rem;
+  font-size: var(--fs-xs);
 }
 
 .sc4-popup-inner .sc4-pop-desc {
-  font-size: 0.85rem;
-  color: rgba(var(--cream-rgb), 0.8);
-  line-height: 1.6;
   display: block;
-  height: auto;
+  color: var(--text-body);
+  font-size: var(--fs-sm);
+  line-height: 1.65;
   white-space: normal;
 }
 
-.sc4-popup-inner .sc4-pop-desc::-webkit-scrollbar {
-  width: 4px;
-}
-
-.sc4-popup-inner .sc4-pop-desc::-webkit-scrollbar-thumb {
-  background: rgba(var(--white-rgb), 0.3);
-  border-radius: 2px;
-}
-
-.sc4-reset-btn {
-  position: absolute;
-  right: 1.5rem;
-  z-index: 1000;
-  background-color: rgba(var(--charcoal-rgb), 0.85);
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(var(--white-rgb), 0.2);
-  color: var(--white);
-  padding: 0.6rem 1rem;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 0.85rem;
-  font-weight: bold;
-  box-shadow: 0 4px 10px rgba(var(--black-rgb), 0.5);
-  transition: all 0.3s ease;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-10px);
-}
-
-.sc4-reset-btn:hover {
-  background-color: var(--red);
-  border-color: var(--red);
-}
-
-.sc4-reset-btn span.material-symbols-outlined {
-  font-size: 1.2rem;
-}
-
-.sc4-reset-btn.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
 .sc4-pop-btns {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-.sc4-btn {
-  flex: 1;
-  text-align: center;
-  padding: 0.5rem 0;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: bold;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.sc4-btn.history-btn {
-  border: 1px solid var(--gold);
-  color: var(--gold);
-}
-
-.sc4-btn.history-btn:hover {
-  background-color: var(--gold);
-  color: var(--black);
-}
-
-.sc4-btn.map-btn {
-  border: 1px solid var(--red);
-  color: var(--red);
-}
-
-.sc4-btn.map-btn:hover {
-  background-color: var(--red);
-  color: var(--white);
-}
-
-.sc4-floating-legend.sc4-reveal {
-  transform: translateY(calc(-50% + 30px)) !important;
-}
-
-.sc4-floating-legend.sc4-reveal.active {
-  transform: translateY(-50%) !important;
-}
-
-/* =======================================================
-   범례 내 장소 리스트 스타일
-======================================================= */
-.sc4-loc-list {
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0 0 0;
-  border-top: 1px solid rgba(var(--white-rgb), 0.1);
-  padding-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  max-height: 220px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-/* 스크롤바 디자인 */
-.sc4-loc-list::-webkit-scrollbar {
-  width: 4px;
-}
-
-.sc4-loc-list::-webkit-scrollbar-thumb {
-  background: rgba(var(--white-rgb), 0.3);
-  border-radius: 2px;
-}
-
-.sc4-loc-item {
-  flex-shrink: 0;
-  width: 92%;
-  line-height: 1.3;
-  font-size: 0.8rem;
-  color: rgba(var(--cream-rgb), 0.8);
-  padding: 0.5rem 0.8rem;
-  border-radius: 4px;
-  background: rgba(var(--black-rgb), 0.3);
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.sc4-loc-item:hover {
-  background: rgba(var(--white-rgb), 0.1);
-  color: var(--white);
-  transform: translateX(3px);
-}
-
-.sc4-col-header {
-  cursor: pointer;
-}
-
-.sc4-loc-item.active {
-  background: rgba(var(--white-rgb), 0.2);
-  color: var(--white);
-}
-
-/* 1. 중요 지점 리스트 클릭 시 -> 빨간색 선 */
-.hub-card .sc4-loc-item.active {
-  border-left: 3px solid var(--red);
-}
-
-/* 2. 시위 장소 리스트 클릭 시 -> 노란색(골드) 선 */
-.site-card .sc4-loc-item.active {
-  border-left: 3px solid var(--gold);
+  margin-top: var(--space-4);
 }
