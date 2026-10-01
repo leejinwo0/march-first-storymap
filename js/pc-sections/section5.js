@@ -6,7 +6,7 @@ export async function initSection5() {
   const mapContainer = document.getElementById('map-s5');
   if (!mapContainer) return;
 
-  const mapS5 = L.map('map-s5', { zoomControl: false, scrollWheelZoom: false, zoomSnap: 1, zoomAnimation: false, crs: getCrsEx() }).setView([37.577613, 126.976897], 10);
+  const mapS5 = L.map('map-s5', { zoomControl: false, scrollWheelZoom: false, zoomSnap: 1, zoomAnimation: false, crs: getCrsEx() }).setView([37.577613, 126.976897], 11);
   const baseMapS5 = new L.TileLayer.DAWULGIS_EX(MAP_ENDPOINTS.seoulBaseMap_kor, { minZoom: 1, maxZoom: 15 });
 
   const gyeongseongMapS5 = L.tileLayer.wms(HISTORICAL_MAPS.wmsUrl, {
@@ -133,7 +133,7 @@ export async function initSection5() {
           marker.openPopup();
           card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 
-          const targetZoom = 11;
+          const targetZoom = 12;
           const targetPoint = mapS5.project([lat, lng], targetZoom);
           targetPoint.y -= 60;
           mapS5.setView(mapS5.unproject(targetPoint, targetZoom), targetZoom, { animate: true });

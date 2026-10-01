@@ -107,7 +107,7 @@
   flex-direction: column;
   justify-content: center;
   padding: clamp(7rem, 12vh, 10rem) clamp(2rem, 5vw, 5rem) clamp(6rem, 10vh, 7rem);
-  background: var(--bg-section);
+  background: var(--bg-base);
   overflow: hidden;
 }
 
