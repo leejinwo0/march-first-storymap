@@ -317,11 +317,11 @@
 }
 
 .sc4-pulse-hub {
-  background-image: url("../../assets/images/marker_theme_11100550_3.png");
+  background-image: url("/assets/images/markers/marker-theme-11100550-3.png");
 }
 
 .sc4-pulse-site {
-  background-image: url("../../assets/images/marker_theme_11100550_4.png");
+  background-image: url("/assets/images/markers/marker-theme-11100550-4.png");
 }
 
 .sc4-pulse-hub::after,

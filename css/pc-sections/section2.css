@@ -184,6 +184,15 @@
   text-align: center;
 }
 
+/* 미니 팝업 제목: 카드용 구분선·여백 제거 */
+.sc2-popup-mini .sc2-pop-title {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border: none;
+  color: var(--white);
+  white-space: nowrap;
+}
+
 /* ---------- 번호 마커 ---------- */
 .sc2-marker-wrapper {
   display: flex;

@@ -186,3 +186,20 @@
   font-size: var(--fs-sm);
   line-height: 1.55;
 }
+
+/* 모달 로딩·오류 상태 문구 (JS 생성) */
+.mobile-modal-status {
+  margin-top: var(--space-5);
+  color: var(--text-tertiary);
+  font-size: var(--fs-sm);
+  text-align: center;
+}
+
+.mobile-modal-status.is-error {
+  color: var(--red-light);
+}
+
+/* 모달 하단 외부 링크 버튼 */
+.mobile-modal-link {
+  margin-top: var(--space-6);
+}

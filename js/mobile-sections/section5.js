@@ -1,10 +1,13 @@
-import { fetchDailyLifeData, MAP_ENDPOINTS } from '../../api/mapService.js';
+import { fetchDailyLifeData, MAP_ENDPOINTS } from '/api/mapService.js';
 
+/* =======================================================
+   Mobile Card 6: 독립의 별들 인물 2열 그리드 + 상세 모달
+======================================================= */
 export async function initMobileSection5() {
   const grid = document.getElementById('mobile-activist-grid');
   if (!grid) return;
 
-  // 모바일 전용 팝업(모달) 동적 생성
+  // 상세 모달(하단 시트) 마크업 1회 생성
   let modal = document.getElementById('mobile-activist-modal');
   if (!modal) {
     const modalHTML = `
@@ -60,25 +63,24 @@ export async function initMobileSection5() {
       const card = document.createElement('div');
       card.className = 'mobile-activist-card';
 
-      // 💡 주소를 없애고 사진과 이름만 렌더링 (이미지가 없을 경우 아예 숨김 처리)
+      // 카드: 사진 + 이름 (이미지 로드 실패 시 img 숨김)
       card.innerHTML = `
         <img src="${imgUrl}" alt="${name} 사진" class="mobile-activist-img" onerror="this.style.display='none';">
         <div class="mobile-activist-name">${name}</div>
       `;
 
-      // 💡 카드 클릭 이벤트: 상세 API 호출 및 팝업 표시
+      // 카드 클릭: 로딩 상태 모달 즉시 표시 → 상세 API 응답 후 내용 교체
       card.addEventListener('click', async () => {
-        // 로딩 상태 표시 후 모달 열기
         modalBody.innerHTML = `
           <div class="mobile-modal-loading">
             <img src="${imgUrl}" onerror="this.style.display='none';" class="mobile-modal-img">
             <h3>${name}</h3>
-            <p style="color:#888; margin-top:20px;">상세 정보를 불러오는 중입니다...</p>
+            <p class="mobile-modal-status">상세 정보를 불러오는 중입니다...</p>
           </div>
         `;
         modal.classList.add('active');
 
-        if (!poiId) return; // POI ID가 없으면 로딩에서 멈춤 (데이터 없음)
+        if (!poiId) return; // POI ID 없음: 상세 조회 불가
 
         try {
           const baseUrl = MAP_ENDPOINTS.themeData_100173.split('/public/')[0];
@@ -109,7 +111,6 @@ export async function initMobileSection5() {
             const pangyul = getSafeValue("판결날", "COT_VALUE_04");
             const joemyung = getSafeValue("죄명", "COT_VALUE_05");
 
-            // 💡 팝업 내용 업데이트 (사진 + 상세 정보)
             modalBody.innerHTML = `
               <div class="mobile-modal-header">
                 <img src="${imgUrl}" onerror="this.style.display='none';" class="mobile-modal-img">
@@ -122,7 +123,7 @@ export async function initMobileSection5() {
                 ${joemyung ? `<div class="info-row"><span class="info-label">죄명</span><span class="info-val">${joemyung}</span></div>` : ''}
                 ${(!sinbun && !sagun && !pangyul && !joemyung) ? `<div class="info-row"><span class="info-val">상세 정보가 없습니다.</span></div>` : ''}
               </div>
-              <a href="${historyUrl}" target="_blank" class="mobile-btn nikh-btn" style="margin-top: 1.5rem;">한국근대사료DB 보기</a>
+              <a href="${historyUrl}" target="_blank" class="mobile-btn nikh-btn mobile-modal-link">한국근대사료DB 보기</a>
             `;
           }
         } catch (error) {
@@ -132,7 +133,7 @@ export async function initMobileSection5() {
               <img src="${imgUrl}" onerror="this.style.display='none';" class="mobile-modal-img">
               <h3 class="mobile-modal-title">${name}</h3>
             </div>
-            <p style="color:#a83228; text-align:center; margin-top:20px;">정보를 불러올 수 없습니다.</p>
+            <p class="mobile-modal-status is-error">정보를 불러올 수 없습니다.</p>
           `;
         }
       });
@@ -142,6 +143,6 @@ export async function initMobileSection5() {
 
   } catch (error) {
     console.error("모바일 독립운동가 데이터를 불러오는 중 오류가 발생했습니다:", error);
-    grid.innerHTML = '<p style="color: rgba(238, 230, 216, 0.6); text-align: center; grid-column: 1 / -1; margin-top: 2rem;">데이터를 불러올 수 없습니다.</p>';
+    grid.innerHTML = '<p class="mobile-empty-msg">데이터를 불러올 수 없습니다.</p>';
   }
 }

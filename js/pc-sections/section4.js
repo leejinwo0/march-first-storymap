@@ -1,7 +1,11 @@
-// 💡 1. HISTORICAL_MAPS 임포트 추가
-import { fetchTimeTravelData, MAP_ENDPOINTS, HISTORICAL_MAPS } from '../../api/mapService.js';
-import { addMapToggleControl } from '../utils/mapUtils.js';
+import { fetchTimeTravelData, MAP_ENDPOINTS, HISTORICAL_MAPS } from '/api/mapService.js';
+import { addMapToggleControl } from '/js/utils/mapUtils.js';
 
+/* =======================================================
+   Section 4: 역사의 현장 (중요 지점 / 시위 장소 필터 지도)
+   - COT_THEME_SUB_ID '4': 중요 지점(hub) / '3': 시위 장소(site)
+   - 섹션 진입(IntersectionObserver) 시 마커 순차 렌더링
+======================================================= */
 export async function initSection4() {
   const mapContainer = document.getElementById('map-s4');
   if (!mapContainer) return;
@@ -9,7 +13,6 @@ export async function initSection4() {
   const mapS4 = L.map('map-s4', { zoomControl: false, scrollWheelZoom: false, crs: getCrsEx() }).setView([37.577613 - 0.019, 126.976897 - 0.04], 7);
   const baseMapS4 = new L.TileLayer.DAWULGIS_EX(MAP_ENDPOINTS.seoulBaseMap_kor, { minZoom: 1, maxZoom: 15 });
 
-  // 💡 2. 기존 위성지도 대신 WMS 경성대지도 레이어 생성
   const gyeongseongMapS4 = L.tileLayer.wms(HISTORICAL_MAPS.wmsUrl, {
     layers: HISTORICAL_MAPS.gyeongseong,
     format: 'image/png',
@@ -20,7 +23,6 @@ export async function initSection4() {
 
   baseMapS4.addTo(mapS4);
 
-  // 💡 3. 토글 컨트롤에 경성대지도를 연결하고 버튼 글씨도 변경
   addMapToggleControl(mapS4, baseMapS4, gyeongseongMapS4, '경성대지도');
 
   let mapTriggered = false;
@@ -43,7 +45,6 @@ export async function initSection4() {
   resetBtn.addEventListener('click', () => {
     mapS4.setView(defaultCenter, defaultZoom, { animate: true, duration: 0.8 });
     mapS4.closePopup();
-    // 초기화 버튼 누를 때 활성화 상태도 모두 지우기
     document.querySelectorAll('.sc4-loc-item').forEach(item => item.classList.remove('active'));
   });
 
@@ -58,7 +59,6 @@ export async function initSection4() {
           let hubDelay = 0;
           let siteDelay = 0;
 
-          // 리스트를 추가할 부모 컨테이너 찾기
           const hubListContainer = document.getElementById('sc4-hub-list');
           const siteListContainer = document.getElementById('sc4-site-list');
 
@@ -95,7 +95,7 @@ export async function initSection4() {
             }
 
             if (pulseClass !== '' && targetLayer) {
-              // 1. 마커와 팝업 생성
+              // 1. 마커·팝업 생성
               const icon = L.divIcon({
                 className: 'sc4-marker-wrapper',
                 html: `<div class="${pulseClass}"></div>`,
@@ -117,7 +117,7 @@ export async function initSection4() {
               `;
               marker.bindPopup(popupContent, { offset: [0, -15], className: 'sc4-leaflet-popup', maxWidth: 450 });
 
-              // 2. 범례 리스트 아이템 생성
+              // 2. 범례 리스트 항목 생성
               const li = document.createElement('li');
               li.className = 'sc4-loc-item';
               li.innerText = name;
@@ -125,19 +125,19 @@ export async function initSection4() {
                 listContainer.appendChild(li);
               }
 
-              // 💡 3. 줌인/줌아웃 토글 공통 로직
+              // 3. 줌인/줌아웃 토글 (마커·리스트 클릭 공용)
               const activateItem = (e) => {
                 if (e && e.stopPropagation) e.stopPropagation();
 
                 const isAlreadyActive = li.classList.contains('active');
 
                 if (isAlreadyActive) {
-                  // 이미 켜져있다면 -> 줌아웃(초기화)
+                  // 활성 항목 재클릭: 초기 시점 복귀
                   li.classList.remove('active');
                   mapS4.closePopup();
                   mapS4.setView(defaultCenter, defaultZoom, { animate: true, duration: 0.8 });
                 } else {
-                  // 안 켜져있다면 -> 줌인(활성화)
+                  // 신규 선택: 필터 OFF 상태면 해당 레이어 재활성화 후 확대
                   const parentCol = li.closest('.sc4-col');
                   if (parentCol && !parentCol.classList.contains('active')) {
                     parentCol.classList.add('active');
@@ -145,11 +145,10 @@ export async function initSection4() {
                     if (subId === '4') mapS4.addLayer(hubLayer);
                   }
 
-                  // 다른 아이템들 선택 해제
                   document.querySelectorAll('.sc4-loc-item').forEach(item => item.classList.remove('active'));
-                  li.classList.add('active'); // 현재 클릭한 것만 선택 표시
+                  li.classList.add('active');
 
-                  // 우측 여백 확보하여 줌인
+                  // 좌측 범례 패널을 피하도록 X -300px, 팝업 공간 확보용 Y -150px 오프셋
                   const targetZoom = 9;
                   const targetPoint = mapS4.project(latlng, targetZoom);
                   targetPoint.y -= 150;
@@ -160,11 +159,10 @@ export async function initSection4() {
                 }
               };
 
-              // 마커 클릭, 리스트 클릭 모두 동일한 토글 로직 적용!
               marker.on('click', activateItem);
               li.addEventListener('click', activateItem);
 
-              // 딜레이를 주어 지도에 마커 추가
+              // 순차 등장 연출: 마커별 150ms 간격 지연 적용
               setTimeout(() => {
                 marker.addTo(targetLayer);
               }, currentDelay);
@@ -175,7 +173,7 @@ export async function initSection4() {
     }, { threshold: 0.3 });
     observerS4.observe(mapContainer);
 
-    // 필터 기능(헤더 클릭) 연동
+    // 범례 헤더 클릭 → 레이어 필터 ON/OFF
     const filterHeaders = document.querySelectorAll('#sc4-filter-list .sc4-col-header');
     filterHeaders.forEach(header => {
       header.addEventListener('click', () => {
@@ -187,7 +185,6 @@ export async function initSection4() {
           item.classList.remove('active');
           if (filterType === 'hub') mapS4.removeLayer(hubLayer);
           if (filterType === 'site') mapS4.removeLayer(siteLayer);
-          // 카드 비활성화 시 내부 아이템들의 active 상태도 지우기
           item.querySelectorAll('.sc4-loc-item').forEach(li => li.classList.remove('active'));
         } else {
           item.classList.add('active');

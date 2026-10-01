@@ -1,5 +1,8 @@
-// js/mobiles/mobile_section2.js
-import { fetchTimeTravelData } from '../../api/mapService.js';
+/* =======================================================
+   Mobile Card 3: 거사의 맹세 세로 타임라인
+   - PC section2와 동일 데이터·순서, 지도 없이 카드 리스트 렌더링
+======================================================= */
+import { fetchTimeTravelData } from '/api/mapService.js';
 
 export async function initMobileSection2() {
   const timelineContainer = document.getElementById('mobile-s2-timeline');
@@ -8,13 +11,13 @@ export async function initMobileSection2() {
   try {
     const geojsonData = await fetchTimeTravelData();
 
-    // section2.js와 동일한 순서 배열
+    // 표시 순서 (pc-sections/section2.js와 동일)
     const targetIds = [
       "start_01", "start_02", "start_03", "start_04", "start_08",
       "start_05", "start_09", "start_07", "start_13"
     ];
 
-    timelineContainer.innerHTML = ''; // 초기화
+    timelineContainer.innerHTML = '';
 
     targetIds.forEach((targetId, index) => {
       const feature = geojsonData.features.find(f => f.properties.COT_CONTS_ID === targetId);
@@ -49,7 +52,6 @@ export async function initMobileSection2() {
         const stepNum = index + 1;
         const stepNumFormatted = stepNum < 10 ? `0${stepNum}` : stepNum;
 
-        // 타임라인 카드 HTML 생성
         const itemNode = document.createElement('div');
         itemNode.className = 'mobile-timeline-item';
 
@@ -75,6 +77,6 @@ export async function initMobileSection2() {
 
   } catch (error) {
     console.error("모바일 Section 2 데이터를 불러오는 중 오류 발생:", error);
-    timelineContainer.innerHTML = '<p style="color: #fff; text-align: center; margin-top: 2rem;">데이터를 불러올 수 없습니다.</p>';
+    timelineContainer.innerHTML = '<p class="mobile-empty-msg">데이터를 불러올 수 없습니다.</p>';
   }
 }

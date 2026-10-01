@@ -2,9 +2,7 @@
 <html lang="ko" class="scroll-smooth">
 
 <head>
-  <!-- 문서의 문자 인코딩 설정 -->
   <meta charset="utf-8" />
-  <!-- 모바일 및 다양한 기기에서의 반응형 웹을 위한 뷰포트 설정 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>서울 히스토리맵, 1919년 3월 그날의 발자취</title>
   <meta name="description" content="1919년 3·1운동의 준비 과정, 만세 시위 경로, 역사 현장과 인물을 스마트서울맵 위에 기록한 디지털 스토리맵" />
@@ -20,25 +18,30 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" />
 
-  <!-- Leaflet.js (오픈소스 지도 라이브러리) CSS 및 JS 로드 -->
+  <!-- Leaflet 1.9.4 (스마트서울맵 OpenAPI 의존 라이브러리) -->
   <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <!-- Swiper.js (모바일 카드 슬라이드용) CSS 로드 -->
+  <!-- Swiper 11 (모바일 카드 슬라이드) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-  <!-- 사용자 정의 스타일시트 (@import 체인 대신 병렬 로드) -->
-  <link rel="stylesheet" href="./css/tokens.css" />
-  <link rel="stylesheet" href="./css/global.css" />
-  <link rel="stylesheet" href="./css/sections/section0.css" />
-  <link rel="stylesheet" href="./css/sections/section1.css" />
-  <link rel="stylesheet" href="./css/sections/section2.css" />
-  <link rel="stylesheet" href="./css/sections/section3.css" />
-  <link rel="stylesheet" href="./css/sections/section4.css" />
-  <link rel="stylesheet" href="./css/sections/section5.css" />
-  <link rel="stylesheet" href="./css/sections/section6.css" />
-  <!-- 모바일 전용 스타일시트 -->
-  <link rel="stylesheet" href="./css/mobile-sections/index-mobile.css" media="(max-width: 768px)">
+  <!-- 공통 스타일 (사이트 루트 기준 절대경로) -->
+  <link rel="stylesheet" href="/css/tokens.css" />
+  <link rel="stylesheet" href="/css/global.css" />
+
+  <!-- PC 섹션 스타일 -->
+  <link rel="stylesheet" href="/css/pc-sections/section0.css" />
+  <link rel="stylesheet" href="/css/pc-sections/section1.css" />
+  <link rel="stylesheet" href="/css/pc-sections/section2.css" />
+  <link rel="stylesheet" href="/css/pc-sections/section3.css" />
+  <link rel="stylesheet" href="/css/pc-sections/section4.css" />
+  <link rel="stylesheet" href="/css/pc-sections/section5.css" />
+  <link rel="stylesheet" href="/css/pc-sections/section6.css" />
+
+  <!-- 모바일 스타일 (768px 이하에서만 적용) -->
+  <link rel="stylesheet" href="/css/mobile-sections/index-mobile.css" media="(max-width: 768px)" />
+  <link rel="stylesheet" href="/css/mobile-sections/mobile-section2.css" media="(max-width: 768px)" />
+  <link rel="stylesheet" href="/css/mobile-sections/mobile-section5.css" media="(max-width: 768px)" />
 </head>
 
 <body class="global-body">
@@ -50,7 +53,7 @@
     <div class="swiper mySwiper">
       <div class="swiper-wrapper">
 
-        <!-- [모바일 카드 1] 대문 (인트로) - 이미지 없이 텍스트만 -->
+        <!-- [모바일 카드 1] 인트로 -->
         <div class="swiper-slide card-slide">
           <div class="card-content full-text-card">
             <p class="card-date">MARCH 1, 1919</p>
@@ -67,13 +70,10 @@
             <p class="card-desc">1910년 경술국치 이후, 가혹한 무단통치 속에서도 조국의 빛을 되찾기 위한 열망은 꺼지지 않았습니다. 도쿄에서 들려온 2·8 독립선언의 메아리는 잠들어 있던 민중의 가슴에 뜨거운 불씨를 당겼습니다.</p>
 
             <div class="mobile-card-btns">
-              <!-- <a href="https://map.seoul.go.kr/smgis2/short/6PTM9" target="_blank" rel="noopener noreferrer" class="mobile-btn map-btn">스마트서울맵</a> -->
               <a href="https://encykorea.aks.ac.kr/Article/E0061926" target="_blank" rel="noopener noreferrer" class="mobile-btn ency-btn">한일병합조약</a>
               <a href="https://encykorea.aks.ac.kr/Article/E0003939" target="_blank" rel="noopener noreferrer" class="mobile-btn ency-btn">고종 황제의 붕어</a>
               <a href="https://contents.history.go.kr/mobile/tg/view.do?levelId=tg_004_1810" target="_blank" rel="noopener noreferrer" class="mobile-btn historynet-btn">민족 자결주의</a>
               <a href="https://contents.history.go.kr/mobile/kc/view.do?levelId=kc_i400110" target="_blank" rel="noopener noreferrer" class="mobile-btn historynet-btn">2.8 독립선언</a>
-              <!-- <a href="https://history.seoul.go.kr/" target="_blank" rel="noopener noreferrer" class="mobile-btn history-btn">역사편찬원</a> -->
-              <!-- <a href="https://db.history.go.kr/" target="_blank" rel="noopener noreferrer" class="mobile-btn nikh-btn">한국근대사료DB</a> -->
             </div>
           </div>
           <div class="card-image bg-history"></div>
@@ -88,15 +88,12 @@
 
             <div class="mobile-card-btns">
               <a href="https://map.seoul.go.kr/smgis2/short/6PTM9" target="_blank" rel="noopener noreferrer" class="mobile-btn map-btn">스마트서울맵</a>
-              <!-- <a href="https://encykorea.aks.ac.kr/" target="_blank" rel="noopener noreferrer" class="mobile-btn ency-btn">한국민족대백과사전</a> -->
-              <!-- <a href="https://contents.history.go.kr/" target="_blank" rel="noopener noreferrer" class="mobile-btn historynet-btn">우리역사넷</a> -->
               <a href="https://db.history.go.kr/modern/level.do?levelId=hdsr_003_0020_0040_0020" target="_blank" rel="noopener noreferrer" class="mobile-btn nikh-btn">한국근대사료DB</a>
-              <!-- <a href="https://history.seoul.go.kr/" target="_blank" rel="noopener noreferrer" class="mobile-btn history-btn">역사편찬원</a> -->
             </div>
           </div>
           <div class="mobile-timeline-scroll-area">
             <div id="mobile-s2-timeline" class="mobile-s2-timeline">
-              <!-- JavaScript를 통해 타임라인 데이터가 삽입됩니다. -->
+              <!-- mobile-sections/section2.js 렌더링 영역 -->
             </div>
           </div>
         </div>
@@ -110,10 +107,7 @@
 
             <div class="mobile-card-btns">
               <a href="https://map.seoul.go.kr/smgis2/short/6PTXI" target="_blank" rel="noopener noreferrer" class="mobile-btn map-btn">스마트서울맵</a>
-              <!-- <a href="https://encykorea.aks.ac.kr/" target="_blank" rel="noopener noreferrer" class="mobile-btn ency-btn">한국민족대백과사전</a> -->
-              <!-- <a href="https://contents.history.go.kr/" target="_blank" rel="noopener noreferrer" class="mobile-btn historynet-btn">우리역사넷</a> -->
               <a href="https://db.history.go.kr/modern/level.do?levelId=hdsr_003_0030_0010_0010" target="_blank" rel="noopener noreferrer" class="mobile-btn nikh-btn">한국근대사료DB</a>
-              <!-- <a href="https://history.seoul.go.kr/" target="_blank" rel="noopener noreferrer" class="mobile-btn history-btn">역사편찬원</a> -->
             </div>
           </div>
           <div class="card-image bg-map-capture-2"></div>
@@ -129,16 +123,12 @@
             <div class="mobile-card-btns">
               <a href="https://map.seoul.go.kr/smgis2/short/6PUjX" target="_blank" rel="noopener noreferrer" class="mobile-btn map-btn">스마트서울맵-시위장소</a>
               <a href="https://map.seoul.go.kr/smgis2/short/6PUiG" target="_blank" rel="noopener noreferrer" class="mobile-btn map-btn">스마트서울맵-중요지점</a>
-              <!-- <a href="https://encykorea.aks.ac.kr/" target="_blank" rel="noopener noreferrer" class="mobile-btn ency-btn">한국민족대백과사전</a> -->
-              <!-- <a href="https://contents.history.go.kr/" target="_blank" rel="noopener noreferrer" class="mobile-btn historynet-btn">우리역사넷</a> -->
-              <!-- <a href="https://db.history.go.kr/" target="_blank" rel="noopener noreferrer" class="mobile-btn nikh-btn">한국근대사료DB</a> -->
-              <!-- <a href="https://history.seoul.go.kr/" target="_blank" rel="noopener noreferrer" class="mobile-btn history-btn">역사편찬원</a> -->
             </div>
           </div>
           <div class="card-image bg-protest"></div>
         </div>
 
-        <!-- [모바일 카드 6] 독립의 별들 (지도 없이 2열 그리드 스크롤) -->
+        <!-- [모바일 카드 6] 독립의 별들 (인물 2열 그리드) -->
         <div class="swiper-slide card-slide">
           <div class="card-content">
             <p class="card-chapter">05. 독립의 별들</p>
@@ -147,21 +137,18 @@
 
             <div class="mobile-card-btns">
               <a href="https://map.seoul.go.kr/smgis2/short/6PTzT" target="_blank" rel="noopener noreferrer" class="mobile-btn map-btn">스마트서울맵</a>
-              <!-- <a href="https://encykorea.aks.ac.kr/" target="_blank" rel="noopener noreferrer" class="mobile-btn ency-btn">한국민족대백과사전</a> -->
-              <!-- <a href="https://contents.history.go.kr/" target="_blank" rel="noopener noreferrer" class="mobile-btn historynet-btn">우리역사넷</a> -->
               <a href="https://db.history.go.kr/modern/ia/level.do" target="_blank" rel="noopener noreferrer" class="mobile-btn nikh-btn">한국근대사료DB</a>
-              <!-- <a href="https://history.seoul.go.kr/" target="_blank" rel="noopener noreferrer" class="mobile-btn history-btn">역사편찬원</a> -->
             </div>
           </div>
 
-          <!-- 💡 기존 사진 대신: 스크롤 가능한 독립운동가 2열 그리드 영역 -->
+          <!-- mobile-sections/section5.js 렌더링 영역 -->
           <div class="mobile-activist-scroll-area">
             <div id="mobile-activist-grid" class="mobile-activist-grid">
             </div>
           </div>
         </div>
 
-        <!-- [모바일 카드 7] 남겨진 유산 (푸터 분리) -->
+        <!-- [모바일 카드 7] 남겨진 유산 -->
         <div class="swiper-slide card-slide">
           <div class="card-content legacy-content">
             <p class="card-chapter">06. 남겨진 유산</p>
@@ -169,17 +156,15 @@
             <p class="card-desc">3월의 붉은 함성은 당장의 광복을 가져오진 못했습니다. 하지만 백성이 주인이 되는 나라, '대한민국 임시정부'의 거대한 뿌리가 되어 오늘날 민주공화국의 굳건한 토대를 쌓아 올렸습니다.</p>
 
             <div class="mobile-card-btns">
-              <!-- <a href="https://map.seoul.go.kr/smgis2/short/6PTAR" target="_blank" rel="noopener noreferrer" class="mobile-btn map-btn">스마트서울맵</a> -->
               <a href="https://encykorea.aks.ac.kr/Article/E0026772" target="_blank" rel="noopener noreferrer" class="mobile-btn ency-btn">한국민족대백과사전</a>
               <a href="https://contents.history.go.kr/mobile/kc/view.do?levelId=kc_i400200" target="_blank" rel="noopener noreferrer" class="mobile-btn historynet-btn">우리역사넷</a>
               <a href="https://db.history.go.kr/modern/level.do?levelId=hdsr_003_0040_0030_0030" target="_blank" rel="noopener noreferrer" class="mobile-btn nikh-btn">한국근대사료DB</a>
-              <!-- <a href="https://history.seoul.go.kr/" target="_blank" rel="noopener noreferrer" class="mobile-btn history-btn">역사편찬원</a> -->
             </div>
           </div>
           <div class="card-image bg-legacy"></div>
         </div>
 
-        <!-- [모바일 카드 8] 푸터 - 이미지 없이 텍스트만 -->
+        <!-- [모바일 카드 8] 엔딩·출처 -->
         <div class="swiper-slide card-slide">
           <div class="card-content full-text-card">
             <h2 class="card-title-sub mobile-end-title">3·1운동</h2>
@@ -194,7 +179,7 @@
         </div>
 
       </div>
-      <!-- 하단 네비게이션 점 -->
+      <!-- Swiper 페이지네이션 -->
       <div class="swiper-pagination"></div>
     </div>
   </div>
@@ -205,7 +190,7 @@
        ============================================================== -->
   <div id="pc-story-container" class="pc-only">
 
-    <!-- [내비게이션] -->
+    <!-- [우측 챕터 dot 내비게이션] js/utils/uiUtils.js 연동 -->
     <nav class="global-dot-nav" aria-label="챕터 이동">
       <button type="button" class="global-dot" data-target-section="0" data-label="인트로" aria-label="인트로"></button>
       <button type="button" class="global-dot" data-target-section="1" data-label="01 시대의 부름" aria-label="01 시대의 부름"></button>
@@ -216,13 +201,11 @@
       <button type="button" class="global-dot" data-target-section="6" data-label="06 남겨진 유산" aria-label="06 남겨진 유산"></button>
     </nav>
 
-    <!-- [섹션 0: 인트로/히어로 영역] -->
+    <!-- [섹션 0: 인트로] -->
     <section data-section="0" class="story-section scroll-section" id="section-0">
-      <!-- <div class="intro-source-text">[기미독립선언서] 한국민족문화대백과사전</div> -->
-      <img src="./assets/images/역사편찬원/독립선언서.jpg" alt="" class="intro-bg-doc" decoding="async" fetchpriority="low" aria-hidden="true">
+      <img src="/assets/images/history/march-first-walk/declaration-of-independence.jpg" alt="" class="intro-bg-doc" decoding="async" fetchpriority="low" aria-hidden="true">
 
-      <!-- <div class="intro-source-text-right">[서울 진관사 태극기] 국가유산포털</div> -->
-      <img src="./assets/images/역사편찬원/진관사태극기.jpg" alt="" class="intro-bg-flag" decoding="async" fetchpriority="low" aria-hidden="true">
+      <img src="/assets/images/history/march-first-walk/jingwansa-taegeukgi.jpg" alt="" class="intro-bg-flag" decoding="async" fetchpriority="low" aria-hidden="true">
 
       <div class="sc0-hero-texture" aria-hidden="true"></div>
       <div class="sc0-hero-ring" aria-hidden="true"></div>
@@ -240,7 +223,7 @@
       <a class="sc0-scroll-cue" href="#section-1">Scroll</a>
     </section>
 
-    <!-- [섹션 1: 시대적 배경] -->
+    <!-- [섹션 1: 시대의 부름] 지도 4개 자동 슬라이더 -->
     <section data-section="1" class="story-section scroll-section" id="section-1">
       <header class="story-header sc1-intro-header">
         <div class="story-header-bg" aria-hidden="true"></div>
@@ -369,7 +352,7 @@
       </div>
     </section>
 
-    <!-- [섹션 2: 거사의 준비] -->
+    <!-- [섹션 2: 거사의 맹세] 스크롤 연동 타임라인 (카드·내비 JS 렌더링) -->
     <section data-section="2" class="story-section scroll-section" id="section-2">
       <header class="story-header">
         <div class="story-header-bg" aria-hidden="true"></div>
@@ -402,7 +385,7 @@
       </div>
     </section>
 
-    <!-- [섹션 3: 3.1운동의 확산] -->
+    <!-- [섹션 3: 함성의 궤적] 시위 경로 라인 (카드·내비 JS 렌더링) -->
     <section data-section="3" class="story-section scroll-section" id="section-3">
       <header class="story-header">
         <div class="story-header-bg" aria-hidden="true"></div>
@@ -435,7 +418,7 @@
       </div>
     </section>
 
-    <!-- [섹션 4: 역사의 현장] -->
+    <!-- [섹션 4: 역사의 현장] 필터 지도 -->
     <section data-section="4" class="story-section scroll-section" id="section-4">
       <header class="story-header sc4-header">
         <div class="story-header-bg" aria-hidden="true"></div>
@@ -451,23 +434,21 @@
         </div>
       </header>
 
-      <!-- [수정됨] 인트로 화면을 없애고 맵 뷰 안에 플로팅 패널로 통합 -->
       <div class="sc4-map-view">
         <div id="map-s4" class="sc4-map-container"></div>
         <button type="button" class="sc4-reset-btn" id="sc4-reset-btn"><svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
           </svg><span>전체 보기</span></button>
 
-        <!-- 인트로 + 범례 결합형 플로팅 UI -->
+        <!-- 플로팅 범례: 헤더 클릭 시 레이어 필터 ON/OFF -->
         <div class="sc4-floating-legend sc4-reveal">
           <div class="sc4-legend-header">
             <h2 class="sc4-legend-title">저항의 물결, 만세의 확산</h2>
             <p class="sc4-legend-subtitle">아래 카드를 클릭하여 지도의 마커를 필터링해 보세요.</p>
           </div>
 
-          <!-- JS와 연동되는 필터 리스트 (li 태그 사용) -->
           <ul class="sc4-intro-cols" id="sc4-filter-list">
-            <!-- 첫 번째 카드: 핵심 거점 -->
+            <!-- 중요 지점 (COT_THEME_SUB_ID 4) -->
             <li class="sc4-col hub-card active" data-filter="hub">
               <div class="sc4-col-header" tabindex="0" role="button">
                 <h3 class="sc4-col-title">
@@ -480,7 +461,7 @@
               <ul class="sc4-loc-list" id="sc4-hub-list"></ul>
             </li>
 
-            <!-- 두 번째 카드: 시위 현장 -->
+            <!-- 시위 장소 (COT_THEME_SUB_ID 3) -->
             <li class="sc4-col site-card active" data-filter="site">
               <div class="sc4-col-header" tabindex="0" role="button">
                 <h3 class="sc4-col-title">
@@ -497,7 +478,7 @@
       </div>
     </section>
 
-    <!-- [섹션 5: 독립의 별들] -->
+    <!-- [섹션 5: 독립의 별들] 인물 지도 + 캐러셀 -->
     <section data-section="5" class="story-section scroll-section" id="section-5">
       <header class="story-header sc5-header">
         <div class="story-header-bg" aria-hidden="true"></div>
@@ -519,10 +500,9 @@
             <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
           </svg><span>전체 보기</span></button>
 
-        <!-- 💡 검색 버튼과 캐러셀 영역을 하나로 묶었습니다. -->
         <div class="sc5-carousel-wrapper sc5-reveal">
 
-          <!-- [이동됨] 왼쪽 화살표 버튼 위로 갈 검색 영역 -->
+          <!-- 초성·이름 검색 패널 -->
           <div class="sc5-search-wrapper">
             <button type="button" class="sc5-search-toggle" id="sc5-search-toggle" aria-controls="sc5-search-panel"><svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
                 <circle cx="11" cy="11" r="7" />
@@ -550,7 +530,7 @@
             </div>
           </div>
 
-          <!-- 기존 하단 카드 슬라이드 조작부 -->
+          <!-- 인물 카드 캐러셀 (JS 렌더링) -->
           <button type="button" class="sc5-nav-btn prev" id="sc5-btn-prev" aria-label="이전 인물"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="m15 18-6-6 6-6" />
             </svg></button>
@@ -582,23 +562,19 @@
       <div class="sc6-content-wrap">
         <div class="sc6-inner-container">
 
-          <!-- 💡 카드 클릭 안내 문구 추가 -->
           <p class="sc6-instruction sc6-reveal">아래 카드를 클릭하여 3·1운동의 자세한 역사적 의의를 확인해 보세요.</p>
 
-          <!-- 사료 기반 핵심 3대 의의 카드 (심플 버전) -->
+          <!-- 의의 카드 3종 (상세 내용: js/pc-sections/section6.js) -->
           <div class="sc6-card-grid">
-            <!-- 01 -->
             <div class="sc6-card sc6-reveal" tabindex="0" role="button">
               <span class="sc6-card-num">01</span>
               <h3 class="sc6-card-title">문화통치로의 전환</h3>
               <p class="sc6-card-en">Shift to Cultural Rule</p>
 
-              <!-- 💡 마우스 호버 시 나타나는 어두운 오버레이 -->
               <div class="sc6-card-overlay" aria-hidden="true">
                 <span>클릭하여 상세 정보 보기</span>
               </div>
             </div>
-            <!-- 02 -->
             <div class="sc6-card sc6-reveal" tabindex="0" role="button">
               <span class="sc6-card-num">02</span>
               <h3 class="sc6-card-title">대한민국 임시정부 수립</h3>
@@ -608,7 +584,6 @@
                 <span>클릭하여 상세 정보 보기</span>
               </div>
             </div>
-            <!-- 03 -->
             <div class="sc6-card sc6-reveal" tabindex="0" role="button">
               <span class="sc6-card-num">03</span>
               <h3 class="sc6-card-title">사상 및 경제사적 의의</h3>
@@ -672,10 +647,9 @@
   <!-- ==============================================================
        [자바스크립트 로드 영역]
        ============================================================== -->
-  <script src="./api/config.js"></script>
-  <!-- Swiper.js JS 로드 -->
+  <script src="/api/config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-  <script type="module" src="./js/index.js"></script>
+  <script type="module" src="/js/index.js"></script>
 
 </body>
 

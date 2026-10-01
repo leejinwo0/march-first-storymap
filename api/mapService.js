@@ -40,13 +40,12 @@ function transformToGeoJSON(apiData) {
         const parsedPath = JSON.parse(item.COT_COORD_DATA);
 
         if (Array.isArray(parsedPath) && parsedPath.length > 0) {
-          // 💡 수정된 부분: 배열 안의 첫 번째 요소가 배열인지 확인하여 '선'과 '점'을 정확히 구분합니다.
+          // 첫 요소가 배열이면 LineString(경로), 아니면 Point(단일 좌표)
           if (Array.isArray(parsedPath[0])) {
             geomType = "LineString";
             coords = parsedPath;
           } else {
             geomType = "Point";
-            // 점 데이터일 경우 기본 좌표값을 그대로 사용
           }
         }
       } catch (e) {

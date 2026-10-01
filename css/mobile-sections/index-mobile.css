@@ -1,15 +1,10 @@
 @charset "utf-8";
-@import './mobile-section2.css';
-@import './mobile-section5.css';
 
 /* =======================================================
    Mobile (≤768px) · 카드형 스와이프 UI
+   - index.html에서 media="(max-width: 768px)" 조건부 로드
+   - .mobile-only 기본 숨김 규칙: global.css
 ======================================================= */
-
-/* PC/모바일 컨테이너 전환 */
-.mobile-only {
-  display: none;
-}
 
 @media (max-width: 768px) {
   .pc-only {
@@ -199,19 +194,19 @@
    카드 배경 이미지
 ======================================================= */
 .bg-history {
-  background-image: url("../assets/images/mobile_cards/mobile_card2.png");
+  background-image: url("/assets/images/mobile-cards/mobile-card2.png");
 }
 
 .bg-map-capture-2 {
-  background-image: url("../assets/images/mobile_cards/mobile_card4.png");
+  background-image: url("/assets/images/mobile-cards/mobile-card4.png");
 }
 
 .bg-protest {
-  background-image: url("../assets/images/mobile_cards/mobile_card5.png");
+  background-image: url("/assets/images/mobile-cards/mobile-card5.png");
 }
 
 .bg-legacy {
-  background-image: url("../assets/images/mobile_cards/mobile_card7.png");
+  background-image: url("/assets/images/mobile-cards/mobile-card7.png");
 }
 
 /* =======================================================
@@ -287,4 +282,14 @@
 .mobile-btn.history-btn:hover,
 .mobile-btn.history-btn:active {
   color: var(--black);
+}
+
+/* =======================================================
+   데이터 로드 실패 안내 (JS 생성: 타임라인·인물 그리드 공용)
+======================================================= */
+.mobile-empty-msg {
+  grid-column: 1 / -1;
+  margin-top: var(--space-8);
+  color: var(--text-tertiary);
+  text-align: center;
 }

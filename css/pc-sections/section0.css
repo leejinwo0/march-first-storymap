@@ -61,13 +61,6 @@
   border: 1px solid rgba(var(--gold-rgb), 0.12);
 }
 
-/* .sc0-hero-ring::after {
-  inset: 22%;
-  background: conic-gradient(from 25deg, rgba(var(--red-rgb), 0.78), transparent 42%, rgba(var(--navy-rgb), 0.62), transparent 82%, rgba(var(--red-rgb), 0.78));
-  filter: blur(1px);
-  opacity: 0.45;
-} */
-
 /* 배경 사료 이미지 (기미독립선언서 / 진관사 태극기) */
 .intro-bg-doc,
 .intro-bg-flag {
@@ -93,26 +86,6 @@
   transform: translateY(-50%) rotate(6deg);
   opacity: 0.08;
 }
-
-/* 이미지 출처 표기
-.intro-source-text,
-.intro-source-text-right {
-  position: absolute;
-  bottom: var(--space-8);
-  z-index: var(--z-content);
-  color: rgba(var(--white-rgb), 0.4);
-  font-size: var(--fs-xs);
-  letter-spacing: 0.02em;
-  pointer-events: none;
-}
-
-.intro-source-text {
-  left: var(--space-10);
-}
-
-.intro-source-text-right {
-  right: var(--space-10);
-} */
 
 .sc0-hero-content {
   position: relative;

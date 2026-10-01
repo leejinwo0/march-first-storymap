@@ -1,5 +1,3 @@
-// js/utils/mapUtils.js
-
 /* =======================================================
    1. 스마트서울맵 OpenAPI V5 동적 로드 (Leaflet 확장팩)
 ======================================================= */
@@ -39,7 +37,7 @@ export function loadSeoulMapAPI() {
 /* =======================================================
    2. 지도 전환(일반/위성 등) 컨트롤 생성
 ======================================================= */
-// 💡 secondaryLabel 파라미터를 추가하여 버튼 글씨를 자유롭게 바꿀 수 있게 만들었습니다. (기본값: '위성지도')
+// secondaryLabel: 보조 레이어 버튼 라벨 (기본값 '위성지도')
 export function addMapToggleControl(map, baseMapLayer, secondaryMapLayer, secondaryLabel = '위성지도') {
   const ToggleControl = L.Control.extend({
     options: { position: 'topright' },

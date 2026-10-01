@@ -1,13 +1,17 @@
-import { fetchTimeTravelData, MAP_ENDPOINTS, HISTORICAL_MAPS } from '../../api/mapService.js';
-import { addMapToggleControl, generateCurvedPath } from '../utils/mapUtils.js';
+import { fetchTimeTravelData, MAP_ENDPOINTS, HISTORICAL_MAPS } from '/api/mapService.js';
+import { addMapToggleControl, generateCurvedPath } from '/js/utils/mapUtils.js';
 
+/* =======================================================
+   Section 2: 거사의 맹세 (스크롤 연동 타임라인)
+   - .sc2-scroll-step 진입 시 카드 내용·마커·경로선 갱신
+======================================================= */
 export async function initSection2() {
   const mapContainer = document.getElementById('map-s2');
   if (!mapContainer) return;
 
   const defaultCenter = [37.5759, 126.9850];
 
-  // 💡 초기 줌 레벨을 일반지도에 맞게 10으로 설정합니다.
+  // 초기 줌 10: 일반지도 기준
   const mapS2 = L.map('map-s2', {
     zoomControl: false,
     scrollWheelZoom: false,
@@ -28,7 +32,7 @@ export async function initSection2() {
   baseMapS2.addTo(mapS2);
   addMapToggleControl(mapS2, baseMapS2, gyeongseongMapS2, '경성대지도');
 
-  // 💡 지도 전환 버튼을 누를 때마다 줌 레벨을 자동으로 +1, -1 보정해주는 핵심 로직
+  // 지도 전환 시 줌 보정: 경성대지도(WMS)와 일반지도 간 축척 차이 1단계 보정
   mapS2.on('layeradd', (e) => {
     if (e.layer === gyeongseongMapS2) {
       mapS2.setZoom(mapS2.getZoom(), { animate: false });
@@ -38,7 +42,7 @@ export async function initSection2() {
     }
   });
 
-  // 💡 현재 켜진 지도에 따라 타겟 줌 레벨을 동적으로 반환하는 함수
+  // 현재 레이어 기준 기본 줌 / 확대 줌 반환
   const getDefaultZoom = () => mapS2.hasLayer(gyeongseongMapS2) ? 9 : 10;
   const getTargetZoom = () => mapS2.hasLayer(gyeongseongMapS2) ? 11 : 12;
 
@@ -52,6 +56,7 @@ export async function initSection2() {
   try {
     const geojsonData = await fetchTimeTravelData();
 
+    // 타임라인 표시 순서 (테마 콘텐츠 ID, mobile-sections/section2.js와 동일)
     const targetIds = [
       "start_01", "start_02", "start_03", "start_04", "start_08",
       "start_05", "start_09", "start_07", "start_13"
@@ -69,6 +74,7 @@ export async function initSection2() {
         if (finalImgUrl && !finalImgUrl.startsWith("http")) {
           finalImgUrl = "https://map.seoul.go.kr" + (finalImgUrl.startsWith("/") ? "" : "/") + finalImgUrl;
         }
+        // http 이미지 → 이미지 프록시(weserv) 경유 (HTTPS 페이지 혼합 콘텐츠 차단 회피)
         if (finalImgUrl.startsWith("http://")) {
           finalImgUrl = "https://images.weserv.nl/?url=" + encodeURIComponent(finalImgUrl);
         }
@@ -148,7 +154,7 @@ export async function initSection2() {
 
       cardContent.classList.add('fade-out');
       setTimeout(() => {
-        // 💡 수정된 부분: 이미지 로드 실패 시 최대 3번까지 재시도 후 숨김 처리
+        // 이미지 로드 실패(404 등) 시 onerror로 img 숨김 처리
         const imageHTML = item.imgUrl ? `<img src="${item.imgUrl}" alt="${item.title}" class="sc2-item-img" onerror="this.style.display='none';">` : "";
         const mapLink = `https://map.seoul.go.kr/smgis2/poiViewMap?ti=11100550&pi=${item.poiId}&lang=ko`;
         const sajeokLink = `http://sajeok.i815.or.kr/i815/search_list?keyword=${encodeURIComponent(item.title)}`;
@@ -191,7 +197,7 @@ export async function initSection2() {
 
       const popupContent = `
         <div class="sc2-popup-inner sc2-popup-mini">
-          <h4 class="sc2-pop-title" style="margin-bottom:0; border:none; padding-bottom:0; white-space:nowrap; color:#ffffff;">${loc.label}</h4>
+          <h4 class="sc2-pop-title">${loc.label}</h4>
         </div>
       `;
 
@@ -212,7 +218,7 @@ export async function initSection2() {
         setTimeout(() => { marker.openPopup(); }, 10);
 
         let targetZoom;
-        // 💡 동적 줌 레벨 적용
+        // 같은 마커 재클릭 시 기본 줌 복귀, 그 외 확대 줌 적용
         if (mapS2.getZoom() > getDefaultZoom() && currentCardId === loc.id) {
           targetZoom = getDefaultZoom();
         } else {
@@ -220,6 +226,7 @@ export async function initSection2() {
         }
 
         const targetPoint = mapS2.project(loc.pos, targetZoom);
+        // PC: 좌측 고정 카드 영역에 마커가 가려지지 않도록 X축 오프셋 적용
         targetPoint.x -= (window.innerWidth <= 768 ? 0 : 350);
 
         mapS2.setView(mapS2.unproject(targetPoint, targetZoom), targetZoom, { animate: true, duration: 0.8 });
@@ -233,6 +240,7 @@ export async function initSection2() {
     const initialCoords = targetIds.map(id => locationsS2.find(l => l.id === id)?.pos).filter(Boolean);
     pathLine.setLatLngs(generateCurvedPath(initialCoords));
 
+    // 스크롤 스텝 진입 감지 → 카드·마커 상태·경로선 갱신 (마커 클릭 이동 중에는 panTo 생략)
     const markerObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {

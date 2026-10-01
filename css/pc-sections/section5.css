@@ -230,7 +230,7 @@
 .sc5-custom-pin {
   width: 100%;
   height: 100%;
-  background: url("../../assets/images/marker_theme_100173_5.png") center bottom / contain no-repeat;
+  background: url("/assets/images/markers/marker-theme-100173-5.png") center bottom / contain no-repeat;
   filter: drop-shadow(0 3px 4px rgba(var(--black-rgb), 0.5));
 }
 
@@ -299,4 +299,12 @@
   color: rgba(var(--white-rgb), 0.9);
   font-size: var(--fs-sm);
   line-height: 1.5;
+}
+
+/* 상세 정보 로딩 문구 (JS 생성) */
+.sc5-pop-info-list .sc5-pop-loading,
+.sc5-pop-loading {
+  padding: var(--space-3) 0;
+  color: var(--text-tertiary);
+  text-align: center;
 }

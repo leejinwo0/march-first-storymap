@@ -1,5 +1,8 @@
+/* =======================================================
+   Section 6: 남겨진 유산 (의의 카드 + 상세 모달)
+======================================================= */
 export function initSection6() {
-  // 1. 기존 스크롤 등장 애니메이션 유지
+  // 1. 스크롤 등장 애니메이션 (.sc6-reveal → .active)
   const sc6RevealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) entry.target.classList.add('active');
@@ -8,7 +11,7 @@ export function initSection6() {
 
   document.querySelectorAll('.sc6-reveal').forEach(el => sc6RevealObserver.observe(el));
 
-  // 2. 모달(팝업창) 동적 생성 및 body에 추가 (백과사전 링크 포함)
+  // 2. 상세 모달 마크업 동적 생성 (body 하단 삽입)
   const modalHTML = `
     <div id="sc6-modal" class="sc6-modal-overlay">
       <div class="sc6-modal-container">
@@ -21,7 +24,6 @@ export function initSection6() {
         <div class="sc6-modal-body">
           <p id="sc6-modal-desc">상세 내용이 들어갑니다.</p>
           
-          <!-- 💡 한국민족문화대백과사전 외부 링크 버튼 -->
           <a href="https://encykorea.aks.ac.kr/Article/E0026772" target="_blank" class="sc6-modal-link">
             한국민족문화대백과사전 원문 보기 ↗
           </a>
@@ -38,7 +40,7 @@ export function initSection6() {
   const modalEn = document.getElementById('sc6-modal-en');
   const modalDesc = document.getElementById('sc6-modal-desc');
 
-  // 3. 팝업창에 들어갈 각 카드별 상세 내용 (한국민족문화대백과사전 원문 반영)
+  // 3. 카드별 상세 내용 (출처: 한국민족문화대백과사전, 카드 순서와 인덱스 일치)
   const expandedDetails = [
     // 01. 문화통치로의 전환
     "일본은 군사력에 의한 무단통치로는 이 운동의 뿌리를 뽑을 수도 없고, 국제 외교상의 비난을 면하기 위해서라도 어떤 조처가 필요함을 느꼈습니다. 그리하여 이른바 '문화통치'로 한국인을 기만하여 식민통치의 목적을 달성하고자, 총독의 자격을 무관에서 문관으로 바꾸고 제복과 패검 폐지, 보통경찰제 도입, 태형제도 폐지 등을 단행하였습니다.",
@@ -50,39 +52,35 @@ export function initSection6() {
     "사상사적 측면에서 독립선언서 등에 자주독립의 사상을 명시하였고, 자유평등·민주주의·애국·애족·인도주의를 곁들인 신사상의 출현을 가져왔습니다. 경제사적으로도 물산장려운동, 국산품애용운동 등 경제적 자립을 꾀하는 운동이 계속되어 민족기업을 건설하려는 운동으로까지 확대되었으며, 이는 전국적으로 확대되어 한국경제사의 내재적 발전의 원동력이 되었습니다."
   ];
 
-  // 4. 각 카드에 클릭 이벤트 연결
+  // 4. 카드 클릭 → 카드 텍스트 + 상세 내용 모달 표시
   const cards = document.querySelectorAll('.sc6-card');
   cards.forEach((card, index) => {
-    // 마우스를 올렸을 때 클릭 가능하다는 표시(포인터) 추가
     card.style.cursor = 'pointer';
 
     card.addEventListener('click', () => {
-      // HTML에서 카드 정보 추출
       const num = card.querySelector('.sc6-card-num').textContent;
       const title = card.querySelector('.sc6-card-title').textContent;
       const en = card.querySelector('.sc6-card-en').textContent;
 
-      // 모달에 정보 덮어쓰기
       modalNum.textContent = num;
       modalTitle.textContent = title;
       modalEn.textContent = en;
       modalDesc.textContent = expandedDetails[index] || "상세 내용이 없습니다.";
 
-      // 모달 열기 및 뒷배경 스크롤 방지
+      // 모달 열림 동안 배경 스크롤 잠금
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
     });
   });
 
-  // 5. 모달 닫기 로직
+  // 5. 모달 닫기 (닫기 버튼 / 배경 클릭)
   const closeModal = () => {
     modal.classList.remove('active');
-    document.body.style.overflow = ''; // 스크롤 복구
+    document.body.style.overflow = '';
   };
 
   modalClose.addEventListener('click', closeModal);
 
-  // 모달 뒷배경 클릭 시 닫기
   modal.addEventListener('click', (e) => {
     if (e.target === modal) closeModal();
   });

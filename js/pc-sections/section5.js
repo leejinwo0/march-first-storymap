@@ -1,7 +1,11 @@
-import { fetchDailyLifeData, MAP_ENDPOINTS, HISTORICAL_MAPS } from '../../api/mapService.js';
-import { addMapToggleControl } from '../utils/mapUtils.js';
-import { getInitialConsonant } from '../utils/uiUtils.js';
+import { fetchDailyLifeData, MAP_ENDPOINTS, HISTORICAL_MAPS } from '/api/mapService.js';
+import { addMapToggleControl } from '/js/utils/mapUtils.js';
+import { getInitialConsonant } from '/js/utils/uiUtils.js';
 
+/* =======================================================
+   Section 5: 독립의 별들 (인물 지도 + 하단 캐러셀 + 초성 검색)
+   - 대상: 생활 속 현장 테마(100173) 중 COT_THEME_SUB_ID '5'
+======================================================= */
 export async function initSection5() {
   const mapContainer = document.getElementById('map-s5');
   if (!mapContainer) return;
@@ -88,13 +92,13 @@ export async function initSection5() {
         historyUrl = historyUrl.replace("http://", "https://");
       }
 
-      // 💡 1. 초기 팝업창은 로딩 상태로 만들어 둡니다.
+      // 1. 초기 팝업: 로딩 상태 (상세 API는 첫 클릭 시 1회 호출)
       const initialPopupContent = `
         <div class="sc5-popup-inner">
           <h3>${name}</h3>
           <span class="sc5-pop-addr">${shortAddr}</span>
           <div class="sc5-pop-desc">
-            <div class="info-row" style="padding: 10px 0; text-align: center; color: #888;">
+            <div class="info-row sc5-pop-loading">
               상세 정보를 불러오는 중입니다...
             </div>
           </div>
@@ -107,14 +111,13 @@ export async function initSection5() {
 
       marker.bindPopup(initialPopupContent, { offset: [0, -35], className: 'sc5-leaflet-popup', autoPan: false });
 
-      let isDetailLoaded = false; // 데이터를 한 번만 불러오기 위한 플래그
+      let isDetailLoaded = false; // 상세 API 중복 호출 방지 플래그
 
-      // 💡 2. 클릭 시 실행되는 함수 (비동기 async 추가)
+      // 2. 카드·마커 클릭 공용 토글 (선택 시 확대 + 상세 로드 / 재클릭 시 초기 시점 복귀)
       const activateItem = async () => {
         const isAlreadyActive = card.classList.contains('active');
 
         if (isAlreadyActive) {
-          // 이미 켜져있다면 줌아웃(끄기)
           card.classList.remove('active');
           mapS5.closePopup();
 
@@ -127,7 +130,6 @@ export async function initSection5() {
             });
           }
         } else {
-          // 안 켜져있다면 줌인(켜기) 및 팝업 열기
           document.querySelectorAll('.sc5-card').forEach(c => c.classList.remove('active'));
           card.classList.add('active');
           marker.openPopup();
@@ -138,10 +140,10 @@ export async function initSection5() {
           targetPoint.y -= 60;
           mapS5.setView(mapS5.unproject(targetPoint, targetZoom), targetZoom, { animate: true });
 
-          // 💡 3. 상세 정보 API 호출 로직 (아직 로드되지 않았을 경우에만)
+          // 3. 상세 정보 API 호출 (최초 1회)
           if (!isDetailLoaded && poiId) {
             try {
-              // 기존 MAP_ENDPOINTS에서 API 키가 포함된 기본 주소 추출
+              // 테마 API URL에서 키 포함 기본 경로 추출 후 detail 엔드포인트 구성
               const baseUrl = MAP_ENDPOINTS.themeData_100173.split('/public/')[0];
               const detailApiUrl = `${baseUrl}/public/themes/contents/detail?theme_id=100173&conts_id=${poiId}`;
 
@@ -149,9 +151,9 @@ export async function initSection5() {
               const detailData = await response.json();
 
               if (detailData && detailData.body && detailData.body.length > 0) {
-                const dProps = detailData.body[0]; // 상세 API에서 받아온 프로퍼티
+                const dProps = detailData.body[0];
 
-                // 상세 정보 추출기
+                // NAME_xx 라벨 매칭 → 대응 VALUE_xx 반환, 미매칭 시 COT_VALUE_xx 직접 조회
                 const getSafeValue = (labelKw, directCotKey) => {
                   for (const key in dProps) {
                     if (key.includes('NAME_')) {
@@ -172,7 +174,7 @@ export async function initSection5() {
                 const pangyul = getSafeValue("판결날", "COT_VALUE_04");
                 const joemyung = getSafeValue("죄명", "COT_VALUE_05");
 
-                // 💡 4. 데이터를 덮어씌운 새로운 팝업 HTML 생성
+                // 4. 상세 정보 반영 팝업 생성
                 const updatedPopupContent = `
                   <div class="sc5-popup-inner">
                     <h3>${name}</h3>
@@ -192,7 +194,6 @@ export async function initSection5() {
                   </div>
                 `;
 
-                // 팝업 내용 업데이트 및 로드 완료 처리
                 marker.setPopupContent(updatedPopupContent);
                 isDetailLoaded = true;
               }

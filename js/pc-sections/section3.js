@@ -1,11 +1,14 @@
-// 💡 1. HISTORICAL_MAPS 임포트 추가
 import {
   fetchTimeTravelData,
   MAP_ENDPOINTS,
   HISTORICAL_MAPS,
-} from "../../api/mapService.js";
-import { addMapToggleControl } from "../utils/mapUtils.js";
+} from "/api/mapService.js";
+import { addMapToggleControl } from "/js/utils/mapUtils.js";
 
+/* =======================================================
+   Section 3: 함성의 궤적 (시위 경로 라인)
+   - 활성 경로: 빨간 점선 + dash 애니메이션 / 비활성 경로: 반투명 처리
+======================================================= */
 export async function initSection3() {
   const mapContainer = document.getElementById("map-s3");
   if (!mapContainer) return;
@@ -20,7 +23,6 @@ export async function initSection3() {
     { minZoom: 1, maxZoom: 15 },
   );
 
-  // 💡 2. 위성지도 대신 WMS 경성대지도 레이어 생성
   const gyeongseongMapS3 = L.tileLayer.wms(HISTORICAL_MAPS.wmsUrl, {
     layers: HISTORICAL_MAPS.gyeongseong,
     format: "image/png",
@@ -31,12 +33,12 @@ export async function initSection3() {
 
   baseMapS3.addTo(mapS3);
 
-  // 💡 3. 토글 컨트롤에 경성대지도를 연결하고, 버튼 텍스트도 '경성대지도'로 변경
   addMapToggleControl(mapS3, baseMapS3, gyeongseongMapS3, "경성대지도");
 
   let activeMarkers = [];
   const routeLayers = {};
 
+  // 스텝 구성: 그룹 ID → 테마 콘텐츠 ID(경로 데이터)
   const sc3Groups = [
     { id: "east-1", targetIds: ["22"] },
     { id: "east-2", targetIds: ["14"] },
@@ -84,9 +86,10 @@ export async function initSection3() {
       mapS3.invalidateSize();
       const isMobile = window.innerWidth <= 768;
       mapS3.fitBounds(allBounds, {
+        // PC 좌측 padding 730px: 고정 카드 영역 제외 후 전체 경로 맞춤
         paddingTopLeft: isMobile ? [30, 30] : [730, 50],
         paddingBottomRight: isMobile ? [30, 150] : [50, 50],
-        // 💡 4. 까만 화면(이미지 깨짐)을 방지하기 위해 최대 줌 레벨을 13 -> 11로 낮췄습니다.
+        // maxZoom 11: 상위 줌에서 경성대지도 타일 미제공(검은 화면) 방지
         maxZoom: 11,
       });
     }, 500);
