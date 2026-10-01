@@ -41,6 +41,8 @@
   <!-- 모바일 스타일 (768px 이하에서만 적용) -->
   <link rel="stylesheet" href="/css/mobile-sections/index-mobile.css" media="(max-width: 768px)" />
   <link rel="stylesheet" href="/css/mobile-sections/mobile-section2.css" media="(max-width: 768px)" />
+  <link rel="stylesheet" href="/css/mobile-sections/mobile-section3.css" media="(max-width: 768px)" />
+  <link rel="stylesheet" href="/css/mobile-sections/mobile-section4.css" media="(max-width: 768px)" />
   <link rel="stylesheet" href="/css/mobile-sections/mobile-section5.css" media="(max-width: 768px)" />
 </head>
 
@@ -110,7 +112,10 @@
               <a href="https://db.history.go.kr/modern/level.do?levelId=hdsr_003_0030_0010_0010" target="_blank" rel="noopener noreferrer" class="mobile-btn nikh-btn">한국근대사료DB</a>
             </div>
           </div>
-          <div class="card-image bg-map-capture-2"></div>
+          <!-- mobile-sections/section3.js 렌더링 영역 -->
+          <div class="mobile-route-scroll-area">
+            <div id="mobile-s3-routes" class="mobile-s3-routes"></div>
+          </div>
         </div>
 
         <!-- [모바일 카드 5] 역사의 현장 -->
@@ -125,7 +130,14 @@
               <a href="https://map.seoul.go.kr/smgis2/short/6PUiG" target="_blank" rel="noopener noreferrer" class="mobile-btn map-btn">스마트서울맵-중요지점</a>
             </div>
           </div>
-          <div class="card-image bg-protest"></div>
+          <!-- mobile-sections/section4.js 렌더링 영역 -->
+          <div class="mobile-place-scroll-area">
+            <div class="mobile-place-tabs" role="tablist" aria-label="장소 분류">
+              <button type="button" class="mobile-place-tab" role="tab" data-filter="hub" aria-selected="true">중요 지점 <span class="mobile-place-count">-</span></button>
+              <button type="button" class="mobile-place-tab" role="tab" data-filter="site" aria-selected="false">시위 장소 <span class="mobile-place-count">-</span></button>
+            </div>
+            <ul id="mobile-s4-list" class="mobile-place-list"></ul>
+          </div>
         </div>
 
         <!-- [모바일 카드 6] 독립의 별들 (인물 2열 그리드) -->

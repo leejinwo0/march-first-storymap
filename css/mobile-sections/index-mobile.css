@@ -58,6 +58,8 @@
 
   .card-image,
   .mobile-timeline-scroll-area,
+  .mobile-route-scroll-area,
+  .mobile-place-scroll-area,
   .mobile-activist-scroll-area {
     flex: 1.2 1 0;
     min-height: 0;
@@ -195,14 +197,6 @@
 ======================================================= */
 .bg-history {
   background-image: url("/assets/images/mobile-cards/mobile-card2.png");
-}
-
-.bg-map-capture-2 {
-  background-image: url("/assets/images/mobile-cards/mobile-card4.png");
-}
-
-.bg-protest {
-  background-image: url("/assets/images/mobile-cards/mobile-card5.png");
 }
 
 .bg-legacy {
