@@ -45,52 +45,67 @@
   }
 
   .card-content {
-    flex: 1 1 0;
+    flex: 0 0 max(30%, 300px);
     min-height: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: calc(var(--space-8) + env(safe-area-inset-top)) var(--space-6) var(--space-6);
+    justify-content: flex-start;
+    padding: calc(var(--space-8) + env(safe-area-inset-top)) var(--space-6) var(--space-5);
     background-color: var(--surface);
     color: var(--cream);
     overflow-y: auto;
   }
 
-  .card-image,
+  /* 카드 하단 콘텐츠 영역 (JS 렌더링 목록) */
+  .mobile-s1-scroll-area,
   .mobile-timeline-scroll-area,
   .mobile-route-scroll-area,
   .mobile-place-scroll-area,
-  .mobile-activist-scroll-area {
-    flex: 1.2 1 0;
+  .mobile-activist-scroll-area,
+  .mobile-s6-scroll-area {
+    flex: 1 1 0;
     min-height: 0;
     background-color: var(--bg-base);
   }
 
-  .card-image {
+  /* ---------- 스마트서울맵 바로가기 (카드 우측 상단) ---------- */
+  .card-content {
     position: relative;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
   }
 
-  /* 텍스트 영역과 이미지 경계 그라데이션 */
-  .card-image::before {
-    content: "";
+  .mobile-map-links {
     position: absolute;
-    inset: 0 0 auto;
-    height: 72px;
-    background: linear-gradient(180deg, var(--surface), transparent);
-    pointer-events: none;
+    top: calc(var(--space-8) + env(safe-area-inset-top) - 6px);
+    right: var(--space-6);
+    display: flex;
+    gap: var(--space-1);
   }
 
-  /* 하단 페이지네이션 영역 확보 */
-  .card-image::after {
-    content: "";
-    position: absolute;
-    inset: auto 0 0;
-    height: 64px;
-    background: linear-gradient(0deg, rgba(var(--ink-rgb), 0.7), transparent);
-    pointer-events: none;
+  .mobile-map-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 28px;
+    padding: 0 var(--space-3);
+    border: 1px solid rgba(var(--red-rgb), 0.55);
+    border-radius: var(--radius-pill);
+    background: rgba(var(--red-rgb), 0.12);
+    color: var(--red-light);
+    font-size: var(--fs-2xs);
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color var(--dur-base) ease, color var(--dur-base) ease;
+  }
+
+  .mobile-map-link svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .mobile-map-link:active {
+    background: var(--red);
+    color: var(--white);
   }
 
   /* ---------- 타이포그래피 ---------- */
@@ -159,6 +174,8 @@
    텍스트 단독 카드 (인트로 / 엔딩)
 ======================================================= */
 .full-text-card {
+  flex: 1 1 auto;
+  justify-content: center;
   align-items: center;
   text-align: center;
   background:
@@ -190,17 +207,6 @@
   color: var(--text-tertiary);
   font-size: var(--fs-xs);
   line-height: 1.6;
-}
-
-/* =======================================================
-   카드 배경 이미지
-======================================================= */
-.bg-history {
-  background-image: url("/assets/images/mobile-cards/mobile-card2.png");
-}
-
-.bg-legacy {
-  background-image: url("/assets/images/mobile-cards/mobile-card7.png");
 }
 
 /* =======================================================

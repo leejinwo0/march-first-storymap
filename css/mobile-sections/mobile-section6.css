@@ -1,0 +1,142 @@
+/* =======================================================
+   Card 7 · 남겨진 유산 의의 카드 + 헌법 전문 인용 (JS 생성)
+======================================================= */
+.mobile-s6-scroll-area {
+  padding: var(--space-6) var(--space-4) var(--space-12);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.mobile-s6-legacy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ---------- 의의 카드 (details/summary) ---------- */
+.legacy-item {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  overflow: hidden;
+  transition: border-color var(--dur-base) ease;
+}
+
+.legacy-item[open] {
+  border-color: rgba(var(--red-rgb), 0.45);
+  background: linear-gradient(180deg, rgba(var(--red-rgb), 0.08), var(--surface) 60%);
+}
+
+.legacy-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  list-style: none;
+  cursor: pointer;
+}
+
+.legacy-head::-webkit-details-marker {
+  display: none;
+}
+
+.legacy-num {
+  flex-shrink: 0;
+  width: 1.6em;
+  color: rgba(var(--white-rgb), 0.35);
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-variant-numeric: lining-nums;
+  transition: color var(--dur-base) ease;
+}
+
+.legacy-item[open] .legacy-num {
+  color: var(--red-light);
+}
+
+.legacy-title {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.legacy-title strong {
+  color: var(--white);
+  font-family: var(--font-serif);
+  font-size: 0.975rem;
+}
+
+.legacy-title em {
+  color: var(--text-tertiary);
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+}
+
+/* + / − 표시 */
+.legacy-sign::before {
+  content: "+";
+  color: var(--text-secondary);
+  font-size: var(--fs-xl);
+  line-height: 1;
+}
+
+.legacy-item[open] .legacy-sign::before {
+  content: "−";
+}
+
+.legacy-body {
+  padding: 0 var(--space-4) var(--space-4) calc(var(--space-4) + 1.6em * 1.375 + var(--space-3));
+  color: var(--text-body);
+  font-size: var(--fs-sm);
+  line-height: 1.7;
+}
+
+.legacy-link {
+  display: inline-block;
+  margin-top: var(--space-2);
+  color: var(--gold);
+  font-size: var(--fs-xs);
+  text-decoration: none;
+}
+
+/* ---------- 헌법 전문 인용 ---------- */
+.legacy-quote {
+  position: relative;
+  margin-top: var(--space-1);
+  padding: var(--space-5) var(--space-5) var(--space-4);
+  border-left: 3px solid var(--red);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: rgba(var(--red-rgb), 0.07);
+  overflow: hidden;
+}
+
+.legacy-quote p {
+  position: relative;
+  color: var(--white);
+  font-family: var(--font-serif);
+  font-size: var(--fs-sm);
+  line-height: 1.7;
+}
+
+.legacy-quote cite {
+  position: relative;
+  display: block;
+  margin-top: var(--space-2);
+  color: var(--text-tertiary);
+  font-size: var(--fs-2xs);
+  font-style: normal;
+  letter-spacing: 0.1em;
+}
+
+/* 배경 연도 장식 */
+.legacy-quote-year {
+  position: absolute;
+  right: -6px;
+  bottom: -22px;
+  color: rgba(var(--white-rgb), 0.04);
+  font-family: var(--font-display);
+  font-size: 5.25rem;
+  line-height: 1;
+}
