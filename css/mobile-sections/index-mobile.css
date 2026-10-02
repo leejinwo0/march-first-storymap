@@ -287,3 +287,102 @@
   color: var(--text-tertiary);
   text-align: center;
 }
+
+/* =======================================================
+   하단 시트 모달 공통 (JS 생성: 카드 5 장소 상세, 카드 6 인물 상세)
+======================================================= */
+.mobile-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: var(--scrim);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--dur-base) ease, visibility var(--dur-base) ease;
+}
+
+.mobile-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* 하단 시트 형태 */
+.mobile-modal-container {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  max-height: 88dvh;
+  padding-bottom: env(safe-area-inset-bottom);
+  border: 1px solid var(--border-default);
+  border-bottom: none;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  transform: translateY(24px);
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.mobile-modal-overlay.active .mobile-modal-container {
+  transform: translateY(0);
+}
+
+/* 시트 핸들 */
+.mobile-modal-container::before {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 4px;
+  margin: var(--space-3) auto 0;
+  border-radius: var(--radius-pill);
+  background: rgba(var(--white-rgb), 0.2);
+}
+
+.mobile-modal-close {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(var(--white-rgb), 0.06);
+  color: var(--white);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.mobile-modal-body {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6) var(--space-6) var(--space-8);
+}
+
+.mobile-modal-title {
+  color: var(--white);
+  font-family: var(--font-serif);
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+}
+
+/* 모달 로딩·오류 상태 문구 (JS 생성) */
+.mobile-modal-status {
+  margin-top: var(--space-5);
+  color: var(--text-tertiary);
+  font-size: var(--fs-sm);
+  text-align: center;
+}
+
+.mobile-modal-status.is-error {
+  color: var(--red-light);
+}

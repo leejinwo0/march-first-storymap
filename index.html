@@ -140,7 +140,7 @@
           </div>
         </div>
 
-        <!-- [모바일 카드 6] 독립의 별들 (인물 2열 그리드) -->
+        <!-- [모바일 카드 6] 독립의 별들 (인물 아카이브: 검색·초성 필터·3열 그리드) -->
         <div class="swiper-slide card-slide">
           <div class="card-content">
             <p class="card-chapter">05. 독립의 별들</p>
@@ -155,8 +155,21 @@
 
           <!-- mobile-sections/section5.js 렌더링 영역 -->
           <div class="mobile-activist-scroll-area">
-            <div id="mobile-activist-grid" class="mobile-activist-grid">
+            <div class="mobile-activist-toolbar">
+              <label class="mobile-activist-search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m20 20-3.5-3.5" />
+                </svg>
+                <input type="search" id="mobile-activist-search" placeholder="독립운동가 이름 검색" autocomplete="off" aria-label="독립운동가 이름 검색">
+              </label>
+              <div class="mobile-activist-filter-row">
+                <!-- swiper-no-swiping: 초성 칩 가로 스크롤 시 슬라이드 전환 차단 -->
+                <div id="mobile-activist-filters" class="mobile-activist-filters swiper-no-swiping" aria-label="초성 필터"></div>
+                <p id="mobile-activist-count" class="mobile-activist-count" aria-live="polite"></p>
+              </div>
             </div>
+            <div id="mobile-activist-grid" class="mobile-activist-grid"></div>
           </div>
         </div>
 
