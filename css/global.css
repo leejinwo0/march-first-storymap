@@ -322,7 +322,7 @@ button {
   transition: opacity var(--dur-base) ease, visibility var(--dur-base) ease, transform var(--dur-base) var(--ease-out), background-color var(--dur-base) ease, border-color var(--dur-base) ease;
 }
 
-.floating-top-btn svg {
+.floating-top-btn .icon {
   width: 16px;
   height: 16px;
 }
@@ -429,10 +429,11 @@ button {
   transform: translateY(0);
 }
 
-.btn-icon {
+.sc4-reset-btn .icon,
+.sc5-reset-btn .icon,
+.sc5-search-toggle .icon {
   width: 16px;
   height: 16px;
-  flex-shrink: 0;
 }
 
 /* 6-3. 외부 링크 버튼 (지도 팝업·카드 공통) */
@@ -783,4 +784,50 @@ button {
     opacity: 1;
     transform: none;
   }
+}
+
+/* =======================================================
+   아이콘 (SVG 마스크)
+   - HTML: <span class="icon icon-이름" aria-hidden="true"></span>
+   - 색상: background-color: currentColor → 부모 글자색 연동
+   - 크기: 기본 1em, 사용처에서 width/height 재정의
+======================================================= */
+.icon {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 1em;
+  height: 1em;
+  background-color: currentColor;
+  -webkit-mask: var(--icon) center / contain no-repeat;
+  mask: var(--icon) center / contain no-repeat;
+}
+
+/* 지도 (스마트서울맵 링크) */
+.icon-map {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z'/%3E%3Cpath d='M9 4v14M15 6v14'/%3E%3C/svg%3E");
+}
+
+/* 검색 */
+.icon-search {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E");
+}
+
+/* 전체 보기 */
+.icon-expand {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7'/%3E%3C/svg%3E");
+}
+
+/* 이전 */
+.icon-chevron-left {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m15 18-6-6 6-6'/%3E%3C/svg%3E");
+}
+
+/* 다음 */
+.icon-chevron-right {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E");
+}
+
+/* 맨 위로 */
+.icon-chevron-up {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m18 15-6-6-6 6'/%3E%3C/svg%3E");
 }

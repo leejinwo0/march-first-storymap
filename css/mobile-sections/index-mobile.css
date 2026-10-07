@@ -98,7 +98,7 @@
     transition: background-color var(--dur-base) ease, color var(--dur-base) ease;
   }
 
-  .mobile-map-link svg {
+  .mobile-map-link .icon {
     width: 13px;
     height: 13px;
   }

@@ -71,7 +71,7 @@
   border-color: var(--accent);
 }
 
-.sc5-nav-btn svg {
+.sc5-nav-btn .icon {
   width: 20px;
   height: 20px;
 }
