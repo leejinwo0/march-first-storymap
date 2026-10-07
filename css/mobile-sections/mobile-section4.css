@@ -159,7 +159,8 @@
 }
 
 .mobile-place-detail .mobile-modal-title {
-  padding-right: var(--space-10); /* 닫기 버튼 영역 확보 */
+  padding-right: var(--space-10);
+  /* 닫기 버튼 영역 확보 */
 }
 
 .mobile-place-detail-addr {
