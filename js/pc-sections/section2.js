@@ -15,11 +15,12 @@ export async function initSection2() {
 
   const defaultCenter = [37.5759, 126.985];
 
-  // 초기 줌 10: 일반지도 기준
+  // 1. 지도 생성 옵션에 zoomSnap 추가 (0.5 단위 줌 허용)
   const mapS2 = L.map("map-s2", {
     zoomControl: false,
     scrollWheelZoom: false,
     closePopupOnClick: false,
+    zoomSnap: 0.5,
     crs: getCrsEx(),
   }).setView(defaultCenter, 10);
 
@@ -39,19 +40,28 @@ export async function initSection2() {
   baseMapS2.addTo(mapS2);
   addMapToggleControl(mapS2, baseMapS2, gyeongseongMapS2, "경성대지도");
 
-  // 지도 전환 시 줌 보정: 경성대지도(WMS)와 일반지도 간 축척 차이 1단계 보정
+  // 경성대지도(WMS) 줌 보정값: 일반지도 대비 축소 단계 수 (값이 클수록 더 멀리 표시)
+  const GYEONGSEONG_ZOOM_OFFSET = 0.5;
+
+  // 지도 전환 시 줌 보정: 경성대지도 전환 시 축소, 일반지도 복귀 시 원래 줌으로 복원
   mapS2.on("layeradd", (e) => {
     if (e.layer === gyeongseongMapS2) {
-      mapS2.setZoom(mapS2.getZoom(), { animate: false });
+      mapS2.setZoom(mapS2.getZoom() - GYEONGSEONG_ZOOM_OFFSET, {
+        animate: false,
+      });
     }
     if (e.layer === baseMapS2) {
-      mapS2.setZoom(mapS2.getZoom() + 1, { animate: false });
+      mapS2.setZoom(mapS2.getZoom() + GYEONGSEONG_ZOOM_OFFSET, {
+        animate: false,
+      });
     }
   });
 
-  // 현재 레이어 기준 기본 줌 / 확대 줌 반환
-  const getDefaultZoom = () => (mapS2.hasLayer(gyeongseongMapS2) ? 9 : 10);
-  const getTargetZoom = () => (mapS2.hasLayer(gyeongseongMapS2) ? 11 : 12);
+  // 현재 레이어 기준 기본 줌 / 확대 줌 반환 (일반지도 10 / 12 고정)
+  const getDefaultZoom = () =>
+    mapS2.hasLayer(gyeongseongMapS2) ? 10 - GYEONGSEONG_ZOOM_OFFSET : 10;
+  const getTargetZoom = () =>
+    mapS2.hasLayer(gyeongseongMapS2) ? 12 - GYEONGSEONG_ZOOM_OFFSET : 12;
 
   const resizeObserverS2 = new ResizeObserver(() => mapS2.invalidateSize());
   resizeObserverS2.observe(mapContainer);
