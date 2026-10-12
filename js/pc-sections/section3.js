@@ -36,6 +36,7 @@ export async function initSection3() {
   addMapToggleControl(mapS3, baseMapS3, gyeongseongMapS3, "경성대지도");
 
   let activeMarkers = [];
+  let routeTrail = null; // 활성 경로 하단 실선 레이어
   const routeLayers = {};
 
   // 스텝 구성: 그룹 ID → 테마 콘텐츠 ID(경로 데이터)
@@ -146,26 +147,39 @@ export async function initSection3() {
         }, 300);
       }
 
+      // 활성 경로 스타일 + 흐름 애니메이션 클래스 적용
+      // (Leaflet setStyle의 className은 최초 생성 시에만 반영 → SVG path에 classList 직접 적용)
       Object.keys(routeLayers).forEach((id) => {
-        if (id === activeId) {
-          routeLayers[id].setStyle({
+        const isActive = id === activeId;
+
+        routeLayers[id].setStyle(
+          isActive
+            ? { color: "#ff0000", weight: 7, opacity: 1, dashArray: "15, 15" }
+            : { color: "#000000", weight: 4, opacity: 0.2, dashArray: null },
+        );
+
+        routeLayers[id].eachLayer((layer) => {
+          const pathEl = layer.getElement && layer.getElement();
+          if (pathEl) pathEl.classList.toggle("sc3-draw-path-active", isActive);
+        });
+
+        if (isActive) routeLayers[id].bringToFront();
+      });
+
+      // 활성 경로 하단 실선 (점선 이동 중 경로 형태 유지)
+      if (routeTrail) mapS3.removeLayer(routeTrail);
+      routeTrail = null;
+      if (routeLayers[activeId]) {
+        routeTrail = L.geoJSON(routeLayers[activeId].toGeoJSON(), {
+          style: {
             color: "#ff0000",
             weight: 7,
-            opacity: 1,
-            dashArray: "15, 15",
-            className: "sc3-draw-path-active",
-          });
-          routeLayers[id].bringToFront();
-        } else {
-          routeLayers[id].setStyle({
-            color: "#000000",
-            weight: 4,
-            opacity: 0.2,
-            dashArray: null,
-            className: "",
-          });
-        }
-      });
+            opacity: 0.18,
+            interactive: false,
+          },
+        }).addTo(mapS3);
+        routeLayers[activeId].bringToFront();
+      }
 
       activeMarkers.forEach((m) => mapS3.removeLayer(m));
       activeMarkers = [];

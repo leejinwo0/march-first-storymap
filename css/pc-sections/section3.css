@@ -184,12 +184,14 @@
   fill-opacity: 0;
 }
 
+/* 활성 경로: 점선이 출발 → 도착 방향으로 이동 (dashoffset 감소 = 진행 방향) */
 #map-s3 path.sc3-draw-path-active {
   stroke-linecap: round;
   stroke-linejoin: round;
-  animation: sc3-flow-dash 1s linear infinite;
+  animation: sc3-flow-dash 0.8s linear infinite;
 }
 
+/* 이동 거리 30 = dashArray "15, 15" 한 주기 → 끊김 없이 반복 */
 @keyframes sc3-flow-dash {
   from {
     stroke-dashoffset: 30;

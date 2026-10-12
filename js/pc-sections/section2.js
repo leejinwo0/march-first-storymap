@@ -5,6 +5,43 @@ import {
 } from "/api/mapService.js";
 import { addMapToggleControl, generateCurvedPath } from "/js/utils/mapUtils.js";
 
+/* -------------------------------------------------------
+   이미지 후보 URL 목록 생성
+   - 1순위: COT_IMG_MAIN_URL1~4 (스마트서울맵 서버 상대경로 → https 절대경로)
+   - 2순위: COT_IMG_MAIN_URL (외부 http 이미지 → weserv 프록시, 이후 원본 직접 요청)
+   - 빈 값·중복 제거
+------------------------------------------------------- */
+function toAbsoluteUrl(url) {
+  const value = String(url || "").trim();
+  if (!value || value === "null") return "";
+  if (value.startsWith("http://map.seoul.go.kr"))
+    return value.replace("http://", "https://");
+  if (value.startsWith("http")) return value;
+  return "https://map.seoul.go.kr" + (value.startsWith("/") ? "" : "/") + value;
+}
+
+function getImageCandidates(props) {
+  const candidates = [];
+
+  [
+    "COT_IMG_MAIN_URL1",
+    "COT_IMG_MAIN_URL2",
+    "COT_IMG_MAIN_URL3",
+    "COT_IMG_MAIN_URL4",
+  ].forEach((key) => candidates.push(toAbsoluteUrl(props[key])));
+
+  const mainUrl = toAbsoluteUrl(props.COT_IMG_MAIN_URL);
+  if (mainUrl.startsWith("http://")) {
+    // http 이미지 → 이미지 프록시(weserv) 경유 (HTTPS 페이지 혼합 콘텐츠 차단 회피)
+    candidates.push(
+      "https://images.weserv.nl/?url=" + encodeURIComponent(mainUrl),
+    );
+  }
+  candidates.push(mainUrl);
+
+  return [...new Set(candidates.filter(Boolean))];
+}
+
 /* =======================================================
    Section 2: 거사의 맹세 (스크롤 연동 타임라인)
    - .sc2-scroll-step 진입 시 카드 내용·마커·경로선 갱신
@@ -15,7 +52,7 @@ export async function initSection2() {
 
   const defaultCenter = [37.5759, 126.985];
 
-  // 1. 지도 생성 옵션에 zoomSnap 추가 (0.5 단위 줌 허용)
+  // 초기 줌 10: 일반지도 기준, zoomSnap 0.5: 경성대지도 0.5단계 보정용
   const mapS2 = L.map("map-s2", {
     zoomControl: false,
     scrollWheelZoom: false,
@@ -102,18 +139,7 @@ export async function initSection2() {
 
       if (feature) {
         const props = feature.properties;
-        let finalImgUrl = props.COT_IMG_MAIN_URL || "";
-        if (finalImgUrl && !finalImgUrl.startsWith("http")) {
-          finalImgUrl =
-            "https://map.seoul.go.kr" +
-            (finalImgUrl.startsWith("/") ? "" : "/") +
-            finalImgUrl;
-        }
-        // http 이미지 → 이미지 프록시(weserv) 경유 (HTTPS 페이지 혼합 콘텐츠 차단 회피)
-        if (finalImgUrl.startsWith("http://")) {
-          finalImgUrl =
-            "https://images.weserv.nl/?url=" + encodeURIComponent(finalImgUrl);
-        }
+        const imgCandidates = getImageCandidates(props);
 
         const title = props.COT_CONTS_NAME || "지명 없음";
 
@@ -137,7 +163,7 @@ export async function initSection2() {
           id: targetId,
           title: title,
           desc: combinedDesc,
-          imgUrl: finalImgUrl,
+          imgCandidates: imgCandidates,
           addrNew: props.COT_ADDR_FULL_NEW || "현재 주소 정보 없음",
           addrOld: props.COT_ADDR_FULL_OLD || "옛 주소 정보 없음",
           poiId: props.COT_CONTS_ID,
@@ -204,9 +230,10 @@ export async function initSection2() {
 
       cardContent.classList.add("fade-out");
       setTimeout(() => {
-        // 이미지 로드 실패(404 등) 시 onerror로 img 숨김 처리
-        const imageHTML = item.imgUrl
-          ? `<img src="${item.imgUrl}" alt="${item.title}" class="sc2-item-img" onerror="this.style.display='none';">`
+        // 이미지: 첫 번째 후보 URL로 생성, 실패 시 아래 error 핸들러에서 다음 후보로 교체
+        const firstImg = item.imgCandidates[0];
+        const imageHTML = firstImg
+          ? `<img src="${firstImg}" alt="${item.title}" class="sc2-item-img">`
           : "";
         const mapLink = `https://map.seoul.go.kr/smgis2/poiViewMap?ti=11100550&pi=${item.poiId}&lang=ko`;
         const sajeokLink = `http://sajeok.i815.or.kr/i815/search_list?keyword=${encodeURIComponent(item.title)}`;
@@ -228,11 +255,29 @@ export async function initSection2() {
 
         const currentImg = cardContent.querySelector(".sc2-item-img");
         if (currentImg) {
+          let candidateIndex = 0;
+
+          // 로드 실패(404 등) 시 다음 후보 URL로 교체, 전체 실패 시 숨김 처리
+          currentImg.addEventListener("error", () => {
+            candidateIndex++;
+            if (candidateIndex < item.imgCandidates.length) {
+              currentImg.src = item.imgCandidates[candidateIndex];
+              return;
+            }
+            console.warn(
+              `[Section2] 이미지 전체 후보 로드 실패: ${item.id}`,
+              item.imgCandidates,
+            );
+            currentImg.style.display = "none";
+          });
+
           currentImg.addEventListener("click", () => {
             if (window.openGlobalModal) {
-              window.openGlobalModal(item.imgUrl, item.title);
+              window.openGlobalModal(currentImg.src, item.title);
             }
           });
+        } else {
+          console.warn(`[Section2] 이미지 URL 없음: ${item.id}`);
         }
       }, 300);
     }

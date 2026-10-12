@@ -162,14 +162,37 @@
   z-index: 2;
 }
 
+/* 헌법 전문 인용: 장문 단락 → 좌측 정렬, 어절 단위 줄바꿈 */
 .sc6-quote-main {
-  margin: 0 auto var(--space-6);
-  color: var(--text-primary);
+  max-width: 880px;
+  margin: 0 auto var(--space-8);
+  text-align: left;
+}
+
+.sc6-quote-main p {
+  color: var(--text-body);
   font-family: var(--font-serif);
-  font-size: clamp(1rem, 1.35vw, 1.3rem);
+  font-size: clamp(0.95rem, 1.05vw, 1.05rem);
+  font-weight: 500;
+  line-height: 1.95;
+  word-break: keep-all;
+}
+
+/* 임시정부 법통 문구 강조: 하단 형광 밑줄 */
+.sc6-quote-main strong {
+  color: var(--text-primary);
   font-weight: 700;
-  line-height: 1.6;
-  white-space: nowrap;
+  background: linear-gradient(transparent 62%, rgba(var(--red-rgb), 0.45) 62%);
+}
+
+.sc6-quote-main cite {
+  display: block;
+  margin-top: var(--space-4);
+  color: var(--gold);
+  font-size: var(--fs-sm);
+  font-style: normal;
+  letter-spacing: 0.08em;
+  text-align: right;
 }
 
 .sc6-quote-sub {
