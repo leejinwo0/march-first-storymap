@@ -175,14 +175,21 @@
   font-size: clamp(0.95rem, 1.05vw, 1.05rem);
   font-weight: 500;
   line-height: 1.95;
-  word-break: keep-all;
+  /* 줄 끝 글자 단위 줄바꿈 + 양쪽 정렬: 오른쪽 끝 정렬 */
+  word-break: normal;
+  overflow-wrap: anywhere;
+  text-align: justify;
+  text-justify: inter-character;
+  text-align-last: left;
 }
 
-/* 임시정부 법통 문구 강조: 하단 형광 밑줄 */
+/* 임시정부 법통 문구 강조: 하단 형광 밑줄 (줄바꿈 시 줄마다 배경 유지) */
 .sc6-quote-main strong {
   color: var(--text-primary);
   font-weight: 700;
   background: linear-gradient(transparent 62%, rgba(var(--red-rgb), 0.45) 62%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 .sc6-quote-main cite {

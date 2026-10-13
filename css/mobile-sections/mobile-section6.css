@@ -149,25 +149,29 @@
 }
 
 .legacy-detail-text {
-  margin: var(--space-5) calc(var(--space-8) * -1) 0 0;
-  /* 본문은 닫기 버튼 여백 없이 전체 폭 사용 */
+  margin: var(--space-5) calc(var(--space-8) * -1) 0 0; /* 본문은 닫기 버튼 여백 없이 전체 폭 사용 */
   padding-top: var(--space-5);
   border-top: 1px solid var(--border-subtle);
   color: var(--text-body);
   font-size: var(--fs-sm);
   line-height: 1.85;
-  word-break: keep-all;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  text-align: justify;
+  text-justify: inter-character;
+  text-align-last: left;
 }
 
 .legacy-detail.is-quote .legacy-detail-text {
   font-family: var(--font-serif);
 }
 
-/* 임시정부 법통 문구 강조 */
 .legacy-detail-text strong {
   color: var(--white);
   font-weight: 700;
   background: linear-gradient(transparent 62%, rgba(var(--red-rgb), 0.45) 62%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 .legacy-detail-link {
